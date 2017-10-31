@@ -27,6 +27,12 @@
                (load-theme 'monokai t))
 #+END_SRC
 
+** Frame 标题
+
+#+BEGIN_SRC emacs-lisp
+  (setq frame-title-format '("Emacs BW"))
+#+END_SRC
+
 ** 最大化
 
 #+BEGIN_SRC emacs-lisp
