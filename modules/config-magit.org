@@ -1,4 +1,6 @@
 #+BEGIN_SRC emacs-lisp
   (use-package magit
-    :ensure t)
+    :ensure t
+    :init
+    (evil-leader/set-key "ag" 'magit-status))
 #+END_SRC
