@@ -1,0 +1,57 @@
+#+BEGIN_SRC emacs-lisp
+  (use-package org
+    :config
+    (evil-leader/set-key "c" 'org-capture)
+    (if (getenv "ORG_DIRECTORY")
+        (setq org-directory (getenv "ORG_DIRECTORY"))
+      (setq org-directory "~/.dropbox/GTD/"))
+    (setq org-capture-templates
+          `(("t" "Todo" entry (file+headline "gtd" "Inbox") "* TODO %? %^g\n  %u")
+            ("n" "Note" entry (file "notes") "* %?\n  %T" :prepend t)
+            ("d" "Diary" entry (file+datetree "journal.org.gpg")
+             "* %^{Title} %^g\n%T\n\n  %?" :kill-buffer t)
+            ("o" "DailyLog" entry (file+datetree+prompt "journal.org.gpg")
+             ,(concat "* Daily Log                                                     :DailyLog:\n"
+                      "<%<%Y-%m-%d %a 23:59>>\n"
+                      "\n"
+                      "  %?\n"
+                      "  - 今日计划\n"
+                      "    + \n"
+                      "  - 今日一览\n"
+                      "    + 工作 :: \n"
+                      "    + 亲友 :: \n"
+                      "    + 健康 :: \n"
+                      "    + 学习 :: \n"
+                      "    + 心智 :: \n"
+                      "  - 今日日志\n"
+                      "    + \n"
+                      "  - 今日打分 %u [%]\n"
+                      "    + [ ] 锻炼英语听力\n"
+                      "    + [ ] 学习 10 个新单词、词组\n"
+                      "    + [ ] 对工作进展满意\n")
+             :kill-buffer t)
+            ("w" "WeeklyReview" entry (file+datetree+prompt "journal.org.gpg")
+             ,(concat "* Weekly Review %<%Y>-W%<%V>                                    :WeeklyReview:\n"
+                      "<%<%Y-%m-%d %a 12:00>>\n"
+                      "\n"
+                      "  本周亮点\n"
+                      "  - %?\n"
+                      "  本周一览\n"
+                      "  - \n"
+                      "  本周遗憾\n"
+                      "  - \n"
+                      "  下周计划\n"
+                      "  - \n")
+             :kill-buffer t)
+            ("m" "MonthlyReview" entry (file+datetree+prompt "journal.org.gpg")
+             ,(concat "* Monthly Review %<%Y>-%<%02m>                                :MonthlyReview:\n"
+                      "<%<%Y-%m-%d %a 23:00>>\n"
+                      "\n"
+                      "  本月亮点\n"
+                      "  - %?\n"
+                      "  本月要点\n"
+                      "  - \n"
+                      "  下月计划\n"
+                      "  - \n")
+             :kill-buffer t))))
+#+END_SRC
