@@ -1,0 +1,12 @@
+* 一些方便的键绑定
+
+#+BEGIN_SRC emacs-lisp
+;; 用 C-2 设置 mark，和 C-@ 键位相同，但不用按 Shift
+(global-set-key [?\C-2] 'set-mark-command)
+
+;; 相应的修改 pop-global-mark，使用 C-x C-2
+(global-set-key (kbd "C-x C-2") 'pop-global-mark)
+
+;; M-o 替换 C-x o，用于切换 window
+(global-set-key (kbd "M-o") 'other-window)
+#+END_SRC

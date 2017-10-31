@@ -1,0 +1,14 @@
+;; -*- coding: utf-8-unix -*-
+
+* Auto Save
+
+#+BEGIN_SRC emacs-lisp
+  (setq auto-save-list-file-prefix
+        (locate-user-emacs-file ".auto-save-list/.saves-"))
+#+END_SRC
+
+* Custom 文件
+
+#+BEGIN_SRC emacs-lisp
+  (setq custom-file (locate-user-emacs-file "personal/.custom.el"))
+#+END_SRC

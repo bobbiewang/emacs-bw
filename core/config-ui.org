@@ -1,0 +1,76 @@
+;; -*- coding: utf-8-unix -*-
+
+* 显示
+** 字体
+
+#+BEGIN_SRC emacs-lisp
+  (defun bw/set-mono-font ()
+    (interactive)
+    (progn
+      (set-frame-font "-outline-Consolas-normal-r-normal-normal-18-*-*-*-c-*-iso10646-1")
+      (dolist (charset '(kana han symbol cjk-misc bopomofo))
+        (set-fontset-font (frame-parameter nil 'font)
+                          charset (font-spec :family "Microsoft Yahei" :size 20)))))
+
+  (bw/set-mono-font)
+#+END_SRC
+
+** 主题
+
+  [[https://github.com/oneKelvinSmith/monokai-emacs][monokai-theme]] 源自 TextMate 的 Monokai Theme，是一个比较舒服的暗色主
+题。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package monokai-theme
+               :ensure t
+               :config
+               (load-theme 'monokai t))
+#+END_SRC
+
+** 最大化
+
+#+BEGIN_SRC emacs-lisp
+  (when bw/windows-p
+    (toggle-frame-maximized))
+#+END_SRC
+
+* 交互
+** which-key
+
+  [[https://github.com/justbur/emacs-which-key][which-key]] 可以显示连续键中后续可选的键，非常酷炫。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package which-key
+               :ensure t
+               :config
+               (which-key-mode))
+#+END_SRC
+
+** Evil
+
+  Spacemacs 的 hybrid 编辑风格可以在 Evil 的 Insert State 使用部分
+Emacs 的键绑定，用着很舒服。下面的链接介绍了如果在 Evil 中实现这样的设
+置：[[https://stackoverflow.com/questions/25542097/emacs-evil-mode-how-to-change-insert-state-to-emacs-state-automatically][Emacs evil-mode how to change insert-state to emacs-state
+automatically]]。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package evil
+               :ensure t
+               :config
+               (evil-mode 1)
+               ;; evil-insert-state 使用 evil-emacs-state 的键绑定，但可
+               ;; 以用 ESC 退出到 evil-normal-state
+               (setq evil-insert-state-map (make-sparse-keymap))
+               (define-key evil-insert-state-map (kbd "<escape>") 'evil-normal-state))
+#+END_SRC
+
+** Helm
+
+  [[https://github.com/emacs-helm/helm][Helm]]
+
+#+BEGIN_SRC emacs-lisp
+  (use-package helm
+               :ensure t
+               :bind (("M-x" . helm-M-x)
+                      ("M-y" . helm-show-kill-ring)))
+#+END_SRC

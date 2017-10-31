@@ -1,0 +1,3 @@
+core/*.el
+personal/*.el
+.elpa/

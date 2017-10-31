@@ -1,0 +1,67 @@
+* ELPA
+
+  ELPA 是 Emacs Lisp Package Archive 的缩写。[[http://elpa.gnu.org/packages/][gnu]] 是 ELPA 的官方（内置）
+源 ，但里面的包不多而且更新不及时。melpa 是一个流行的第三方源。
+
+  package.el 实现了 Emacs 的包管理系统。从 ELPA 下载的包会安装到
+package-user-dir 目录下，并组织在以 /name-version/ 风格命名的子目录里。
+package-user-dir 目录下所有的内容被称为 Package Contents。
+
+  下面是 package 中其中几个常用的函数。
+  - package-initialize :: 更新本地 Package 安装列表，将各 Package 加到
+       load-path，运行其 /name/-autoloads.el 文件
+  - package-refresh-contents :: 从 ELPA 下载包的数据。注意，下载数据后
+       才可以用 package-install 安装服务器上的包
+  - package-list-packages（list-packages） :: 从 ELPA 下载包的描述（可
+       以用 prefix 跳过），并列出包的列表
+  - package-install :: 安装包
+
+  下面是 Emacs 的启动过程：
+  - 加载 init 文件和 abbrev 文件
+  - 运行 package-initialize 加载安装的 Package
+  - 运行 after-init-hook。
+
+  所以，缺省不能在 init 文件的加载过程中使用 Package（如 use-package）。
+为了解决这个问题，我们可以在 init 文件中显式地运行 package-initialize。
+
+* 定义函数
+
+#+BEGIN_SRC emacs-lisp
+  (defun bw/install-package-on-demand-impl (package &optional min-version no-refresh)
+    "按需安装 PACKAGE。
+  MIN-VERSION：可选参数，指定 PACKAGE 最低版本。
+  NO-REFRESH：如果是非 nil，则不从 ELPA 重新下载数据。"
+    (if (package-installed-p package min-version)
+        t
+      (if (or (assoc package package-archive-contents) no-refresh)
+          ;; PACKAGE 已经在 package-archive-contents 中，或者要求不刷新，
+          ;; 则直接安装 PACKAGE
+          (if (boundp 'package-selected-packages)
+              ;; Record this as a package the user installed explicitly
+              (package-install package nil)
+            (package-install package))
+        ;; 否则，刷新 package-archive-contents，然后递归调用自身函数，安
+        ;; 装 PACKAGE
+        (progn
+          (package-refresh-contents)
+          (bw/install-package-on-demand-impl package min-version t)))))
+
+
+  (defun bw/install-package-on-demand (package &optional min-version no-refresh)
+    "按需安装 PACKAGE。如果安装失败，打印一条错误信息。
+  MIN-VERSION：可选参数，指定 PACKAGE 最低版本。
+  NO-REFRESH：如果是非 nil，则不从 ELPA 重新下载数据。"
+    (condition-case err
+        (bw/install-package-on-demand-impl package min-version no-refresh)
+      (error
+       (message "Couldn't install optional package `%s': %S" package err)
+       nil)))
+ #+END_SRC
+
+* 使用 use-package
+
+  [[https://github.com/jwiegley/use-package][use-package]]
+
+#+BEGIN_SRC emacs-lisp
+  (bw/install-package-on-demand 'use-package)
+#+END_SRC
