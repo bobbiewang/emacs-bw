@@ -17,4 +17,17 @@
       (let ((case-fold-search isearch-case-fold-search))
         (occur (if isearch-regexp isearch-string
                  (regexp-quote isearch-string))))))
+
+  (defun bw/beginning-of-line ()
+    "If the point is not on beginning of current line, move point
+    to beginning of current line, as 'beginning-of-line' does.  If
+    the point already is on the beginning of current line, then move
+    the point to the first non-space character, if it exists."
+    (interactive)
+    (if (not (eq (point) (line-beginning-position)))
+        (beginning-of-line)
+      (when (re-search-forward "\[^\[:blank:\]　\]" (line-end-position) t)
+        (backward-char))))
+
+  (global-set-key [?\C-a] 'bw/beginning-of-line)
 #+END_SRC
