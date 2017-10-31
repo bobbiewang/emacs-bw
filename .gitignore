@@ -1,3 +1,5 @@
 core/*.el
+modules/*.el
 personal/*.el
-.elpa/
+.*
+*~
