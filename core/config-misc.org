@@ -1,3 +1,11 @@
+* 自定义 Mode
+
+#+BEGIN_SRC emacs-lisp
+  ;; emacs-lisp-example-mode 用于 Emacs 配置 .org 文件，相应的代码不会用
+  ;; 于初始化 Emacs
+  (defalias 'emacs-lisp-example-mode 'emacs-lisp-mode)
+#+END_SRC
+
 * Auto Save
 
 #+BEGIN_SRC emacs-lisp
