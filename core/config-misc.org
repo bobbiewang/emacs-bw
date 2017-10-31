@@ -1,5 +1,3 @@
-;; -*- coding: utf-8-unix -*-
-
 * Auto Save
 
 #+BEGIN_SRC emacs-lisp
@@ -11,4 +9,11 @@
 
 #+BEGIN_SRC emacs-lisp
   (setq custom-file (locate-user-emacs-file "personal/.custom.el"))
+#+END_SRC
+* 其他
+
+#+BEGIN_SRC emacs-lisp
+  (setq savehist-file (locate-user-emacs-file ".history"))
+  (setq recentf-save-file (locate-user-emacs-file ".recentf"))
+  (setq server-auth-dir (locate-user-emacs-file ".server/"))
 #+END_SRC
