@@ -5,15 +5,59 @@
         (locate-user-emacs-file ".auto-save-list/.saves-"))
 #+END_SRC
 
+* Auto Backup
+
+#+BEGIN_SRC emacs-lisp
+  ;; Backup 策略
+  (setq version-control t)     ; 启用文件备份方式的版本控制
+  (setq kept-new-versions 5)   ; 备份最新的版本五次
+  (setq delete-old-versions t) ; 删掉过时的的版本
+
+  ;; 设置备份文件的路径
+  (setq backup-directory-alist
+        '(("" . "~/.emacs.d/.auto-backup/")))
+
+  ;; 设置备份方法：直接拷贝
+  (setq backup-by-copying t)
+  (setq make-backup-files t)
+#+END_SRC
+
 * Custom 文件
 
 #+BEGIN_SRC emacs-lisp
   (setq custom-file (locate-user-emacs-file "personal/.custom.el"))
 #+END_SRC
+
+* Easy PG
+
+#+BEGIN_SRC emacs-lisp
+  ;; 总是使用对称加密
+  (setq epa-file-encrypt-to nil)
+
+  ;; 允许缓存密码，否则编辑时每次保存都要输入密码
+  (setq epa-file-cache-passphrase-for-symmetric-encryption t)
+
+  ;; 允许自动保存
+  (setq epa-file-inhibit-auto-save nil)
+#+END_SRC
+
 * 其他
 
 #+BEGIN_SRC emacs-lisp
+  ;; 显示括号匹配
+  (show-paren-mode 1)
+
+  ;; 即使在中文操作系统，mode-line 和 dired 等模式下星期、月份等信息不用中文
+  (setq system-time-locale "C")
+
+  ;; 以 24 小时格式显示时间
+  (setq display-time-24hr-format t)
+
+  ;; 全局高亮当前行
+  (global-hl-line-mode 1)
+
   (setq savehist-file (locate-user-emacs-file ".history"))
   (setq recentf-save-file (locate-user-emacs-file ".recentf"))
   (setq server-auth-dir (locate-user-emacs-file ".server/"))
+  (setq bookmark-default-file "~/.emacs.d/.bookmarks") ; 自定义 bookmark 文件的位置
 #+END_SRC
