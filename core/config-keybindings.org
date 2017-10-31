@@ -1,12 +1,20 @@
-* Ò»Ğ©·½±ãµÄ¼ü°ó¶¨
+* é”®ç»‘å®š
 
 #+BEGIN_SRC emacs-lisp
-;; ÓÃ C-2 ÉèÖÃ mark£¬ºÍ C-@ ¼üÎ»ÏàÍ¬£¬µ«²»ÓÃ°´ Shift
-(global-set-key [?\C-2] 'set-mark-command)
+  ;; ç”¨ C-2 è®¾ç½® markï¼Œå’Œ C-@ é”®ä½ç›¸åŒï¼Œä½†ä¸ç”¨æŒ‰ Shift
+  (global-set-key [?\C-2] 'set-mark-command)
 
-;; ÏàÓ¦µÄĞŞ¸Ä pop-global-mark£¬Ê¹ÓÃ C-x C-2
-(global-set-key (kbd "C-x C-2") 'pop-global-mark)
+  ;; ç›¸åº”çš„ä¿®æ”¹ pop-global-markï¼Œä½¿ç”¨ C-x C-2
+  (global-set-key (kbd "C-x C-2") 'pop-global-mark)
 
-;; M-o Ìæ»» C-x o£¬ÓÃÓÚÇĞ»» window
-(global-set-key (kbd "M-o") 'other-window)
+  ;; M-o æ›¿æ¢ C-x oï¼Œç”¨äºåˆ‡æ¢ window
+  (global-set-key (kbd "M-o") 'other-window)
+
+  ;; åœ¨ isearch è¿‡ç¨‹ä¸­ï¼Œç”¨ C-o æ˜¾ç¤ºå½“å‰æŸ¥æ‰¾å†…å®¹çš„ occur ç»“æœ
+  (define-key isearch-mode-map (kbd "C-o")
+    (lambda ()
+      (interactive)
+      (let ((case-fold-search isearch-case-fold-search))
+        (occur (if isearch-regexp isearch-string
+                 (regexp-quote isearch-string))))))
 #+END_SRC
