@@ -1,0 +1,22 @@
+* highlight-parentheses
+
+  [[https://github.com/tsdh/highlight-parentheses.el][highlight-parentheses]] 将对应的括号用不同的颜色显示，在写 Emacs Lisp
+代码的时候特别有用。
+
+  加载后运行 highlight-parentheses-mode 激活，或者加到 hook 中去。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package highlight-parentheses
+    :ensure t
+    :init
+    (add-hook 'emacs-lisp-mode-hook 'highlight-parentheses-mode))
+#+END_SRC
+
+* smartparens
+
+  [[https://github.com/Fuco1/smartparens][smartparens]]
+
+#+BEGIN_SRC emacs-lisp
+  (use-package smartparens
+                 :ensure t)
+#+END_SRC
