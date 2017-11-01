@@ -1,0 +1,19 @@
+#+TITLE:     Project Management
+
+* Projectile
+
+  [[https://github.com/bbatsov/projectile][Projectile]] 为 Emacs 提供了项目管理功能。
+
+  参考资料
+  - [[https://tuhdo.github.io/helm-projectile.html][Exploring large projects with Projectile and Helm Projectile]]
+
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :ensure t
+    :init
+    (which-key-add-key-based-replacements "<SPC> p" "projects")
+    (evil-leader/set-key "pf" 'projectile-find-file
+                         "pd" 'projectile-dired)
+    :config
+    (projectile-global-mode))
+#+END_SRC
