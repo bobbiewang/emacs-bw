@@ -25,17 +25,30 @@
                (load-theme 'monokai t))
 #+END_SRC
 
-** Frame 标题
+** Frame
+*** 标题
 
 #+BEGIN_SRC emacs-lisp
   (setq frame-title-format '("Emacs BW"))
+#+END_SRC
+
+*** 界面
+
+#+BEGIN_SRC emacs-lisp
+  (menu-bar-mode -1)
+  (when (fboundp 'tool-bar-mode)
+    (tool-bar-mode -1))
+  (when (fboundp 'scroll-bar-mode)
+    (scroll-bar-mode -1))
+  (when (fboundp 'horizontal-scroll-bar-mode)
+    (horizontal-scroll-bar-mode -1))
 #+END_SRC
 
 ** 最大化
 
 #+BEGIN_SRC emacs-lisp
   (when bw/windows-p
-    (toggle-frame-maximized))
+    (set-frame-parameter nil 'fullscreen 'maximized))
 #+END_SRC
 
 * 交互
@@ -97,11 +110,21 @@
 
   [[https://github.com/emacs-evil/evil/][Evil]] 在 Emacs 中提供了对 vi 的模拟。
 
+  vi 中有各种模式，在 Evil 中成为 State。Evil 内置支持 7 种 State，每
+种 State 都有各自的 kemap 和设置选项。
+  - Normal (N)
+  - Insert (I)
+  - Visual (V)
+  - Replace (R)
+  - Operator-Pending (O)
+  - Motion (M)
+  - Emacs (E)
+
+  缺省情况下，不同的 State 仅靠 Tag（N、I 等）区别，可以通过设置
+Cursor、Tag、mode-line、hl-line 等可视内容提供更醒目的信息
+
   Evil 的 Insert State 不能使用 Emacs 键绑定，对于传统 Emacs 用户不方
 便，可以改为 Emacs State 的键绑定。
-
-  可以通过设置 evil-normal-state-cursor 等变量自定义不同 State 的光标
-的样式和颜色。样式有实心框、空心框、竖线、横线、不显示等。
 
   参考资料
   - [[https://raw.githubusercontent.com/emacs-evil/evil/master/doc/evil.pdf][PDF manual]]
@@ -118,13 +141,43 @@
     ;; 以用 ESC 退出到 evil-normal-state
     (setq evil-insert-state-map (make-sparse-keymap))
     (define-key evil-insert-state-map (kbd "<escape>") 'evil-normal-state)
-    ;; 让光标醒目一点，以方便识别目前的 State
-    (setq evil-normal-state-cursor '(box "red")))
+    ;; 让 Evil 的 State 醒目
+    (setq evil-normal-state-cursor '(box "green")
+          evil-insert-state-cursor '(bar "red"))
+    (setq evil-normal-state-tag (propertize "[N]"
+                                            'face '((:background "green" :foreground "black")))
+          evil-insert-state-tag (propertize "[I]" 'face
+                                            '((:background "red") :foreground "white"))
+          evil-visual-state-tag (propertize "[V]"
+                                            'face '((:background "grey80" :foreground "black")))
+          evil-operator-state-tag (propertize "[O]"
+                                              'face '((:background "purple")))
+          evil-motion-state-tag (propertize "[M]"
+                                            'face '((:background "blue") :foreground "white"))
+          evil-emacs-state-tag (propertize "[E]"
+                                           'face '((:background "orange" :foreground "black"))))
+    (add-hook 'evil-normal-state-entry-hook (lambda ()
+                                              (set-face-background 'hl-line "#32CD32")))
+    (add-hook 'evil-insert-state-entry-hook (lambda ()
+                                              (set-face-background 'hl-line "#49483E")))
+    (add-hook 'evil-visual-state-entry-hook (lambda ()
+                                              (set-face-background 'hl-line "#49483E")))
+    (add-hook 'evil-replace-state-entry-hook (lambda ()
+                                              (set-face-background 'hl-line "#49483E")))
+    (add-hook 'evil-operator-state-entry-hook (lambda ()
+                                                (set-face-background 'hl-line "#49483E")))
+    (add-hook 'evil-motion-state-entry-hook (lambda ()
+                                              (set-face-background 'hl-line "#49483E")))
+    (add-hook 'evil-emacs-state-entry-hook (lambda ()
+                                             (set-face-background 'hl-line "#49483E"))))
 #+END_SRC
 
 ** Helm
 
   [[https://github.com/emacs-helm/helm][Helm]]
+
+  参考资料
+  - [[https://tuhdo.github.io/helm-intro.html][A Package in a league of its own]]
 
 #+BEGIN_SRC emacs-lisp
   (use-package helm
