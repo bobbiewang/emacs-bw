@@ -11,6 +11,11 @@
   (use-package projectile
     :ensure t
     :init
+    (setq projectile-cache-file
+          (locate-user-emacs-file ".projectile.cache"))
+    (setq projectile-known-projects-file
+          (locate-user-emacs-file ".projectile-bookmarks.eld"))
+    (setq
     (which-key-add-key-based-replacements "<SPC> p" "projects")
     (evil-leader/set-key "pf" 'projectile-find-file
                          "pd" 'projectile-dired)
