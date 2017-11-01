@@ -156,8 +156,9 @@ Cursor、Tag、mode-line、hl-line 等可视内容提供更醒目的信息
                                             'face '((:background "blue") :foreground "white"))
           evil-emacs-state-tag (propertize "[E]"
                                            'face '((:background "orange" :foreground "black"))))
+    (global-hl-line-mode 1)
     (add-hook 'evil-normal-state-entry-hook (lambda ()
-                                              (set-face-background 'hl-line "#32CD32")))
+                                              (set-face-background 'hl-line "#006400")))
     (add-hook 'evil-insert-state-entry-hook (lambda ()
                                               (set-face-background 'hl-line "#49483E")))
     (add-hook 'evil-visual-state-entry-hook (lambda ()

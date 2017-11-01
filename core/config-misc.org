@@ -140,9 +140,6 @@
   ;; 以 24 小时格式显示时间
   (setq display-time-24hr-format t)
 
-  ;; 全局高亮当前行
-  (global-hl-line-mode 1)
-
   ;; 在 kill ring 中保留其他程序复制的内容
   (setq save-interprogram-paste-before-kill t)
 
