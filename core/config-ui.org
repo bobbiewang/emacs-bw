@@ -50,7 +50,8 @@
   (use-package filecache
                :commands bw/file-cache-list
                :config
-               (file-cache-add-file-list (list "~/.emacs.d/init.el"))
+               (file-cache-add-file-list (list "~/.emacs.d/init.el"
+                                               "~/initialize.org"))
                (file-cache-add-directory "~/.emacs.d/core/" "config-.*.org")
                (file-cache-add-directory "~/.emacs.d/modules/" "config-.*.org")
 
@@ -91,8 +92,7 @@ Emacs State 的键绑定。下面的链接介绍了如果在 Evil 中实现这�
   (use-package evil-leader
                :ensure t
                :config
-               (evil-leader/set-leader "<SPC>")
-               (evil-leader/set-key "ff" 'helm-find-files))
+               (evil-leader/set-leader "<SPC>"))
 
   (use-package evil
                :ensure t
@@ -114,8 +114,10 @@ Emacs State 的键绑定。下面的链接介绍了如果在 Evil 中实现这�
                :ensure t
                :bind (("M-x" . helm-M-x)
                       ("M-y" . helm-show-kill-ring))
-               :config
+               :init
+               (evil-leader/set-key "ff" 'helm-find-files)
                (evil-leader/set-key "fF" 'helm-mini)
+               :config
                ;; 设置 helm-mini 包括的内容
                (setq bw/helm-source-file-cache
                      '((name . "File cache")
