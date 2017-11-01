@@ -82,27 +82,44 @@
 #+END_SRC
 
 ** Evil
-*** Evil Mode
+*** Evil Leader
 
-  Evil 的 Insert State 不能使用 Emacs 键绑定，使用时不方便，可以改为
-Emacs State 的键绑定。下面的链接介绍了如果在 Evil 中实现这样的设置：
-[[https://stackoverflow.com/questions/25542097/emacs-evil-mode-how-to-change-insert-state-to-emacs-state-automatically][Emacs evil-mode how to change insert-state to emacs-state automatically]]。
+  [[https://github.com/cofi/evil-leader][Evil Leader]]
 
 #+BEGIN_SRC emacs-lisp
   (use-package evil-leader
                :ensure t
                :config
                (evil-leader/set-leader "<SPC>"))
+#+END_SRC
 
+*** Evil Mode
+
+  [[https://github.com/emacs-evil/evil/][Evil]] 在 Emacs 中提供了对 vi 的模拟。
+
+  Evil 的 Insert State 不能使用 Emacs 键绑定，对于传统 Emacs 用户不方
+便，可以改为 Emacs State 的键绑定。
+
+  可以通过设置 evil-normal-state-cursor 等变量自定义不同 State 的光标
+的样式和颜色。样式有实心框、空心框、竖线、横线、不显示等。
+
+  参考资料
+  - [[https://raw.githubusercontent.com/emacs-evil/evil/master/doc/evil.pdf][PDF manual]]
+  - [[https://stackoverflow.com/questions/25542097/emacs-evil-mode-how-to-change-insert-state-to-emacs-state-automatically][Emacs evil-mode how to change insert-state to emacs-state automatically]]
+
+#+BEGIN_SRC emacs-lisp
   (use-package evil
-               :ensure t
-               :config
-               (global-evil-leader-mode)
-               (evil-mode 1)
-               ;; evil-insert-state 使用 evil-emacs-state 的键绑定，但可
-               ;; 以用 ESC 退出到 evil-normal-state
-               (setq evil-insert-state-map (make-sparse-keymap))
-               (define-key evil-insert-state-map (kbd "<escape>") 'evil-normal-state))
+    :ensure t
+    :config
+    ;; 激活 Evil Leader 和 Evil Mode
+    (global-evil-leader-mode)
+    (evil-mode 1)
+    ;; evil-insert-state 使用 evil-emacs-state 的键绑定，但可
+    ;; 以用 ESC 退出到 evil-normal-state
+    (setq evil-insert-state-map (make-sparse-keymap))
+    (define-key evil-insert-state-map (kbd "<escape>") 'evil-normal-state)
+    ;; 让光标醒目一点，以方便识别目前的 State
+    (setq evil-normal-state-cursor '(box "red")))
 #+END_SRC
 
 ** Helm
