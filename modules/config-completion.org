@@ -1,0 +1,12 @@
+* yasnippet
+
+  [[https://github.com/joaotavora/yasnippet][YASnippet]] 
+
+  运行 yas-new-snippet 创建新的 snippet。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    :ensure t
+    :commands (yas-global-mode yas-minor-mode)
+   ) 
+#+END_SRC
