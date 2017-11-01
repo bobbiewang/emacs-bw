@@ -14,9 +14,20 @@
 
 * smartparens
 
-  [[https://github.com/Fuco1/smartparens][smartparens]]
+  [[https://github.com/Fuco1/smartparens][smartparens]] 帮助用户在 Emacs 更高效地处理括号。
+
+  安装 smartparens 后，执行 M-x smartparens-mode 激活，或者 M-x
+smartparens-global-mode 全局激活。
+
+  M-x sp-cheat-sheet 查看命令列表。
+
+  参考资料：
+  - [[https://ebzzry.io/en/emacs-pairs/][Emacs and Pairs]]
+  - [[https://github.com/Fuco1/smartparens/wiki][smartparens Wiki]]
 
 #+BEGIN_SRC emacs-lisp
   (use-package smartparens
-                 :ensure t)
+    :ensure t
+    :init
+    (add-hook 'emacs-lisp-mode-hook #'smartparens-mode))
 #+END_SRC
