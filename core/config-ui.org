@@ -132,7 +132,23 @@ Emacs State 的键绑定。下面的链接介绍了如果在 Evil 中实现这�
 
 ** which-key
 
-  [[https://github.com/justbur/emacs-which-key][which-key]] 可以显示连续键中后续可选的键，非常酷炫。
+  [[https://github.com/justbur/emacs-which-key][which-key]] 可以显示连续键中后续可选的键，不仅酷炫，而且方便使用不是很
+常用的键绑定
+
+  which-key 缺省显示键对应的命令或者 prefix（还有后续按键），可以自定
+义显示的内容。下面是两个例子。
+
+#+BEGIN_SRC emacs-lisp-example
+  ;; 全局设置
+  (which-key-add-key-based-replacements
+    "C-x C-f" "find files")
+
+  ;; 针对某 Major Mode 设置
+  (which-key-add-major-mode-key-based-replacements 'org-mode
+    "C-c C-c" "Org C-c C-c"
+    "C-c C-a" "Org Attach")
+#+END_SRC
+
 
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
@@ -140,5 +156,8 @@ Emacs State 的键绑定。下面的链接介绍了如果在 Evil 中实现这�
                :init
                (setq which-key-idle-delay 0.4)
                :config
+               (which-key-add-key-based-replacements
+                 "<SPC> a" "applications"
+                 "<SPC> f" "files")
                (which-key-mode))
 #+END_SRC
