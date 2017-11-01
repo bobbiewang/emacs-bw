@@ -60,6 +60,26 @@
                          file-cache-alist)))
 #+END_SRC
 
+** ido
+
+  ido 是 Emacs 内置的扩展，缺省横向显示待选项，ido-vertical-mode 可以
+将其设置为纵向显示。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ido-vertical-mode
+    :ensure t
+    :init
+    ;; 自定义 ido 记录文件的路径
+    (setq ido-save-directory-list-file
+          (locate-user-emacs-file ".ido.last"))
+    (ido-mode 1)
+    ;; 可以用 cu 匹配文件名 config-ui.org
+    (setq ido-enable-flex-matching t)
+    ;; 在任何可以读取文件、目录的地方使用 ido
+    (ido-everywhere 1)
+    (ido-vertical-mode 1))
+#+END_SRC
+
 ** Evil
 *** Evil Mode
 
