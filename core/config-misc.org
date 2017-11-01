@@ -49,11 +49,90 @@
   (setq epa-file-inhibit-auto-save nil)
 #+END_SRC
 
+* uniquify
+
+#+BEGIN_SRC emacs-lisp
+  (use-package uniquify
+    :config
+    (setq uniquify-buffer-name-style 'forward))
+#+END_SRC
+
+* Save Place
+
+  Save Place 是 Emacs 内置扩展，能够记录光标在文件中的位置，这样下次打
+开文件时能够定位光标到关闭文件时的位置。
+
+  需要注意的是，这会导致退出 Emacs 额外的耗时，设置不保存只读文件的位
+置可以改善速度。如果还是太慢，可以把这个功能关掉。
+
+#+BEGIN_SRC emacs-lisp
+  (setq save-place-file (locate-user-emacs-file ".places"))
+
+  ;; 不保存只读文件的位置
+  (setq save-place-forget-unreadable-files nil)
+
+  (if (version< emacs-version "25.1")
+      (progn
+        (require 'saveplace)
+        (set-default save-place t))
+    (save-place-mode 1))
+#+END_SRC
+
+* 键绑定
+
+#+BEGIN_SRC emacs-lisp
+  ;; 用 C-2 设置 mark，和 C-@ 键位相同，但不用按 Shift
+  (global-set-key [?\C-2] 'set-mark-command)
+
+  ;; 相应的修改 pop-global-mark，使用 C-x C-2
+  (global-set-key (kbd "C-x C-2") 'pop-global-mark)
+
+  ;; M-o 替换 C-x o，用于切换 window
+  (global-set-key (kbd "M-o") 'other-window)
+
+  (defun bw/beginning-of-line ()
+    "If the point is not on beginning of current line, move point
+    to beginning of current line, as 'beginning-of-line' does.  If
+    the point already is on the beginning of current line, then move
+    the point to the first non-space character, if it exists."
+    (interactive)
+    (if (not (eq (point) (line-beginning-position)))
+        (beginning-of-line)
+      (when (re-search-forward "\[^\[:blank:\]　\]" (line-end-position) t)
+        (backward-char))))
+
+  (global-set-key [?\C-a] 'bw/beginning-of-line)
+
+  ;; 用 hippie-expand 代替 dabbrev-expand
+  (global-set-key (kbd "M-/") 'hippie-expand)
+
+  ;; 用 ibuffer 代替 list-buffers
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+
+  ;; 对换正则表达式和字符串 isearch
+  (global-set-key (kbd "C-s") 'isearch-forward-regexp)
+  (global-set-key (kbd "C-r") 'isearch-backward-regexp)
+  (global-set-key (kbd "C-M-s") 'isearch-forward)
+  (global-set-key (kbd "C-M-r") 'isearch-backward)
+
+  ;; 在 isearch 过程中，用 C-o 显示当前查找内容的 occur 结果
+  (define-key isearch-mode-map (kbd "C-o")
+    (lambda ()
+      (interactive)
+      (let ((case-fold-search isearch-case-fold-search))
+        (occur (if isearch-regexp isearch-string
+                 (regexp-quote isearch-string))))))
+
+#+END_SRC
+
 * 其他
 
 #+BEGIN_SRC emacs-lisp
-  ;; 显示括号匹配
+  ;; 当光标在括号上时，用实心框光标显示匹配括号
   (show-paren-mode 1)
+
+  ;; 用空格代替 Tab
+  (setq-default indent-tabs-mode nil)
 
   ;; 即使在中文操作系统，mode-line 和 dired 等模式下星期、月份等信息不用中文
   (setq system-time-locale "C")
@@ -63,6 +142,24 @@
 
   ;; 全局高亮当前行
   (global-hl-line-mode 1)
+
+  ;; 在 kill ring 中保留其他程序复制的内容
+  (setq save-interprogram-paste-before-kill t)
+
+  ;; apropos 命令搜索更多内容，当然这会花费更多时间
+  (setq apropos-do-all t)
+
+  ;; 用鼠标粘贴内容
+  (setq mouse-yank-at-point t)
+
+  ;; 使用闪屏而不是声音提示错误操作
+  (setq visible-bell t)
+
+  ;; 在 elc、el、dll 中加载最新的，而不是第一个找到的
+  (setq load-prefer-newer t)
+
+  ;; 在一个 Frame 中显示 Ediff 界面
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
   (setq savehist-file (locate-user-emacs-file ".history"))
   (setq recentf-save-file (locate-user-emacs-file ".recentf"))

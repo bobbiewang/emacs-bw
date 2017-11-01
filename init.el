@@ -14,7 +14,7 @@
 
 (defun bw/load-core-files ()
   (interactive)
-  (dolist (pkg '(infrastructure packages ui misc keybindings))
+  (dolist (pkg '(infrastructure packages ui misc))
     (org-babel-load-file (locate-user-emacs-file (format "core/config-%s.org" pkg)))))
 
 (setq bw/modules-dir (locate-user-emacs-file "modules/"))
