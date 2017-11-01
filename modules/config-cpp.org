@@ -1,0 +1,15 @@
+#+TITLE:     C++ Development Environment
+
+* CC Mode
+
+#+BEGIN_SRC emacs-lisp
+  (defun bw/c++-mode-hook()
+    (c-set-style "stroustrup")
+    (c-set-offset 'inline-open 0))
+
+  (add-hook 'c++-mode-hook 'bw/c++-mode-hook)
+#+END_SRC
+
+* 参考资料
+
+  - [[https://tuhdo.github.io/c-ide.html][Setup C/C++ Development Environment for Emacs]]
