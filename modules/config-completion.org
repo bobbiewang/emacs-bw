@@ -1,12 +1,35 @@
-* yasnippet
+#+TITLE:     Completion
 
-  [[https://github.com/joaotavora/yasnippet][YASnippet]] 
+* YASnippet
 
-  运行 yas-new-snippet 创建新的 snippet。
+  [[https://github.com/joaotavora/yasnippet][YASnippet]] 是 Emacs 中一个流行的模版系统。
+
+  安装 YASnippet 后，有两种方式激活。
+  - M-x yas-global-mode 全局激活
+  - 通过 yas-reload-all 加载 Snippets，在 hook 中通过 yas-minor-mode
+    激活
+
+  YASnippet 的 Snippet 目录通过 yas-snippet-dirs 设置，其子目录以
+Major Mode 的名字组织。
+
+  运行 yas-new-snippet 创建新的 Snippet。
+
+  参考资料：
+  - [[http://joaotavora.github.io/yasnippet/][Yet another snippet extension]] 官方文档
 
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
     :ensure t
     :commands (yas-global-mode yas-minor-mode)
-   ) 
+    :init
+    (add-hook 'org-mode-hook #'yas-minor-mode)
+    :config
+    (yas-reload-all))
+#+END_SRC
+
+* Company
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :ensure t)
 #+END_SRC
