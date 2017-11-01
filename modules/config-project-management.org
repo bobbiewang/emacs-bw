@@ -15,10 +15,14 @@
           (locate-user-emacs-file ".projectile.cache"))
     (setq projectile-known-projects-file
           (locate-user-emacs-file ".projectile-bookmarks.eld"))
-    (setq
     (which-key-add-key-based-replacements "<SPC> p" "projects")
-    (evil-leader/set-key "pf" 'projectile-find-file
-                         "pd" 'projectile-dired)
+    (evil-leader/set-key
+      "p!" 'projectile-run-shell-command-in-root
+      "p&" 'projectile-run-async-shell-command-in-root
+      "pf" 'projectile-find-file
+      "pv" 'projectile-vc
+      "pD" 'projectile-dired
+      "pR" 'projectile-regenerate-tags)
     :config
     (projectile-global-mode))
 #+END_SRC
