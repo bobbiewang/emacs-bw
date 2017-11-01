@@ -1,0 +1,12 @@
+#+TITLE:     Navigation
+
+* Avy
+
+#+BEGIN_SRC emacs-lisp
+  (use-package avy
+    :ensure t
+    :init
+    (evil-leader/set-key "<SPC>" 'avy-goto-word-1)
+    (which-key-add-key-based-replacements
+      "<SPC> <SPC>" "avy word"))
+#+END_SRC
