@@ -13,3 +13,24 @@
 * 参考资料
 
   - [[https://tuhdo.github.io/c-ide.html][Setup C/C++ Development Environment for Emacs]]
+  - [[https://github.com/mawenbao/emacs.d][awenbao/emacs.d]] 以上文为基础配置的 C/C++、Golang 和 Python 的开发
+    环境
+  - [[https://vxlabs.com/2016/04/11/step-by-step-guide-to-c-navigation-and-completion-with-emacs-and-the-clang-based-rtags/][C++ navigation and completion with Emacs and the Clang-based rtags]]
+  - [[https://github.com/redguardtoo/mastering-emacs-in-one-year-guide/blob/master/emacs_cpp_developer_guide-en.org][Practical Emacs Guide for C++ developers]]
+  - [[https://github.com/emacs-tw/awesome-emacs][Awesome Emacs]] 推荐的扩展
+    - CC Mode
+    - rtags
+    - ggtags
+    - irony-mode
+    - cmake-font-lock
+    - function-args
+    - Ebrowse
+  - Spacemacs 使用的扩展
+    - flycheck
+    - disaster
+    - clang-format
+    - Semantic
+    - cscope
+    - company-clang
+    - company-ycmd
+
