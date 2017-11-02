@@ -17,12 +17,12 @@
           (locate-user-emacs-file ".projectile-bookmarks.eld"))
     (which-key-add-key-based-replacements "<SPC> p" "projects")
     (bw/set-space-key-and-name
-      "p!" 'projectile-run-shell-command-in-root "run shell"
+      "p!" 'projectile-run-shell-command-in-root       "run shell"
       "p&" 'projectile-run-async-shell-command-in-root "run async shell"
-      "pf" 'projectile-find-file nil
-      "pv" 'projectile-vc nil
-      "pD" 'projectile-dired nil
-      "pR" 'projectile-regenerate-tags nil)
+      "pf" 'projectile-find-file                       "find file in project"
+      "pv" 'projectile-vc                              "vc in project"
+      "pD" 'projectile-dired nil                       "dired in project"
+      "pR" 'projectile-regenerate-tags                 "regerate tags")
     :config
     (projectile-global-mode))
 #+END_SRC
@@ -37,6 +37,9 @@
 #+BEGIN_SRC emacs-lisp
   (use-package helm-projectile
     :ensure t
+    :init
+    (bw/set-space-key-and-name
+     "ps" 'helm-projectile-switch-project "switch project")
     :config
     (helm-projectile-on))
 #+END_SRC

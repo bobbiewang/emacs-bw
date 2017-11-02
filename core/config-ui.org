@@ -74,14 +74,11 @@
 
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
-               :ensure t
-               :init
-               (setq which-key-idle-delay 0.4)
-               :config
-               (which-key-add-key-based-replacements
-                 "<SPC> a" "applications"
-                 "<SPC> f" "files")
-               (which-key-mode))
+    :ensure t
+    :init
+    (setq which-key-idle-delay 0.4)
+    :config
+    (which-key-mode))
 #+END_SRC
 
 ** File Name Cache
@@ -234,12 +231,9 @@ C-h m 查看 Helm 自带的帮助。
 #+BEGIN_SRC emacs-lisp
   (use-package helm
                :ensure t
-               :bind (("M-x" . helm-M-x)
-                      ("M-y" . helm-show-kill-ring))
-               :init
-               (bw/set-space-key-and-name
-                "ff" 'helm-find-files nil
-                "fF" 'helm-mini nil)
+               :bind (("M-x"   . helm-M-x)
+                      ("M-y"   . helm-show-kill-ring)
+                      ("C-x b" . helm-mini))
                :config
                ;; 交换 TAB 和 C-Z
                (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
