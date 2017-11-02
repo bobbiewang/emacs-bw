@@ -1,7 +1,11 @@
 #+BEGIN_SRC emacs-lisp
   (use-package org
+    :init
+    (add-hook 'org-mode-hook
+              (lambda ()
+                (auto-fill-mode 1)))
     :config
-    (evil-leader/set-key "c" 'org-capture)
+    (bw/set-space-key-and-name "c" 'org-capture nil)
     (if (getenv "ORG_DIRECTORY")
         (setq org-directory (getenv "ORG_DIRECTORY"))
       (setq org-directory "~/.dropbox/GTD/"))

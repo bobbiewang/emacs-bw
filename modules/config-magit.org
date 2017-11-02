@@ -2,5 +2,6 @@
   (use-package magit
     :ensure t
     :init
-    (evil-leader/set-key "ag" 'magit-status))
+    (bw/set-space-key-and-name
+     "ag" 'magit-status nil))
 #+END_SRC

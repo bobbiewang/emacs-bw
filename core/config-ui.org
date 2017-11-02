@@ -52,6 +52,38 @@
 #+END_SRC
 
 * 交互
+** which-key
+
+  [[https://github.com/justbur/emacs-which-key][which-key]] 可以显示连续键中后续可选的键，不仅酷炫，而且方便使用不是很
+常用的键绑定
+
+  which-key 缺省显示键对应的命令或者 prefix（还有后续按键），可以自定
+义显示的内容。下面是两个例子。
+
+#+BEGIN_SRC emacs-lisp-example
+  ;; 全局设置
+  (which-key-add-key-based-replacements
+    "C-x C-f" "find files")
+
+  ;; 针对某 Major Mode 设置
+  (which-key-add-major-mode-key-based-replacements 'org-mode
+    "C-c C-c" "Org C-c C-c"
+    "C-c C-a" "Org Attach")
+#+END_SRC
+
+
+#+BEGIN_SRC emacs-lisp
+  (use-package which-key
+               :ensure t
+               :init
+               (setq which-key-idle-delay 0.4)
+               :config
+               (which-key-add-key-based-replacements
+                 "<SPC> a" "applications"
+                 "<SPC> f" "files")
+               (which-key-mode))
+#+END_SRC
+
 ** File Name Cache
 
   File Name Cache 是一个方便的快速打开常用文件的扩展。缺省情况下，在使
@@ -101,9 +133,19 @@
 
 #+BEGIN_SRC emacs-lisp
   (use-package evil-leader
-               :ensure t
-               :config
-               (evil-leader/set-leader "<SPC>"))
+    :ensure t
+    :config
+    (evil-leader/set-leader "<SPC>")
+    (defun bw/set-space-key-and-name (key def name &rest bindings)
+      "设置 SPC 引导的键绑定和显示的名字。"
+      (while key
+        (evil-leader/set-key key def)
+        (if name
+            (which-key-add-key-based-replacements
+              (format "<SPC> %s" key) name))
+        (setq key  (pop bindings)
+              def  (pop bindings)
+              name (pop bindings)))))
 #+END_SRC
 
 *** Evil Mode
@@ -195,8 +237,9 @@ C-h m 查看 Helm 自带的帮助。
                :bind (("M-x" . helm-M-x)
                       ("M-y" . helm-show-kill-ring))
                :init
-               (evil-leader/set-key "ff" 'helm-find-files)
-               (evil-leader/set-key "fF" 'helm-mini)
+               (bw/set-space-key-and-name
+                "ff" 'helm-find-files nil
+                "fF" 'helm-mini nil)
                :config
                ;; 交换 TAB 和 C-Z
                (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
@@ -212,36 +255,4 @@ C-h m 查看 Helm 自带的帮助。
                                                  helm-source-recentf
                                                  bw/helm-source-file-cache
                                                  helm-source-buffer-not-found)))
-#+END_SRC
-
-** which-key
-
-  [[https://github.com/justbur/emacs-which-key][which-key]] 可以显示连续键中后续可选的键，不仅酷炫，而且方便使用不是很
-常用的键绑定
-
-  which-key 缺省显示键对应的命令或者 prefix（还有后续按键），可以自定
-义显示的内容。下面是两个例子。
-
-#+BEGIN_SRC emacs-lisp-example
-  ;; 全局设置
-  (which-key-add-key-based-replacements
-    "C-x C-f" "find files")
-
-  ;; 针对某 Major Mode 设置
-  (which-key-add-major-mode-key-based-replacements 'org-mode
-    "C-c C-c" "Org C-c C-c"
-    "C-c C-a" "Org Attach")
-#+END_SRC
-
-
-#+BEGIN_SRC emacs-lisp
-  (use-package which-key
-               :ensure t
-               :init
-               (setq which-key-idle-delay 0.4)
-               :config
-               (which-key-add-key-based-replacements
-                 "<SPC> a" "applications"
-                 "<SPC> f" "files")
-               (which-key-mode))
 #+END_SRC

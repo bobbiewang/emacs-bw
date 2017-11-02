@@ -16,13 +16,13 @@
     (setq projectile-known-projects-file
           (locate-user-emacs-file ".projectile-bookmarks.eld"))
     (which-key-add-key-based-replacements "<SPC> p" "projects")
-    (evil-leader/set-key
-      "p!" 'projectile-run-shell-command-in-root
-      "p&" 'projectile-run-async-shell-command-in-root
-      "pf" 'projectile-find-file
-      "pv" 'projectile-vc
-      "pD" 'projectile-dired
-      "pR" 'projectile-regenerate-tags)
+    (bw/set-space-key-and-name
+      "p!" 'projectile-run-shell-command-in-root "run shell"
+      "p&" 'projectile-run-async-shell-command-in-root "run async shell"
+      "pf" 'projectile-find-file nil
+      "pv" 'projectile-vc nil
+      "pD" 'projectile-dired nil
+      "pR" 'projectile-regenerate-tags nil)
     :config
     (projectile-global-mode))
 #+END_SRC

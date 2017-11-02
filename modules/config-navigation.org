@@ -1,17 +1,37 @@
 #+TITLE:     Navigation
 
-* Avy
+* Cursor
+** Avy
 
 #+BEGIN_SRC emacs-lisp
   (use-package avy
     :ensure t
     :init
-    (evil-leader/set-key "<SPC>" 'avy-goto-word-1)
-    (which-key-add-key-based-replacements
-      "<SPC> <SPC>" "avy word"))
+    (bw/set-space-key-and-name
+     "<SPC>" 'avy-goto-word-1 "avy word"))
 #+END_SRC
 
-* helm-gtags
+** winum
+
+  [[https://github.com/deb0ch/emacs-winum][winum]] 给每个 Window 编号，可以通过编号快速跳转到指定
+Windows。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package winum
+    :ensure t
+    :init
+    (bw/set-space-key-and-name
+     "0" 'winum-select-window-0 "window 0"
+     "1" 'winum-select-window-1 "window 1"
+     "2" 'winum-select-window-2 "window 2"
+     "3" 'winum-select-window-3 "window 3"
+     "4" 'winum-select-window-4 "window 4")
+    :config
+    (winum-mode 1))
+#+END_SRC
+
+* Tag
+** helm-gtags
 
   [[https://github.com/syohex/emacs-helm-gtags][helm-gtags]] 为 GNU Global 提供了 Helm 接口。
 
