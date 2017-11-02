@@ -26,3 +26,17 @@
     :config
     (projectile-global-mode))
 #+END_SRC
+
+* helm-projectile
+
+  [[https://github.com/bbatsov/helm-projectile][helm-projectile]] 让 Projectile 的许多功能使用 Helm 接口，还提供了一些
+有用的功能。
+  - helm-projectile :: 显示项目的 Buffer、File 和其他项目列表
+  - Virtual directory
+
+#+BEGIN_SRC emacs-lisp
+  (use-package helm-projectile
+    :ensure t
+    :config
+    (helm-projectile-on))
+#+END_SRC
