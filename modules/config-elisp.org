@@ -9,7 +9,15 @@
   (use-package highlight-parentheses
     :ensure t
     :init
-    (add-hook 'emacs-lisp-mode-hook 'highlight-parentheses-mode))
+    (add-hook 'prog-mode-hook #'highlight-parentheses-mode)
+    :config
+    ;; 调整括号的颜色，缺省的颜色太接近
+    (setq hl-paren-colors '("Springgreen3"
+                            "IndianRed1"
+                            "IndianRed3"
+                            "IndianRed4"))
+    ;; 用粗体显示括号
+    (set-face-attribute 'hl-paren-face nil :weight 'ultra-bold))
 #+END_SRC
 
 * smartparens
