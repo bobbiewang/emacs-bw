@@ -52,9 +52,8 @@
 * uniquify
 
 #+BEGIN_SRC emacs-lisp
-  (use-package uniquify
-    :config
-    (setq uniquify-buffer-name-style 'forward))
+  (require 'uniquify)
+  (setq uniquify-buffer-name-style 'forward)
 #+END_SRC
 
 * Save Place
