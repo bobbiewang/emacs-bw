@@ -78,6 +78,7 @@
 #+END_SRC
 
 * 键绑定
+** 传统键绑定
 
 #+BEGIN_SRC emacs-lisp
   ;; 用 C-2 设置 mark，和 C-@ 键位相同，但不用按 Shift
@@ -122,6 +123,78 @@
         (occur (if isearch-regexp isearch-string
                  (regexp-quote isearch-string))))))
 
+#+END_SRC
+
+** Space 键绑定
+
+#+BEGIN_SRC emacs-lisp
+  (defun bw/last-buffer (&optional window)
+    "Switch back and forth between current and last buffer in the
+  current window."
+    (interactive)
+    (let ((current-buffer (window-buffer window))
+          (buffer-predicate
+           (frame-parameter (window-frame window) 'buffer-predicate)))
+      ;; switch to first buffer previously shown in this window that matches
+      ;; frame-parameter `buffer-predicate'
+      (switch-to-buffer
+       (or (cl-find-if (lambda (buffer)
+                         (and (not (eq buffer current-buffer))
+                              (or (null buffer-predicate)
+                                  (funcall buffer-predicate buffer))))
+                       (mapcar #'car (window-prev-buffers window)))
+           ;; `other-buffer' honors `buffer-predicate' so no need to filter
+           (other-buffer current-buffer t)))))
+
+  (defun bw/kill-this-buffer (&optional arg)
+    "Kill the current buffer.
+  If the universal prefix argument is used then kill also the window."
+    (interactive "P")
+    (if (window-minibuffer-p)
+        (abort-recursive-edit)
+      (if (equal '(4) arg)
+          (kill-buffer-and-window)
+        (kill-buffer))))
+
+  (defun bw/dos2unix ()
+    "Converts the current buffer to UNIX file format."
+    (interactive)
+    (set-buffer-file-coding-system 'undecided-unix nil))
+
+  (defun bw/unix2dos ()
+    "Converts the current buffer to DOS file format."
+    (interactive)
+    (set-buffer-file-coding-system 'undecided-dos nil))
+
+  (which-key-add-key-based-replacements
+    "<SPC> a"  "applications"
+    "<SPC> b"  "buffers"
+    "<SPC> f"  "files"
+    "<SPC> fC" "convert"
+    "<SPC> h"  "help"
+    "<SPC> r"  "registers"
+    "<SPC> s"  "search"
+    "<SPC> w"  "windows")
+
+  (bw/set-space-key-and-name
+   "TAB" 'bw/last-buffer            "last buffer"
+   "bd"  'bw/kill-this-buffer       "kill this buffer"
+   "bi"  'helm-imenu                "imenu"
+   "fCd" 'bw/unix2dos               "unix2dos"
+   "fCu" 'bw/dos2unix               "dos2unix"
+   "ff"  'helm-find-files           nil
+   "fF"  'helm-mini                 nil
+   "ha"  'helm-apropos              "apropos"
+   "hb"  'describe-bindings         "bindings"
+   "hc"  'describe-char             "char"
+   "hF"  'describe-face             "face"
+   "hf"  'describe-function         "function"
+   "hk"  'describe-key              "key"
+   "hm"  'describe-mode             "mode"
+   "wd"  'delete-window             "delete"
+   "wh"  'split-window-horizontally "split |"
+   "wk"  'delete-other-windows      "keep"
+   "wv"  'split-window-vertically   "split -")
 #+END_SRC
 
 * 其他
