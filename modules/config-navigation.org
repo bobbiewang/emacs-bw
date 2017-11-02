@@ -10,3 +10,29 @@
     (which-key-add-key-based-replacements
       "<SPC> <SPC>" "avy word"))
 #+END_SRC
+
+* helm-gtags
+
+  [[https://github.com/syohex/emacs-helm-gtags][helm-gtags]] 为 GNU Global 提供了 Helm 接口。
+
+  启用 helm-gtags 后，会将 M-x 绑定到类似传统 Tag 用法的
+helm-gtags-find-tag，可以将其绑定到 helm-gtags.dwim 实现更灵活的功能。
+  - 从 include 语句跳转到文件
+  - 从定义跳转到引用
+  - 从引用跳转到定义
+
+  但是，M-, 没有绑定到 helm-gtags-pop-stack。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package helm-gtags
+    :ensure t
+    :init
+    (setq helm-gtags-ignore-case t
+          helm-gtags-auto-update t
+          helm-gtags-use-input-at-cursor t
+          helm-gtags-pulse-at-cursor t
+          helm-gtags-prefix-key "\C-cg"
+          helm-gtags-suggested-key-mapping t)
+    (add-hook 'c-mode-hook 'helm-gtags-mode)
+    (add-hook 'c++-mode-hook 'helm-gtags-mode))
+#+END_SRC
