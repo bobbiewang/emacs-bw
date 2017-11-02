@@ -60,8 +60,63 @@ package-user-dir 目录下所有的内容被称为 Package Contents。
 
 * 使用 use-package
 
-  [[https://github.com/jwiegley/use-package][use-package]]
+  [[https://github.com/jwiegley/use-package][use-package]] 提供了一个灵活、强大的配置 Emacs 扩展包的宏。这个宏支持
+许多关键字。
+  - :init :: 加载扩展之前执行的代码。:init 部分应该尽可能简单，把配置
+             放在 :config 部分
+  - :config :: 加载扩展之后的执行的代码
+  - :preface ::
+  - :magic :: 设置 magic-mode-alist
+  - :magic-fallback :: 设置 magic-fallback-mode-alist
+  - :mode :: 设置 auto-mode-alist
+  - :interpreter :: 设置 interpreter-mode-alist
+  - :commands :: 命令成为 autoload
+  - :bind :: 配置键绑定，对应的命令自动成为 autoload。可以结合 :map 设
+             置 keymap
+  - :bind* ::
+  - :bind-keymap ::
+  - :bind-keymap* ::
+  - :defer :: 强制延后加载
+  - :after :: 在指定 feature 加载后加载
+  - :demand :: 强制立即加载
+  - :if EXP :: 条件加载，比如某些配置仅适于 window-system
+  - :disabled :: 禁用扩展包
+  - :defines :: 用于抑制 byte-compile 时的警告
+  - :functions :: 用于抑制 byte-compile 时的警告
+  - :load-path :: 把指定目录加到 load-path
+  - :diminish :: 配合 diminish
+  - :delight :: 配合 delight
+  - :ensure :: t 表示按需安装，也可以指定依赖的包
+  - :pin :: 绑定到特定的 ELPA
+
+  下面是一个例子。
+
+#+BEGIN_SRC emacs-lisp-example
+  (use-package color-moccur
+    :commands (isearch-moccur isearch-all)
+    :bind (("M-s O" . moccur)
+           :map isearch-mode-map
+           ("M-o" . isearch-moccur)
+           ("M-O" . isearch-moccur-all))
+    :init
+    (setq isearch-lazy-highlight t)
+    :config
+    (use-package moccur-edit))
+
+  (use-package helm
+    :bind (("M-x" . helm-M-x)
+           ("M-<f5>" . helm-find-files)
+           ([f10] . helm-buffers-list)
+           ([S-f10] . helm-recentf)))
+
+  (use-package exec-path-from-shell
+    :if (memq window-system '(mac ns))
+    :ensure t
+    :config
+    (exec-path-from-shell-initialize))
+#+END_SRC
 
 #+BEGIN_SRC emacs-lisp
   (bw/install-package-on-demand 'use-package)
+  (setq use-package-always-ensure t)
 #+END_SRC
