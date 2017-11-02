@@ -175,7 +175,16 @@ Cursor、Tag、mode-line、hl-line 等可视内容提供更醒目的信息
 
 ** Helm
 
-  [[https://github.com/emacs-helm/helm][Helm]]
+  [[https://github.com/emacs-helm/helm][Helm]] 是一个增量补全和过滤选择项的框架，输入框支持正则表达式和以空格
+分隔的多重条件。
+
+  在运行 Helm 时，用户能进行一些额外的操作，下面是几个常见的。可以执行
+C-h m 查看 Helm 自带的帮助。
+  - helm-select-action (Tab) :: 显示动作菜单
+  - helm-execute-persistent-action (C-z) :: 选择当前项，不退出 minibuffer
+  - helm-maybe-exit-minibuffer (RET)  :: 选择当前项，退出 minibuffer
+
+  在 helm-mini、helm-find-files 中可以按 C-s 进入搜索模式。
 
   参考资料
   - [[https://tuhdo.github.io/helm-intro.html][A Package in a league of its own]]
@@ -189,6 +198,10 @@ Cursor、Tag、mode-line、hl-line 等可视内容提供更醒目的信息
                (evil-leader/set-key "ff" 'helm-find-files)
                (evil-leader/set-key "fF" 'helm-mini)
                :config
+               ;; 交换 TAB 和 C-Z
+               (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+               (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
+               (define-key helm-map (kbd "C-z")  'helm-select-action)
                ;; 设置 helm-mini 包括的内容
                (setq bw/helm-source-file-cache
                      '((name . "File cache")
