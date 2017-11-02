@@ -31,9 +31,17 @@ Major Mode 的名字组织。
 
   [[http://company-mode.github.io/][Company]] 是一个自动补全框架。
 
+  | M-x company-mode     | 激活 Company 模式      |
+  | M-x company-complete | 补全命令，可以手动激发 |
+  | M-n、M-p             | 在候选内容中选择       |
+  | C-s、C-r、C-o        | 在候选内容中搜索       |
+
 #+BEGIN_SRC emacs-lisp
-    (use-package company
-      :ensure t
-      :config
-      (add-hook 'after-init-hook 'global-company-mode))
+  (use-package company
+    :ensure t
+    :config
+    ;; 全局激活 Company Mode
+    (add-hook 'after-init-hook 'global-company-mode)
+    ;; 激发补全前等待时间，缺省是 0.5，修改成 0.1 会快一点
+    (setq company-idle-delay 0.1))
 #+END_SRC
