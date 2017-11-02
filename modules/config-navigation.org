@@ -56,3 +56,16 @@ helm-gtags-find-tag，可以将其绑定到 helm-gtags.dwim 实现更灵活的�
     (add-hook 'c-mode-hook 'helm-gtags-mode)
     (add-hook 'c++-mode-hook 'helm-gtags-mode))
 #+END_SRC
+
+* Search
+** helm-ag
+
+  [[https://github.com/syohex/emacs-helm-ag][helm-ag]] 为 Silver Searcher 提供了 Helm 接口。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package helm-ag
+    :ensure t
+    :init
+    (bw/set-space-key-and-name
+     "sg" 'helm-do-ag nil))
+#+END_SRC
