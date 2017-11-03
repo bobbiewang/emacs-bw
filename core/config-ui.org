@@ -44,6 +44,13 @@
     (horizontal-scroll-bar-mode -1))
 #+END_SRC
 
+** Modeline
+
+#+BEGIN_SRC emacs-lisp
+  ;; 在 modeline 显示列号
+  (column-number-mode 1)
+#+END_SRC
+
 ** 最大化
 
 #+BEGIN_SRC emacs-lisp
