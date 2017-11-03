@@ -1,0 +1,8 @@
+#+TITLE:     Python 开发环境
+
+* anaconda-mode
+
+#+BEGIN_SRC emacs-lisp
+  (use-package anaconda-mode
+    :ensture t)
+#+END_SRC
