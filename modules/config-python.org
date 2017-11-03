@@ -2,7 +2,34 @@
 
 * anaconda-mode
 
+  anaconda-mode 支持代码浏览、文档查找和代码补全等功能。安装、设置也很
+简单，通过 ELPA 安装 anaconda-mode，然后在 python-mode 中激活
+anaconda-mode 和 anaconda-eldoc-mode 就可以了。实际上其功能是通过一些
+Python 包完成的，在运行 anaconda-mode 的命令时会自动通过 pip 安装这些
+包（如 anaconda-mode、jedi 等）。值得注意的是，pip 在 Windows 平台会自
+动读取 IE 设置的代理，要确保代理是可用的。
+
 #+BEGIN_SRC emacs-lisp
   (use-package anaconda-mode
-    :ensture t)
+    :ensure t)
 #+END_SRC
+
+* 参考资料
+
+  - [[https://www.emacswiki.org/emacs/PythonProgrammingInEmacs][EmacsWiki: Python Programming In Emacs]]
+  - [[https://realpython.com/blog/python/emacs-the-best-python-editor/][Emacs - the Best Python Editor? - Real Python]]
+  - [[https://github.com/emacs-tw/awesome-emacs][Awesome Emacs]] 推荐的扩展
+    - Jedi - A Python auto-completion package.
+    - Elpy - An Emacs Python development environment.
+    - anaconda-mode - Code navigation, documentation lookup and
+      completion for Python.
+    - virtualenvwrapper.el - Manage virtualenv from inside Emacs.
+  - Spacemacs 使用的扩展
+    - anaconda-mode - auto-complete, code navigation, documentation
+      lookup
+    - pylookup - documentation lookup
+    - nose.el, pytest - test runner
+    - pyvenv, pyenv - virtual environment
+    - YAPF - PEP8 compliant formatting
+    - autoflake - suppression of unused import
+    - evil-matchit - use the % key to jump between blocks

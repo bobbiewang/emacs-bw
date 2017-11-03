@@ -3,7 +3,9 @@
 
 * Enhanced Ruby Mode
 
-  [[http://github.com/zenspider/Enhanced-Ruby-Mode][Enhanced Ruby Mode]]
+  [[http://github.com/zenspider/Enhanced-Ruby-Mode][Enhanced Ruby Mode]] 使用 Ruby 自带的 Ripper 解析代码，能够更准确地分
+析代码，因此提供了比 Emacs 内置的 ruby-mode 更强大的功能，比如支持语法
+检查。
 
 #+BEGIN_SRC emacs-lisp
   (use-package enh-ruby-mode
@@ -12,9 +14,43 @@
 
 * inf-ruby
 
-  [[http://github.com/nonsequitur/inf-ruby][inf-ruby]]
+  [[http://github.com/nonsequitur/inf-ruby][inf-ruby]] 可以在 Emacs 中运行 Ruby 的交互界面。inf-ruby 缺省运行 irb，
+如果要运行 pry，可以将 inf-ruby-default-implementation 设置为 pry。
 
 #+BEGIN_SRC emacs-lisp
-  (use-package info-ruby
+  (use-package inf-ruby
     :ensure t)
 #+END_SRC
+
+* 参考资料
+
+  - [[http://crypt.codemancers.com/posts/2013-09-26-setting-up-emacs-as-development-environment-on-osx/][Setting up Emacs as Ruby development environment on OSX]]
+  - [[https://lorefnon.me/2014/02/02/configuring-emacs-for-rails.html][Configuring Emacs as a productive development environment for Rails development]]
+  - [[https://github.com/emacs-tw/awesome-emacs][Awesome Emacs]] 推荐的扩展
+    - rvm - Ruby versions manager within Emacs.
+    - bundler - Interact with gem Bundler from Emacs.
+    - inf-ruby - REPL buffer connected to a Ruby subprocess.
+    - enhanced-ruby-mode - Enhanced Ruby Mode replaces the emacs ruby
+      mode that comes with ruby. It uses the Ripper class found in
+      ruby 1.9.2 (and later) to parse and indent the source code.
+    - yari - Yet Another RI interface for Emacs.
+    - robe - Code navigation, documentation lookup and completion for
+      Ruby.
+    - rubocop - A Ruby static code analyzer, based on the community
+      Ruby style guide.
+    - motion-mode - A package to provide emacs' major mode for
+      RubyMotion enviroment.
+    - rspec-mode - An RSpec minor mode for Emacs.
+    - feature-mode - Emacs mode for editing Cucumber plain text
+      stories.
+    - rinari - Rinari Is Not A Rails IDE (it is an Emacs minor mode
+      for Rails).
+  - [[http://spacemacs.org/layers/+lang/ruby/README.html][Spacemacs]] 使用的扩展
+    - rbenv, rvm or chruby - version manager
+    - ruby-test and rspec - test runner
+    - rubocop - linter (rubocop)
+    - robe - interactive REPL and code navigation
+    - bundler, rspec-mode, ruby-test-mode, ruby-tools
+  - [[https://emacs.zeef.com/ehartc][Emacs by Ernst de Hart]] 收集的扩展
+    - RVM, Bundler, inf-ruby, Rubocop, chruby, Ruby Refactor,
+      enhanced-ruby-mode, Yari
