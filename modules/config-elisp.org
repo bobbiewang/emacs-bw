@@ -39,3 +39,9 @@ smartparens-global-mode 全局激活。
     :init
     (add-hook 'emacs-lisp-mode-hook #'smartparens-mode))
 #+END_SRC
+
+* eldoc
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+#+END_SRC
