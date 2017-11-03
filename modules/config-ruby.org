@@ -1,0 +1,20 @@
+#+TITLE:     Ruby 开发环境
+
+
+* Enhanced Ruby Mode
+
+  [[http://github.com/zenspider/Enhanced-Ruby-Mode][Enhanced Ruby Mode]]
+
+#+BEGIN_SRC emacs-lisp
+  (use-package enh-ruby-mode
+    :ensure t)
+#+END_SRC
+
+* inf-ruby
+
+  [[http://github.com/nonsequitur/inf-ruby][inf-ruby]]
+
+#+BEGIN_SRC emacs-lisp
+  (use-package info-ruby
+    :ensure t)
+#+END_SRC
