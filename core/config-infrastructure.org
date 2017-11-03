@@ -6,31 +6,53 @@
 #+END_SRC
 
 * 自定义函数
+
+#+BEGIN_SRC emacs-lisp
+  (defun bw/get-ip-address ()
+    "获取本机的 IP 地址。"
+    (interactive)
+    (let* (ip-address)
+      (with-temp-buffer
+        (let ((coding-system-for-read 'raw-text))
+          (goto-char (point-min))
+          (call-process "ipconfig" nil t nil "/all")
+          (goto-char (point-min))
+          (search-forward-regexp "IPv4 Address.*: \\([0-9.]+\\)")
+          (setq ip-address
+                (buffer-substring (match-beginning 1) (match-end 1)))))
+      ip-address))
+#+END_SRC
+
 * 自定义常量
-** 判断运行环境
+** 运行环境
 
 #+BEGIN_SRC emacs-lisp
   (defconst bw/windows-p
       (eq system-type 'windows-nt)
-    "Are we running on a Windows system?")
+    "是否运行在 MS Windows 环境")
 
   (defconst bw/cygwin-p
       (eq system-type 'cygwin)
-    "Are we running on a Cygwin system?")
+    "是否运行在 Cygwin 环境")
 
   (defconst bw/linux-p
       (or (eq system-type 'gnu/linux)
           (eq system-type 'linux))
-    "Are we running on a GNU/Linux system?")
+    "是否运行在 Linux 环境")
 
   (defconst bw/x-window-p
       (and window-system bw/linux-p)
-    "Are we running under X on a GNU/Linux system?")
-#+END_SRC
+    "是否运行在 Linux 的 X Window 环境")
 
+  (defcustom bw/office-p nil
+    "是否运行在公司的网络环境")
 
-#+BEGIN_SRC emacs-lisp
-#+END_SRC
+  (defcustom bw/home-p t
+    "是否运行在家庭的网络环境")
 
-#+BEGIN_SRC emacs-lisp
+  ;; 加载 ~/persional/personal.el，里面存私人设置，比如当前是公司还是家
+  ;; 庭网络环境
+  (let ((persional-file (locate-user-emacs-file "personal/personal.el")))
+    (when (file-exists-p persional-file)
+      (load-file persional-file)))
 #+END_SRC
