@@ -179,12 +179,8 @@
   (bw/set-space-key-and-name
    "TAB" 'bw/last-buffer            "last buffer"
    "bd"  'bw/kill-this-buffer       "kill this buffer"
-   "bi"  'helm-imenu                "imenu"
    "fCd" 'bw/unix2dos               "unix2dos"
    "fCu" 'bw/dos2unix               "dos2unix"
-   "ff"  'helm-find-files           nil
-   "fF"  'helm-mini                 nil
-   "ha"  'helm-apropos              "apropos"
    "hb"  'describe-bindings         "bindings"
    "hc"  'describe-char             "char"
    "hF"  'describe-face             "face"
