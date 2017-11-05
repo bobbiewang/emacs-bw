@@ -1,9 +1,14 @@
 #+TITLE:     Completion
 
 * Helm
+** Helm
 
   [[https://github.com/emacs-helm/helm][Helm]] 是一个增量补全和过滤选择项的框架，输入框支持正则表达式和以空格
 分隔的多重条件。
+
+  M-x helm-mode 全局激活 Helm 补全，在 Emacs 中所有使用
+completing-read（如 describe-function）或 read-file-name 的地方都会自
+动使用 Helm 接口。
 
   在运行 Helm 时，用户能进行一些额外的操作，下面是几个常见的。可以执行
 C-h m 查看 Helm 自带的帮助。
@@ -32,7 +37,8 @@ C-h m 查看 Helm 自带的帮助。
                 "bi"  'helm-imenu      "imenu"
                 "ff"  'helm-find-files nil
                 "fF"  'helm-mini       nil
-                "ha"  'helm-apropos    "apropos")
+                "ha"  'helm-apropos    "apropos"
+                "sf"  'helm-find       "find")
                ;; 设置 helm-mini 包括的内容
                (setq bw/helm-source-file-cache
                      '((name . "File cache")

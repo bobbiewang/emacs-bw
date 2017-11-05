@@ -49,6 +49,9 @@
 #+BEGIN_SRC emacs-lisp
   ;; 在 modeline 显示列号
   (column-number-mode 1)
+
+  ;; 在 modeline 显示时间
+  (display-time)
 #+END_SRC
 
 ** 最大化
@@ -135,6 +138,8 @@
 
   [[https://github.com/cofi/evil-leader][Evil Leader]]
 
+  [[https://github.com/noctuid/general.el][general.el]] 似乎可以定义多个 Leader Key，可以关注一下。
+
 #+BEGIN_SRC emacs-lisp
   (use-package evil-leader
     :ensure t
@@ -165,6 +170,15 @@
   - Operator-Pending (O)
   - Motion (M)
   - Emacs (E)
+
+  Emacs 中的 Mode 会有一个缺省的 State，这可以通过 evil-*-state-modes
+变量设置。下面的例子中把所有缺省为 Emacs State 的 Modes 改为 Motion
+State。
+
+#+BEGIN_SRC emacs-lisp-example
+  (setq evil-motion-state-modes (append evil-emacs-state-modes evil-motion-state-modes))
+  (setq evil-emacs-state-modes nil)
+#+END_SRC
 
   缺省情况下，不同的 State 仅靠 Tag（N、I 等）区别，可以通过设置
 Cursor、Tag、mode-line、hl-line 等可视内容提供更醒目的信息
