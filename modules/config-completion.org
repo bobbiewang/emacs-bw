@@ -42,7 +42,27 @@ C-h m 查看 Helm 自带的帮助。
                (setq helm-mini-default-sources '(helm-source-buffers-list
                                                  helm-source-recentf
                                                  bw/helm-source-file-cache
-                                                 helm-source-buffer-not-found)))
+                                                 helm-source-buffer-not-found))
+               (helm-mode 1))
+#+END_SRC
+
+** helm-descbinds
+
+  [[https://github.com/emacs-helm/helm-descbinds][helm-descbinds]] 为 Emacs 的 describe-bindings 提供了 Helm 接口。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package helm-descbinds
+    :ensure t
+    :init
+    (helm-descbinds-mode))
+#+END_SRC
+
+* Ivy
+
+  [[https://github.com/abo-abo/swiper][Ivy]] 也是一个增量补全和规律选择项的框架，比 Helm 轻量级。
+
+#+BEGIN_SRC emacs-lisp
+
 #+END_SRC
 
 * YASnippet
