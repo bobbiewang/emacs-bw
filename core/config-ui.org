@@ -184,10 +184,24 @@ State。
 Cursor、Tag、mode-line、hl-line 等可视内容提供更醒目的信息
 
   Evil 的 Insert State 不能使用 Emacs 键绑定，对于传统 Emacs 用户不方
-便，可以改为 Emacs State 的键绑定。
+便，可以改为 Emacs State 的键绑定，但同时要保留 ESC 键切换到 Normal
+State 的功能。下面的代码可以达到这个目的。
+
+#+BEGIN_SRC emacs-lisp-example
+  ;; 方法 1
+  (setq evil-insert-state-map (make-sparse-keymap))
+  (define-key evil-insert-state-map (kbd "<escape>") 'evil-normal-state)
+
+  ;; 方法 2
+  (setcdr evil-insert-state-map nil)
+  (define-key evil-insert-state-map
+    (read-kbd-macro evil-toggle-key) 'evil-emacs-state)
+#+END_SRC
 
   参考资料
   - [[https://raw.githubusercontent.com/emacs-evil/evil/master/doc/evil.pdf][PDF manual]]
+  - [[http://dnquark.com/blog/2012/02/emacs-evil-ecumenicalism/][Emacs + Evil = ecumenicalism]] Evil 缺省适合 Vim 用户，Emacs 用户需
+    要进行一些设置
   - [[https://stackoverflow.com/questions/25542097/emacs-evil-mode-how-to-change-insert-state-to-emacs-state-automatically][Emacs evil-mode how to change insert-state to emacs-state automatically]]
 
 #+BEGIN_SRC emacs-lisp
