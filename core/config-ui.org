@@ -216,7 +216,10 @@ Cursor、Tag、mode-line、hl-line 等可视内容提供更醒目的信息
                                             'face '((:background "blue") :foreground "white"))
           evil-emacs-state-tag (propertize "[E]"
                                            'face '((:background "orange" :foreground "black"))))
+    ;; 激活 hl-line-mode，一边下面进行自定义
+    ;; 注意要和 transient-mark-mode 的颜色（region face）区别开来
     (global-hl-line-mode 1)
+    (set-face-background 'region "purple4")
     (add-hook 'evil-normal-state-entry-hook (lambda ()
                                               (set-face-background 'hl-line "#006400")))
     (add-hook 'evil-insert-state-entry-hook (lambda ()
