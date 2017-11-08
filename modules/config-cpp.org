@@ -10,6 +10,27 @@
   (add-hook 'c++-mode-hook 'bw/c++-mode-hook)
 #+END_SRC
 
+* Flycheck - Syntax checking for GNU Emacs
+
+  [[http://www.flycheck.org/][Flycheck]] 是个现代的实时语法检查工具，可以替代 Flymake。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :ensure t
+    :init (global-flycheck-mode))
+#+END_SRC
+
+* cmake-font-lock
+
+  [[https://github.com/Lindydancer/cmake-font-lock][cmake-font-lock]] 为 CMakeLists.txt 提供了语法高亮。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package cmake-font-lock
+    :ensure t
+    :init
+    (add-hook 'cmake-mode-hook 'cmake-font-lock-activate))
+#+END_SRC
+
 * 参考资料
 
   - [[https://tuhdo.github.io/c-ide.html][Setup C/C++ Development Environment for Emacs]]
