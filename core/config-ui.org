@@ -163,12 +163,12 @@
 
   vi 中有各种模式，在 Evil 中成为 State。Evil 内置支持 7 种 State，每
 种 State 都有各自的 kemap 和设置选项。
-  - Normal (N)
-  - Insert (I)
+  - Normal (N) :: 用于浏览和编辑
+  - Insert (I) :: 用于输入文本
   - Visual (V)
   - Replace (R)
   - Operator-Pending (O)
-  - Motion (M)
+  - Motion (M) :: 用于 Read-only Buffer，比如 Help
   - Emacs (E)
 
   Emacs 中的 Mode 会有一个缺省的 State，这可以通过 evil-*-state-modes
@@ -211,10 +211,6 @@ State 的功能。下面的代码可以达到这个目的。
     ;; 激活 Evil Leader 和 Evil Mode
     (global-evil-leader-mode)
     (evil-mode 1)
-    ;; evil-insert-state 使用 evil-emacs-state 的键绑定，但可
-    ;; 以用 ESC 退出到 evil-normal-state
-    (setq evil-insert-state-map (make-sparse-keymap))
-    (define-key evil-insert-state-map (kbd "<escape>") 'evil-normal-state)
     ;; 让 Evil 的 State 醒目
     (setq evil-normal-state-cursor '(box "green")
           evil-insert-state-cursor '(bar "red"))
@@ -247,5 +243,13 @@ State 的功能。下面的代码可以达到这个目的。
     (add-hook 'evil-motion-state-entry-hook (lambda ()
                                               (set-face-background 'hl-line "#49483E")))
     (add-hook 'evil-emacs-state-entry-hook (lambda ()
-                                             (set-face-background 'hl-line "#49483E"))))
+                                             (set-face-background 'hl-line "#49483E")))
+    ;; evil-insert-state 使用 evil-emacs-state 的键绑定，但可
+    ;; 以用 ESC 退出到 evil-normal-state
+    (setq evil-insert-state-map (make-sparse-keymap))
+    (define-key evil-insert-state-map (kbd "<escape>") 'evil-normal-state)
+    ;; 调整各 State 的键绑定
+    (define-key evil-normal-state-map "\C-e" 'evil-end-of-line)
+    (define-key evil-visual-state-map "\C-e" 'evil-end-of-line)
+    (define-key evil-motion-state-map "\C-e" 'evil-end-of-line))
 #+END_SRC
