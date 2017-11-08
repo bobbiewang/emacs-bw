@@ -102,8 +102,7 @@
   (use-package filecache
                :commands bw/file-cache-list
                :config
-               (file-cache-add-file-list (list "~/.emacs.d/init.el"
-                                               "~/initialize.org"))
+               (file-cache-add-file-list (list "~/.emacs.d/init.el"))
                (file-cache-add-directory "~/.emacs.d/core/" "config-.*.org")
                (file-cache-add-directory "~/.emacs.d/modules/" "config-.*.org")
 
