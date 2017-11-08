@@ -15,9 +15,9 @@
     :config
     ;; 调整括号的颜色，缺省的颜色太接近
     (setq hl-paren-colors '("Springgreen3"
-                            "IndianRed1"
-                            "IndianRed3"
-                            "IndianRed4"))
+                            "yellow1"
+                            "firebrick1"
+                            "RosyBrown1"))
     ;; 用粗体显示括号
     (set-face-attribute 'hl-paren-face nil :weight 'ultra-bold))
 #+END_SRC
