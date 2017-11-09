@@ -95,6 +95,30 @@
     (global-set-key (kbd "M-z") #'zzz-to-char))
 #+END_SRC
 
+* clean-aindent-mode
+
+  在自动缩进的编辑模式下，如果连续输入回车，每一行都会留下几个缩进的空
+格，[[https://github.com/pmarinov/clean-aindent-mode][clean-aindent-mode]] 可以自动删除这些多余的空格。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package clean-aindent-mode
+    :ensure t
+    :init
+    (add-hook 'prog-mode-hook 'clean-aindent-mode))
+#+END_SRC
+
+* ws-butler
+
+  [[https://github.com/lewang/ws-butler][ws-butler]] 会自动在保存文件是清除行尾多余空格。因为这个清除只作用于本
+次修改的行，所以在处理大文件时性能会比较好。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ws-butler
+    :ensure t
+    :init
+    (add-hook 'prog-mode-hook 'ws-butler-mode))
+#+END_SRC
+
 * visual-regexp
 
   [[https://github.com/benma/visual-regexp.el][visual-regexp]]
