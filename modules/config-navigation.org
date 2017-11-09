@@ -41,7 +41,15 @@ helm-gtags-find-tag，可以将其绑定到 helm-gtags.dwim 实现更灵活的�
   - 从定义跳转到引用
   - 从引用跳转到定义
 
-  但是，M-, 没有绑定到 helm-gtags-pop-stack。
+  但是，传统 Tag 用法的返回键绑定 M-,（缺省是 tags-loop-continue）没有
+绑定到 helm-gtags-pop-stack，需要绑定一下。
+
+  下面是其他常用的命令。
+  - helm-gtags-tags-in-this-function
+  - helm-gtags-select
+  - helm-gtags-previous-history
+  - helm-gtags-next-history
+  - helm-gtags-show-stack
 
 #+BEGIN_SRC emacs-lisp
   (use-package helm-gtags
@@ -55,6 +63,17 @@ helm-gtags-find-tag，可以将其绑定到 helm-gtags.dwim 实现更灵活的�
           helm-gtags-suggested-key-mapping t)
     (add-hook 'c-mode-hook 'helm-gtags-mode)
     (add-hook 'c++-mode-hook 'helm-gtags-mode))
+#+END_SRC
+
+** ggtags
+
+  Projectile 后台依赖于 ggtags。在运行 projectile-regenerate-tags 命令
+的时候，如果检测到安装了 ggtags，会使用 gtags 创建 Tag，否则使用 ctags。
+所以，即使使用 helm-gtags，还是要安装 ggtags。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ggtags
+    :ensure t)
 #+END_SRC
 
 * Search
