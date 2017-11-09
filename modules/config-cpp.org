@@ -10,6 +10,42 @@
   (add-hook 'c++-mode-hook 'bw/c++-mode-hook)
 #+END_SRC
 
+* Semantic
+
+  Semantic 是 CEDET 的一部分，以 Emacs Lisp 实现各语言的解析器，从而提
+供代码补全、代码浏览等功能的支持。
+  - Company 自带 company-semantic 后端使用 Semantic 数据进行补全
+  - Senator 使用 Semantic 数据进行代码浏览，也有代码补全功能
+
+  Semantic 缺省自动解析有限的系统 INCLUDE 目录，具体内置可以查看变量
+semantic-dependency-system-include-path。对于其他系统或第三方库的头文
+件的路径，需要通过 semanntic-add-system-include 命令添加。
+
+#+BEGIN_SRC emacs-lisp-example
+  (semantic-add-system-include "~/kernel") ; 用于 C/C++ Modes
+  (semantic-add-system-include "/usr/include/boost" 'c++-mode) ; 用于 C++ Mode
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp-example
+  (setq semanticdb-default-save-directory
+        (locate-user-emacs-file ".semanticdb"))
+
+  (require 'semantic)
+
+  ;; 将 Semantic 解析后的数据缓存到文件中
+  (global-semanticdb-minor-mode 1)
+
+  ;; 在用户不操作是自动更新数据，否则只在执行某些命令时更新
+  (global-semantic-idle-scheduler-mode 1)
+
+  ;; 激活 Semantic Mode，解析文件
+  (semantic-mode 1)
+
+  ;; 在 buffer 的第一行显示当前光标所在函数的函数名
+  (add-to-list 'semantic-default-submodes
+               'global-semantic-stickyfunc-mode)
+#+END_SRC
+
 * Flycheck - Syntax checking for GNU Emacs
 
   [[http://www.flycheck.org/][Flycheck]] 是个现代的实时语法检查工具，可以替代 Flymake。
@@ -29,6 +65,17 @@
     :ensure t
     :init
     (add-hook 'cmake-mode-hook 'cmake-font-lock-activate))
+#+END_SRC
+
+* Debugging
+
+#+BEGIN_SRC emacs-lisp
+  (setq
+   ;; 缺省激活 gdb-many-windows
+   gdb-many-windows t
+
+   ;; 启动的时候显示包含 main 的源文件
+   gdb-show-main t)
 #+END_SRC
 
 * 参考资料
