@@ -107,6 +107,15 @@ Major Mode 的名字组织。
   | M-n、M-p             | 在候选内容中选择       |
   | C-s、C-r、C-o        | 在候选内容中搜索       |
 
+  如果使用 company-clang 的话，需要通过 .dir-locals 文件让 Clang 知道
+编译参数，尤其是 include 目录的路径。下面是一个例子。
+
+#+BEGIN_SRC emacs-lisp-example
+  ((nil . ((company-clang-arguments . ("-I/path/to/include1/"
+                                       "-I/path/to/include2/"
+                                       "-DDEBUG")))))
+#+END_SRC
+
 #+BEGIN_SRC emacs-lisp
   (use-package company
     :ensure t
