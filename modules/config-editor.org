@@ -1,5 +1,22 @@
 #+TITLE:     编辑器通用设置
 
+* Scroll
+
+  Emacs 缺省的滚屏方式比较诡异，这里设置平滑的滚屏方式。
+
+#+BEGIN_SRC emacs-lisp
+  ;; 光标移动到离顶端/底端多少行开始滚动。设置为 0 表示到达顶端/底
+  ;; 端才滚动；设置为 3 表示距离顶端/底端 3 行就开始滚动
+  (setq scroll-margin 3)
+
+  ;; 光标越出屏幕时，跳回屏幕的行数。设置为 0 的话，光标跳回屏幕中
+  ;; 心；设置为一个很大的值，相当于禁止这个功能
+  (setq scroll-conservatively 9999)
+
+  ;; 翻屏时保持光标在屏幕的位置
+  (setq scroll-preserve-screen-position 1)
+#+END_SRC
+
 * Line Number
 
   [[http://elpa.gnu.org/packages/nlinum.html][nlinum]] 可以替换 Emacs 内置的 linum-mode。因为 nlinum 使用 jit-lock，
@@ -49,7 +66,7 @@
   (use-package auto-highlight-symbol
     :ensure t
     :init
-    (setq ahs-idle-interval 0.2)
+    (setq ahs-idle-interval 1)
     (add-hook 'prog-mode-hook #'auto-highlight-symbol-mode))
 #+END_SRC
 
