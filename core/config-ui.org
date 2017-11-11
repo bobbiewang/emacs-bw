@@ -164,9 +164,9 @@
 种 State 都有各自的 kemap 和设置选项。
   - Normal (N) :: 用于浏览和编辑
   - Insert (I) :: 用于输入文本
-  - Visual (V)
+  - Visual (V) :: 按 v 进入
   - Replace (R)
-  - Operator-Pending (O)
+  - Operator-Pending (O) :: 按 c、d 等后，还要等待操作对象时的状态
   - Motion (M) :: 用于 Read-only Buffer，比如 Help
   - Emacs (E)
 
@@ -207,9 +207,11 @@ State 的功能。下面的代码可以达到这个目的。
   (use-package evil
     :ensure t
     :config
-    ;; 激活 Evil Leader 和 Evil Mode
+    ;; 先激活 Evil Leader，再激活 Evil Mode
     (global-evil-leader-mode)
     (evil-mode 1)
+    ;; 缺省从 Insert State 切换到 Normal State，光标会前移一格，改为不移动
+    (setq evil-move-cursor-back nil)
     ;; 让 Evil 的 State 醒目
     (setq evil-normal-state-cursor '(box "green")
           evil-insert-state-cursor '(bar "red"))
