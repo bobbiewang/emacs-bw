@@ -10,7 +10,9 @@
         (set-fontset-font (frame-parameter nil 'font)
                           charset (font-spec :family "Microsoft Yahei" :size 20)))))
 
-  (bw/set-mono-font)
+  ;; 在图形界面中设置字体
+  (when window-system
+    (bw/set-mono-font))
 #+END_SRC
 
 ** 主题
