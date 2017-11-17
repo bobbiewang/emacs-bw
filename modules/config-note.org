@@ -12,7 +12,7 @@
     (bw/set-space-key-and-name "c" 'org-capture nil)
     (if (getenv "ORG_DIRECTORY")
         (setq org-directory (getenv "ORG_DIRECTORY"))
-      (setq org-directory "~/.dropbox/GTD/"))
+      (setq org-directory "~/notes/"))
     (setq org-capture-templates
           `(("t" "Todo" entry (file+headline "gtd" "Inbox") "* TODO %? %^g\n  %u")
             ("n" "Note" entry (file "notes") "* %?\n  %T" :prepend t)
