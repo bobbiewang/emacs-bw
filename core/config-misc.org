@@ -143,6 +143,22 @@ buffer。
           try-expand-whole-kill))
 #+END_SRC
 
+* Emacs Server
+
+  Emacs 启动 Server 模式后，可以通过 emacsclient 打开文件，文件会在该
+Emacs（Server）中打开文件。
+
+  值得注意的是，Emacs Server 启动后，缺省在 ~/.emacs.d/server 下生成一
+个名为 server 的文件，emacsclient 就是通过这个文件找到正在运行的 Emacs
+Server。如果修改了路径（server-auth-dir 的值），emacsclient 就找不到
+Emacs Server 了，这时可以通过环境变量 EMACS_SERVER_FILE 或者
+emacsclient 的 --server-file 参数，设置 server 文件的路径。
+
+#+BEGIN_SRC emacs-lisp
+  (when (not (server-running-p))
+    (server-start))
+#+END_SRC
+
 * 键绑定
 ** 传统键绑定
 
@@ -404,9 +420,6 @@ buffer。
 
   (setq savehist-file (locate-user-emacs-file ".history"))
   (setq recentf-save-file (locate-user-emacs-file ".recentf"))
-  (setq server-auth-dir (locate-user-emacs-file ".server/"))
-  (setq bookmark-default-file "~/.emacs.d/.bookmarks") ; 自定义 bookmark 文件的位置
 
-  ;; 启动 Emacs Server
-  (server-start)
+  (setq bookmark-default-file "~/.emacs.d/.bookmarks") ; 自定义 bookmark 文件的位置
 #+END_SRC
