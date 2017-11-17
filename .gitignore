@@ -1,5 +1,6 @@
 core/*.el
 modules/*.el
 personal/*.el
+server/
 .*
 *~
