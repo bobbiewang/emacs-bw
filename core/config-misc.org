@@ -406,4 +406,7 @@ buffer。
   (setq recentf-save-file (locate-user-emacs-file ".recentf"))
   (setq server-auth-dir (locate-user-emacs-file ".server/"))
   (setq bookmark-default-file "~/.emacs.d/.bookmarks") ; 自定义 bookmark 文件的位置
+
+  ;; 启动 Emacs Server
+  (server-start)
 #+END_SRC
