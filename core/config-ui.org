@@ -168,7 +168,8 @@
   - Insert (I) :: 用于输入文本
   - Visual (V) :: 按 v 进入
   - Replace (R)
-  - Operator-Pending (O) :: 按 c、d 等后，还要等待操作对象时的状态
+  - Operator-Pending (O) :: 一些操作符（如 c、d 等）后面需要跟动作命令
+       （如 w、$），这是等待动作的状态
   - Motion (M) :: 用于 Read-only Buffer，比如 Help
   - Emacs (E)
 
@@ -191,12 +192,17 @@ State 的功能。下面的代码可以达到这个目的。
 #+BEGIN_SRC emacs-lisp-example
   ;; 方法 1
   (setq evil-insert-state-map (make-sparse-keymap))
+  ;; 在 Insert State 中通过 ESC 切换到 Normal State
   (define-key evil-insert-state-map (kbd "<escape>") 'evil-normal-state)
 
   ;; 方法 2
+  ;; 将 Insert State 所有键绑定清除
   (setcdr evil-insert-state-map nil)
+  ;; 在 Insert State 中使用 Emacs State 的键绑定
   (define-key evil-insert-state-map
     (read-kbd-macro evil-toggle-key) 'evil-emacs-state)
+  ;; 在 Insert State 中通过 ESC 切换到 Normal State
+  (define-key evil-insert-state-map [escape] 'evil-normal-state)
 #+END_SRC
 
   参考资料
