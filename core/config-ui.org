@@ -20,6 +20,12 @@
   ;; 在图形界面中设置字体
   (when window-system
     (bw/set-mono-font))
+
+  ;; 基于 Emacs Daemon 新建 Frame 时设置字体
+  (add-hook 'after-make-frame-functions
+            (lambda (frame)
+              (select-frame frame)
+              (bw/set-mono-font)))
 #+END_SRC
 
 ** 主题
