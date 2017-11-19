@@ -1,5 +1,7 @@
 ;; -*- coding: utf-8-unix -*-
 
+;;; Code:
+
 ;; 初始化 ELPA 环境
 
 (require 'package)
@@ -13,12 +15,14 @@
 (require 'ob-tangle)
 
 (defun bw/load-core-files ()
+  "加载 core 配置文件."
   (interactive)
   (dolist (pkg '(infrastructure packages ui misc))
     (org-babel-load-file (locate-user-emacs-file (format "core/config-%s.org" pkg)))))
 
-(setq bw/modules-dir (locate-user-emacs-file "modules/"))
+(defvar bw/modules-dir (locate-user-emacs-file "modules/"))
 (defun bw/load-modules-files ()
+  "加载 modules 配置文件."
   (interactive)
   (when (file-exists-p bw/modules-dir)
   (message "Loading configuration files of modules...")
@@ -27,3 +31,6 @@
 (bw/load-core-files)
 (bw/load-modules-files)
 
+(provide 'init)
+
+;;; init.el ends here
