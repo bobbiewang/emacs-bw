@@ -333,6 +333,7 @@ buffer。
   (which-key-add-key-based-replacements
     "<SPC> a"  "applications"
     "<SPC> b"  "buffers"
+    "<SPC> bi" "indent"
     "<SPC> f"  "files"
     "<SPC> fC" "convert"
     "<SPC> h"  "help"

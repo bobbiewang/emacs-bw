@@ -87,6 +87,11 @@
       (delete-trailing-whitespace)
       (mark-paragraph)
       (indent-region (region-beginning) (region-end) nil)))
+
+  (bw/set-space-key-and-name
+   "bib" 'bw/indent-whole-buffer      "indent buffer"
+   "bip" 'bw/indent-current-paragraph "indent paragraph"
+   "bir" 'bw/indent-region            "indent region")
 #+END_SRC
 
 * expand-region
