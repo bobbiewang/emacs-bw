@@ -65,10 +65,36 @@ C-h m 查看 Helm 自带的帮助。
 
 * Ivy
 
-  [[https://github.com/abo-abo/swiper][Ivy]] 也是一个增量补全和规律选择项的框架，比 Helm 轻量级。
+  [[https://github.com/abo-abo/swiper][Ivy]] 是一个增量补全和过滤选择项的框架，比 Helm 轻量级，其实现分为三个
+包：ivy、swiper、counsel。安装 counsel 会自动安装前两个依赖的包。
+
+  M-x ivy-mode 全局激活 Ivy 补全，在 Emacs 中所有使用
+completing-read-function 的地方会自动调用 Ivy 接口。
+
+  参考资料
+  - [[https://writequit.org/denver-emacs/presentations/2017-04-11-ivy.html][Ivy, Counsel and Swiper]]
 
 #+BEGIN_SRC emacs-lisp
-
+    (use-package counsel
+      :if (eq bw/completion-framework 'ivy)
+      :ensure t
+      :bind (("M-x"     . counsel-M-x)
+             ("C-x b"   . ivy-switch-buffer)
+             ("M-y"     . counsel-yank-pop)
+             ("C-x C-f" . counsel-find-file))
+      :init
+      ;; 把最近打开的文件和书签加到 ivy-switch-buffer 中
+      (setq ivy-use-virtual-buffers t)
+      (setq enable-recursive-minibuffers t)
+      ;; 在 Ivy 补全界面中同时显示当前项序号和项目总数
+      (setq ivy-count-format "%d/%d ")
+      (bw/set-space-key-and-name
+       "bs" 'counsel-grep-or-swiper    "searche"
+       "hb" 'counsel-descbinds         "bindings"
+       "hf" 'counsel-describe-function "function"
+       "hF" 'counsel-describe-face     "face"
+       "hv" 'counsel-describe-variable "variable"
+       "sa" 'counsel-ag                "ag"))
 #+END_SRC
 
 * YASnippet
