@@ -83,6 +83,7 @@ helm-gtags-find-tag，可以将其绑定到 helm-gtags.dwim 实现更灵活的�
 
 #+BEGIN_SRC emacs-lisp
   (use-package helm-ag
+    :if (eq bw/completion-framework 'helm)
     :ensure t
     :init
     (bw/set-space-key-and-name

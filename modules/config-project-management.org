@@ -82,6 +82,7 @@ sbt、rebar 和 bundler 项目。如果项目目录不使用以上工具，可�
 
 #+BEGIN_SRC emacs-lisp
   (use-package helm-projectile
+    :if (eq bw/completion-framework 'helm)
     :ensure t
     :init
     (bw/set-space-key-and-name
