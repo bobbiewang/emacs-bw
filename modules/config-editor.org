@@ -160,3 +160,19 @@
   (use-package discover-my-major
     :ensure t)
 #+END_SRC
+
+* NeoTree
+
+  [[https://github.com/jaypei/emacs-neotree][NeoTree]] 在 Emacs 的 Frame 中嵌入一个树状的目录、文件浏览器。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package neotree
+    :ensure t
+    :init
+    ;; 定制 NeoTree 在 Evil Normal State 下的键绑定
+    (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-quick-look)
+    (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
+    (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+    (bw/set-space-key-and-name
+     "at" 'neotree-toggle "NeoTree"))
+#+END_SRC
