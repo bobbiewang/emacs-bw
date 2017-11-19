@@ -65,10 +65,11 @@ sbt、rebar 和 bundler 项目。如果项目目录不使用以上工具，可�
     (bw/set-space-key-and-name
       "p!" 'projectile-run-shell-command-in-root       "run shell"
       "p&" 'projectile-run-async-shell-command-in-root "run async shell"
+      "pD" 'projectile-dired                           "dired in project"
       "pf" 'projectile-find-file                       "find file in project"
-      "pv" 'projectile-vc                              "vc in project"
-      "pD" 'projectile-dired nil                       "dired in project"
-      "pR" 'projectile-regenerate-tags                 "regerate tags")
+      "pp" 'projectile-switch-project                  "swith project"
+      "pR" 'projectile-regenerate-tags                 "regerate tags"
+      "pv" 'projectile-vc                              "vc in project")
     :config
     (projectile-global-mode))
 #+END_SRC
