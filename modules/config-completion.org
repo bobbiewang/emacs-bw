@@ -23,33 +23,34 @@ C-h m 查看 Helm 自带的帮助。
 
 #+BEGIN_SRC emacs-lisp
   (use-package helm
-               :ensure t
-               :bind (("M-x"   . helm-M-x)
-                      ("M-y"   . helm-show-kill-ring)
-                      ("C-x b" . helm-mini))
-               :config
-               ;; 交换 TAB 和 C-Z
-               (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-               (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
-               (define-key helm-map (kbd "C-z")  'helm-select-action)
-               ;; Space 键绑定
-               (bw/set-space-key-and-name
-                "bi"  'helm-imenu      "imenu"
-                "ff"  'helm-find-files nil
-                "fF"  'helm-mini       nil
-                "ha"  'helm-apropos    "apropos"
-                "sf"  'helm-find       "find")
-               ;; 设置 helm-mini 包括的内容
-               (setq bw/helm-source-file-cache
-                     '((name . "File cache")
-                       (candidates . bw/file-cache-list)
-                       (action . (lambda (candidate)
-                                   (find-file candidate)))))
-               (setq helm-mini-default-sources '(helm-source-buffers-list
-                                                 helm-source-recentf
-                                                 bw/helm-source-file-cache
-                                                 helm-source-buffer-not-found))
-               (helm-mode 1))
+    :if (eq bw/completion-framework 'helm)
+    :ensure t
+    :bind (("M-x"   . helm-M-x)
+           ("M-y"   . helm-show-kill-ring)
+           ("C-x b" . helm-mini))
+    :config
+    ;; 交换 TAB 和 C-Z
+    (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+    (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
+    (define-key helm-map (kbd "C-z")  'helm-select-action)
+    ;; Space 键绑定
+    (bw/set-space-key-and-name
+     "bi"  'helm-imenu      "imenu"
+     "ff"  'helm-find-files nil
+     "fF"  'helm-mini       nil
+     "ha"  'helm-apropos    "apropos"
+     "sf"  'helm-find       "find")
+    ;; 设置 helm-mini 包括的内容
+    (setq bw/helm-source-file-cache
+          '((name . "File cache")
+            (candidates . bw/file-cache-list)
+            (action . (lambda (candidate)
+                        (find-file candidate)))))
+    (setq helm-mini-default-sources '(helm-source-buffers-list
+                                      helm-source-recentf
+                                      bw/helm-source-file-cache
+                                      helm-source-buffer-not-found))
+    (helm-mode 1))
 #+END_SRC
 
 ** helm-descbinds
@@ -58,6 +59,7 @@ C-h m 查看 Helm 自带的帮助。
 
 #+BEGIN_SRC emacs-lisp
   (use-package helm-descbinds
+    :if (eq bw/completion-framework 'helm)
     :ensure t
     :init
     (helm-descbinds-mode))
