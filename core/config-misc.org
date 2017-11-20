@@ -427,4 +427,10 @@ emacsclient 的 --server-file 参数，设置 server 文件的路径。
   (setq recentf-save-file (locate-user-emacs-file ".recentf"))
 
   (setq bookmark-default-file "~/.emacs.d/.bookmarks") ; 自定义 bookmark 文件的位置
+
+  ;; 在文本选择的状态，输入时直接替换被选择文本
+  (delete-selection-mode 1)
+
+  ;; 鼠标选择文本时自动复制
+  (setq mouse-drag-copy-region t)
 #+END_SRC
