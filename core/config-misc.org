@@ -32,6 +32,9 @@
 
 * Custom 文件
 
+  缺省情况下，Emacs 内置 Customization 的设置存在 init.el 文件。这里设
+置存在单独的文件，并在 Emacs 启动过程中加载。
+
 #+BEGIN_SRC emacs-lisp
   (setq custom-file (locate-user-emacs-file "personal/.custom.el"))
   (load custom-file 'noerror)
@@ -347,6 +350,7 @@ emacsclient 的 --server-file 参数，设置 server 文件的路径。
   (which-key-add-key-based-replacements
     "<SPC> a"  "applications"
     "<SPC> b"  "buffers"
+    "<SPC> bi" "indent"
     "<SPC> f"  "files"
     "<SPC> fC" "convert"
     "<SPC> h"  "help"

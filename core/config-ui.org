@@ -1,18 +1,31 @@
 * 显示
 ** 字体
 
+  Emacs 23 开始底层统一用 Unicode 实现，中英文混合字体的设置比较简单了。
+下面的设置使用了我喜欢的 Consolas 和雅黑组合，字体大小适中，而且中英文
+等宽。
+
+  如果需要更强大的字体设置功能，可以考虑使用 [[https://github.com/tumashu/cnfonts][cnfonts]] 包。
+
 #+BEGIN_SRC emacs-lisp
   (defun bw/set-mono-font ()
     (interactive)
     (progn
-      (set-frame-font "-outline-Consolas-normal-r-normal-normal-18-*-*-*-c-*-iso10646-1")
+      (set-face-attribute 'default nil :font "Consolas:pixelsize=18")
       (dolist (charset '(kana han symbol cjk-misc bopomofo))
         (set-fontset-font (frame-parameter nil 'font)
-                          charset (font-spec :family "Microsoft Yahei" :size 20)))))
+                          charset (font-spec :family "Microsoft Yahei"
+                                             :size 20)))))
 
   ;; 在图形界面中设置字体
   (when window-system
     (bw/set-mono-font))
+
+  ;; 基于 Emacs Daemon 新建 Frame 时设置字体
+  (add-hook 'after-make-frame-functions
+            (lambda (frame)
+              (select-frame frame)
+              (bw/set-mono-font)))
 #+END_SRC
 
 ** 主题

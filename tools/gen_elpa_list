@@ -1,4 +1,4 @@
-#!/bin/env sh
+#!/usr/bin/env sh
 
 USER_EMACS_DIR=~/.emacs.d/
 # USER_EMACS_DIR=`emacs --batch -Q --eval '(princ (file-truename user-emacs-directory))'`

@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: Include Common Header Files
+# key: incs
+# --
+#include <string>
+#include <vector>
+#include <iostream>
+#include <fstream>
+#include <iterator>
+#include <algorithm>
+$0
