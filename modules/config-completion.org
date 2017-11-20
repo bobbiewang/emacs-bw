@@ -66,7 +66,7 @@ C-h m 查看 Helm 自带的帮助。
 #+END_SRC
 
 * Ivy
-
+** Ivy
   [[https://github.com/abo-abo/swiper][Ivy]] 是一个增量补全和过滤选择项的框架，比 Helm 轻量级，其实现分为三个
 包：ivy、swiper、counsel。安装 counsel 会自动安装前两个依赖的包。
 
@@ -101,6 +101,16 @@ completing-read-function 的地方会自动调用 Ivy 接口。
      "hF" 'counsel-describe-face     "face"
      "hv" 'counsel-describe-variable "variable"
      "sa" 'counsel-ag                "ag"))
+#+END_SRC
+
+** ivy-hydra
+
+  [[https://github.com/abo-abo/swiper][ivy-hydra]] 为 Ivy 提供了 hydra-ivy/body 命令，在 Ivy 界面按 C-o，可以
+调出 [[https://github.com/abo-abo/hydra][Hydra]] 的功能介绍界面。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy-hydra
+    :ensure t)
 #+END_SRC
 
 * YASnippet
