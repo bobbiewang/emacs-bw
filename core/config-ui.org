@@ -218,6 +218,75 @@ State 的功能。下面的代码可以达到这个目的。
   (define-key evil-insert-state-map [escape] 'evil-normal-state)
 #+END_SRC
 
+  Evil Normal State 缺省绑定了以下单独按键的功能。可以自定义功能的单键
+有：B、E、F、G、H、K、L、M、N、Q、T、U、V、W、b、e、f、h、j、k、l、n、
+t、v、w。
+
+  | <escape> | evil-force-normal-state           |
+  | "        | evil-use-register                 |
+  | &        | evil-ex-repeat-substitute         |
+  | .        | evil-repeat                       |
+  | <        | evil-shift-left                   |
+  | =        | evil-indent                       |
+  | >        | evil-shift-right                  |
+  | @        | evil-execute-macro                |
+  | ~        | evil-invert-char                  |
+  |----------+-----------------------------------|
+  | A        | evil-append-line                  |
+  | C        | evil-change-line                  |
+  | D        | evil-delete-line                  |
+  | I        | evil-insert-line                  |
+  | J        | evil-join                         |
+  | O        | evil-open-above                   |
+  | P        | evil-paste-before                 |
+  | R        | evil-replace-state                |
+  | S        | evil-change-whole-line            |
+  | X        | evil-delete-backward-char         |
+  | Y        | evil-yank-line                    |
+  | a        | evil-append                       |
+  | c        | evil-change                       |
+  | d        | evil-delete                       |
+  | i        | evil-insert                       |
+  | m        | evil-set-marker                   |
+  | o        | evil-open-below                   |
+  | p        | evil-paste-after                  |
+  | q        | evil-record-macro                 |
+  | r        | evil-replace                      |
+  | s        | evil-substitute                   |
+  | u        | undo                              |
+  | x        | evil-delete-char                  |
+  | y        | evil-yank                         |
+  |----------+-----------------------------------|
+  | Z        | Prefix Command                    |
+  | Z Q      | evil-quit                         |
+  | Z Z      | evil-save-modified-and-close      |
+  |----------+-----------------------------------|
+  | z        | Prefix Command                    |
+  | z =      | ispell-word                       |
+  | z O      | evil-open-fold-rec                |
+  | z a      | evil-toggle-fold                  |
+  | z c      | evil-close-fold                   |
+  | z m      | evil-close-folds                  |
+  | z o      | evil-open-fold                    |
+  | z r      | evil-open-folds                   |
+  |----------+-----------------------------------|
+  | g        | Prefix Command                    |
+  | g &      | evil-ex-repeat-global-substitute  |
+  | g ,      | goto-last-change-reverse          |
+  | g 8      | what-cursor-position              |
+  | g ;      | goto-last-change                  |
+  | g ?      | evil-rot13                        |
+  | g F      | evil-find-file-at-point-with-line |
+  | g J      | evil-join-whitespace              |
+  | g U      | evil-upcase                       |
+  | g a      | what-cursor-position              |
+  | g f      | find-file-at-point                |
+  | g i      | evil-insert-resume                |
+  | g q      | evil-fill-and-move                |
+  | g u      | evil-downcase                     |
+  | g w      | evil-fill                         |
+  | g ~      | evil-invert-case                  |
+
   参考资料
   - [[https://raw.githubusercontent.com/emacs-evil/evil/master/doc/evil.pdf][PDF manual]]
   - [[http://dnquark.com/blog/2012/02/emacs-evil-ecumenicalism/][Emacs + Evil = ecumenicalism]] Evil 缺省适合 Vim 用户，Emacs 用户需
