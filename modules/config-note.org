@@ -9,10 +9,14 @@
               (lambda ()
                 (auto-fill-mode 1)))
     :config
+    ;; 键绑定
+    (setq org-special-ctrl-a/e t)         ; 微调 C-a/e 的行为
     (bw/set-space-key-and-name "c" 'org-capture nil)
+    ;; Org 目录
     (if (getenv "ORG_DIRECTORY")
         (setq org-directory (getenv "ORG_DIRECTORY"))
       (setq org-directory "~/notes/"))
+    ;; Org Capture 模版
     (setq org-capture-templates
           `(("t" "Todo" entry (file+headline "gtd" "Inbox") "* TODO %? %^g\n  %u")
             ("n" "Note" entry (file "notes") "* %?\n  %T" :prepend t)
