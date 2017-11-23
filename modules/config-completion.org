@@ -110,7 +110,21 @@ completing-read-function 的地方会自动调用 Ivy 接口。
 
 #+BEGIN_SRC emacs-lisp
   (use-package ivy-hydra
+    :if (eq bw/completion-framework 'ivy)
     :ensure t)
+#+END_SRC
+
+** smex
+
+  Ivy 的 counsel-M-x 缺省命令列表的排序是固定的，安装了 smex 后会使用
+smex 的数据，最近用的命令列在前面。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package smex
+    :if (eq bw/completion-framework 'ivy)
+    :ensure t
+    :init
+    (setq smex-save-file (locate-user-emacs-file ".smex-items")))
 #+END_SRC
 
 * YASnippet
