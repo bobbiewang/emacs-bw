@@ -148,8 +148,14 @@ buffer。
 
 * Emacs Server
 
-  Emacs 启动 Server 模式后，可以通过 emacsclient 打开文件，文件会在该
-Emacs（Server）中打开文件。
+  Emacs 的 Server 模式可以通过 (server-mode 1) 或者 M-x server-start
+启动。启动 Server 模式后，可以通过 emacsclient 打开文件，文件会在该
+Emacs（Server）中打开文件，而不需要重新启动一个 Emacs。
+
+  以启动的 Emacs Server 可以通过 M-x server-force-delete 停止。
+
+  在 Emacs 启动过程中，可以通过 server-running-p 判断是否已经有 Server
+在运行了。但这个函数不是 autoload，需要显式加载 server 包后再使用。
 
   值得注意的是，Emacs Server 启动后，缺省在 ~/.emacs.d/server 下生成一
 个名为 server 的文件，emacsclient 就是通过这个文件找到正在运行的 Emacs
