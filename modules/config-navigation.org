@@ -53,6 +53,7 @@ helm-gtags-find-tag，可以将其绑定到 helm-gtags.dwim 实现更灵活的�
 
 #+BEGIN_SRC emacs-lisp
   (use-package helm-gtags
+    :if (eq bw/completion-framework 'helm)
     :ensure t
     :init
     (setq helm-gtags-ignore-case t
@@ -63,6 +64,48 @@ helm-gtags-find-tag，可以将其绑定到 helm-gtags.dwim 实现更灵活的�
           helm-gtags-suggested-key-mapping t)
     (add-hook 'c-mode-hook 'helm-gtags-mode)
     (add-hook 'c++-mode-hook 'helm-gtags-mode))
+#+END_SRC
+
+** counsel-gtags
+
+  [[https://github.com/syohex/emacs-counsel-gtags][counsel-gtags]] 为 GNU Global 提供了 Ivy 接口。
+
+  下表是 counsel-gtags 提供的命令。对于查找命令，跳转前的位置会压到
+Context Stack，可以通过 counsel-gtags-go-backward 和
+counsel-gtags-go-forward 两个命令浏览。
+
+  如果设置 counsel-gtags-use-suggested-key-map 为 t，则会自动设置推荐
+的键绑定。
+
+  | 命令                          | 说明                     | 推荐键绑定            |
+  |-------------------------------+--------------------------+-----------------------|
+  | counsel-gtags-dwim            | 从定义查找引用，或者反之 |                       |
+  | counsel-gtags-find-definition | 查找定义                 | C-c d 或 C-c t 或 M-. |
+  | counsel-gtags-find-reference  | 查找引用                 | C-c r                 |
+  | counsel-gtags-find-symbol     | 查找符号                 | C-c s                 |
+  |-------------------------------+--------------------------+-----------------------|
+  | counsel-gtags-find-file       | 查找文件                 |                       |
+  |-------------------------------+--------------------------+-----------------------|
+  | counsel-gtags-go-backward     | 后退                     | M-*                   |
+  | counsel-gtags-go-forward      | 前进                     | C-t                   |
+  |-------------------------------+--------------------------+-----------------------|
+  | counsel-gtags-create-tags     | 创建 Tag 文件            |                       |
+  | counsel-gtags-update-tags     | 更新 Tag 文件            |                       |
+
+  引用和符号的区别在于符号的范围更广，比如 C++ 的关键字 class 也属于符
+号。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package counsel-gtags
+    :if (eq bw/completion-framework 'ivy)
+    :ensure t
+    :init
+    (add-hook 'c-mode-hook 'counsel-gtags-mode)
+    (add-hook 'c++-mode-hook 'counsel-gtags-mode)
+    :config
+    (define-key counsel-gtags-mode-map (kbd "M-.") 'counsel-gtags-find-definition)
+    (define-key counsel-gtags-mode-map (kbd "M-*") 'counsel-gtags-go-backward)
+    (define-key counsel-gtags-mode-map (kbd "M-?") 'counsel-gtags-find-reference))
 #+END_SRC
 
 ** ggtags
