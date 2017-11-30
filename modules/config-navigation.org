@@ -1,5 +1,19 @@
 #+TITLE:     Navigation
 
+* Emacs 内置 Navigation 命令
+
+  | 单位      | 前移        | 后移        | 删除                          |
+  |-----------+-------------+-------------+-------------------------------|
+  | char      | C-b         | C-f         | C-d, backspace                |
+  | word      | M-b         | M-f         | M-d, M-backspace, C-backspace |
+  | sentence  | M-a         | M-e         |                               |
+  | paragraph | C-up, M-{   | C-down, M-} |                               |
+  | document  | M-<, C-home | M->, C-end  |                               |
+  |-----------+-------------+-------------+-------------------------------|
+  | sexp      | C-M-left    | C-M-right   |                               |
+  | list      | C-M-up      | C-M-down    |                               |
+  | defun     | C-M-home    | C-M-end     |                               |
+
 * Cursor
 ** Avy
 
