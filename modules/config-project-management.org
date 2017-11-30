@@ -128,3 +128,26 @@ sbt、rebar 和 bundler 项目。如果项目目录不使用以上工具，可�
     :config
     (helm-projectile-on))
 #+END_SRC
+
+* counsel-projectile
+
+  [[https://github.com/ericdanan/counsel-projectile][counsel-projectile]] 将 Ivy 集成到 Projectile。
+
+  这个包提供了 counsel-projectile 命令，如果在项目外部运行，会显示项目
+列表；如果在项目内部运行，会显示项目 Buffer 和文件列表。
+
+  可以通过 M-x counsel-projectile-on，用以下 counsel-projectile 版的命
+令替换Projectile 里的相应命令，这些命令有 Ivy Action 可用。
+  - counsel-projectile-find-file
+  - counsel-projectile-find-dir
+  - counsel-projectile-switch-to-buffer
+  - counsel-projectile-ag
+  - counsel-projectile-switch-project
+
+  如果不喜欢，可以 M-x counsel-projectile-off 撤销这些替换。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package counsel-projectile
+    :if (eq bw/completion-framework 'ivy)
+    :ensure t)
+#+END_SRC
