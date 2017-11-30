@@ -134,6 +134,18 @@ counsel-gtags-go-forward 两个命令浏览。
 #+END_SRC
 
 * Search
+** ag
+
+  [[https://github.com/Wilfred/ag.el/][ag]] 支持在 Emacs 内用 ag 程序搜索。其他一些命令，比如 projectile-ag，
+也需要 ag 的支持。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package 'ag
+    :ensure t
+    :config
+    (setq ag-highlight-search t))
+#+END_SRC
+
 ** helm-ag
 
   [[https://github.com/syohex/emacs-helm-ag][helm-ag]] 为 Silver Searcher 提供了 Helm 接口。
