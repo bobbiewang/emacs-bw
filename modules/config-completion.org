@@ -82,8 +82,9 @@ completing-read-function 的地方会自动调用 Ivy 接口。
     :ensure t
     :bind (("M-x"     . counsel-M-x)
            ("C-x b"   . ivy-switch-buffer)
-           ("M-y"     . counsel-yank-pop)
-           ("C-x C-f" . counsel-find-file))
+           ("C-x C-f" . counsel-find-file)
+           ("M-`"     . counsel-imenu)
+           ("M-y"     . counsel-yank-pop))
     :init
     ;; 把最近打开的文件和书签加到 ivy-switch-buffer 中
     (setq ivy-use-virtual-buffers t)
