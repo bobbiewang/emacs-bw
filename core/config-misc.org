@@ -40,6 +40,16 @@
   (load custom-file 'noerror)
 #+END_SRC
 
+* Sentence
+
+#+BEGIN_SRC emacs-lisp
+  ;; Sentence 之间不需要两个空格
+  (setq sentence-end-double-space nil)
+
+  ;; 识别中文 Sentence
+  (setq sentence-end "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
+#+END_SRC
+
 * Easy PG
 
 #+BEGIN_SRC emacs-lisp
