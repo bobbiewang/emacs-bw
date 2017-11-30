@@ -9,41 +9,64 @@
 sbt、rebar 和 bundler 项目。如果项目目录不使用以上工具，可以在项目根目
 录下创建一个 .projectile 文件。
 
-  下面是 Projectile 的常用命令。
+  下面是 Projectile 提供的命令。
 
-  | 键绑定    | 命令                            | 描述                                   |
-  |-----------+---------------------------------+----------------------------------------|
-  | C-c p C-h |                                 | 查看 Projectile 所有键绑定             |
-  |-----------+---------------------------------+----------------------------------------|
-  | C-c p f   | projectile-find-file            | 列出当前项目的文件                     |
-  | C-c p d   | projectile-find-dir             | 列出当前项目的目录                     |
-  | C-c p T   | projectile-find-test-file       | 列出测试文件（specs、features）        |
-  | C-c p b   | projectile-switch-to-buffer     | 列出当前项目打开的文件                 |
-  | C-c p S   | projectile-save-project-buffers | 保存所有当前项目的文件                 |
-  |-----------+---------------------------------+----------------------------------------|
-  | C-c p k   | projectile-kill-buffers         | 关闭当前项目打开的文件                 |
-  |-----------+---------------------------------+----------------------------------------|
-  | C-c p g   | projectile-grep                 | 在项目文件中 grep                      |
-  | C-c p a   | projectile-ack                  | 在项目文件中 ack，需要 ack-and-a-half  |
-  | C-c p o   | projectile-multi-occur          | 在当前项目打开的文件中运行 multi-occur |
-  |-----------+---------------------------------+----------------------------------------|
-  | C-c p v   | projectile-vc                   | 在项目根目录运行 vc-dir                |
-  |-----------+---------------------------------+----------------------------------------|
-  | C-c p R   | projectile-regenerate-tags      | 重新生成项目的 TAGS 文件               |
-  | C-c p j   | projectile-find-tag             | 在项目的 TAGS 文件中搜索               |
-  |-----------+---------------------------------+----------------------------------------|
-  | C-c p c   | projectile-compile-project      | 在项目根目录运行编译命令               |
-  | C-c p p   | projectile-test-project         | 在项目根目录运行测试命令               |
-  | C-c p t   |                                 | 在实现文件和测试文件之间切换           |
-  | C-c p !   |                                 | 在项目根目录运行 shell-command         |
-  | C-c p &   |                                 | 在项目根目录运行 async-shell-command   |
-  |-----------+---------------------------------+----------------------------------------|
+  | 键绑定    | 命令                                              | 描述                                         |
+  |-----------+---------------------------------------------------+----------------------------------------------|
+  | C-c p C-h |                                                   | 查看 Projectile 所有键绑定                   |
+  |-----------+---------------------------------------------------+----------------------------------------------|
+  |           | 文件相关的命令                                    |                                              |
+  | C-c p g   | projectile-find-file-dwim                         | 列出当前项目的文件，智能处理光标所在处文件名 |
+  | C-c p f   | projectile-find-file                              | 列出当前项目的文件                           |
+  | C-c p a   | projectile-find-other-file                        | 切换到当前项目中同名但不同后缀的文件         |
+  | C-c p T   | projectile-find-test-file                         | 列出当前项目的测试文件（specs、features）    |
+  | C-c p t   | projectile-toggle-between-implementation-and-test | 在实现文件和测试文件之间切换                 |
+  | C-c p e   | projectile-recentf                                | 列出当前项目中最近访问过的文件               |
+  | C-c p l   | projectile-find-file-in-directory                 | 列出当前项目指定目录下的项目文件             |
+  | C-c p d   | projectile-find-dir                               | 列出当前项目的目录                           |
+  | C-c p p   | projectile-switch-project                         | 切换到以前访问过的项目                       |
+  | C-c p q   | projectile-switch-open-project                    | 切换到目前打开的项目                         |
+  | C-c p F   | projectile-find-file-in-known-projects            | 列出所有已知项目的文件列表                   |
+  |-----------+---------------------------------------------------+----------------------------------------------|
+  |           | Buffer 相关的命令                                 |                                              |
+  | C-c p ESC | projectile-project-buffers-other-buffer           | 切换到当前项目中前一个 Buffer                |
+  | C-c p b   | projectile-switch-to-buffer                       | 列出当前项目的 Buffer                        |
+  | C-c p I   | projectile-ibuffer                                | 在 IBuffer 里列出当前项目的 Buffer           |
+  | C-c p S   | projectile-save-project-buffers                   | 保存所有当前项目的 Buffer                    |
+  | C-c p k   | projectile-kill-buffers                           | 关闭项目的所有 Buffer                        |
+  |-----------+---------------------------------------------------+----------------------------------------------|
+  |           | 查找、替换相关的命令                              |                                              |
+  | C-c p s s | projectile-ag                                     | 在当前项目所有文件中运行 ag                  |
+  | C-c p s g | projectile-grep                                   | 在当前项目所有文件中运行 grep                |
+  | C-c p o   | projectile-multi-occur                            | 在当前项目打开的文件中运行 multi-occur       |
+  | C-c p r   | projectile-replace                                | 在当前项目中替换字符串                       |
+  |-----------+---------------------------------------------------+----------------------------------------------|
+  |           | Tag 相关的命令                                    |                                              |
+  | C-c p R   | projectile-regenerate-tags                        | 重新生成当前项目的 TAGS 文件                 |
+  | C-c p j   | projectile-find-tag                               | 在当前项目的 Tag 文件中搜索                  |
+  |-----------+---------------------------------------------------+----------------------------------------------|
+  |           | 编译、运行相关的命令                              |                                              |
+  | C-c p c   | projectile-compile-project                        | 在当前项目根目录运行编译命令                 |
+  | C-c p u   | projectile-run-project                            | 输入命令行，在当前项目的根目录执行           |
+  | C-c p P   | projectile-test-project                           | 输入命令行，在当前项目的根目录运行           |
+  | C-c p !   | projectile-run-shell-command-in-root              | 在当前项目根目录运行 shell-command           |
+  | C-c p &   | projectile-run-async-shell-command-in-root        | 在当前项目根目录运行 async-shell-command     |
+  | C-c p x e | projectile-run-eshell                             | 在当前项目的根目录运行 eshell                |
+  | C-c p x s | projectile-run-shell                              | 在当前项目的根目录运行 shell                 |
+  | C-c p x t | projectile-run-term                               | 在当前项目的根目录运行 term                  |
+  |-----------+---------------------------------------------------+----------------------------------------------|
+  |           | 版本管理相关的命令                                |                                              |
+  | C-c p v   | projectile-vc                                     | 在当前项目根目录运行 vc                      |
+  | C-c p V   | projectile-browse-dirty-projects                  | 列出有修改的项目，选择后打开 vc              |
+  |-----------+---------------------------------------------------+----------------------------------------------|
+  |           | 其他命令                                          |                                              |
+  | C-c p D   | projectile-dired                                  | 在当前项目根目录打开 Dired                   |
+  | C-c p E   | projectile-edit-dir-locals                        | 编辑当前项目的 .dir-locals 文件              |
+  | C-p p i   | projectile-invalidate-cache                       | 清空当前项目缓存中的文件列表                 |
+  | C-c p z   | projectile-cache-current-file                     | 把当前文件加到当前项目的缓存                 |
+  | C-c p m   | projectile-commander                              | 用单个字母执行 Projectile 命令               |
 
-  在安装了 helm-projectile 后，多了下面的命令。
-
-  | 键绑定  | 命令            | 描述                                          |
-  |---------+-----------------+-----------------------------------------------|
-  | C-c p h | helm-projectile | 使用 Helm（替代 ido）的接口列出当前项目的文件 |
+  projectile-ag 需要 ag 包的支持。
 
   参考资料
   - [[https://tuhdo.github.io/helm-projectile.html][Exploring large projects with Projectile and Helm Projectile]]
@@ -61,15 +84,28 @@ sbt、rebar 和 bundler 项目。如果项目目录不使用以上工具，可�
     ;; 缓存文件索引的结果，这样 M-x projectile-find-file 可以使用缓存数
     ;; 据。C-u M-x projectile-find-file 重置缓存
     (setq projectile-enable-caching t)
-    (which-key-add-key-based-replacements "<SPC> p" "projects")
+    (which-key-add-key-based-replacements "<SPC> p"   "projects")
+    (which-key-add-key-based-replacements "<SPC> p s" "search")
     (bw/set-space-key-and-name
-      "p!" 'projectile-run-shell-command-in-root       "run shell"
-      "p&" 'projectile-run-async-shell-command-in-root "run async shell"
-      "pD" 'projectile-dired                           "dired in project"
-      "pf" 'projectile-find-file                       "find file in project"
-      "pp" 'projectile-switch-project                  "swith project"
-      "pR" 'projectile-regenerate-tags                 "regerate tags"
-      "pv" 'projectile-vc                              "vc in project")
+      "p!"  'projectile-run-shell-command-in-root       "run shell"
+      "p&"  'projectile-run-async-shell-command-in-root "run async shell"
+      "pD"  'projectile-dired                           "dired in project"
+      "pE"  'projectile-edit-dir-locals                 "dir-locals"
+      "pR"  'projectile-regenerate-tags                 "regerate tags"
+      "pS"  'projectile-save-project-buffers            "save project buffers"
+      "pa"  'projectile-find-other-file                 "alternative file"
+      "pb"  'projectile-switch-to-buffer                "switch to buffer"
+      "pc"  'projectile-compile-project                 "compile"
+      "pf"  'projectile-find-file                       "find file"
+      "pg"  'projectile-find-file-dwim                  "find file dwim"
+      "pj"  'projectile-find-tag                        "find tag"
+      "po"  'projectile-multi-occur                     "multi occur"
+      "pp"  'projectile-switch-project                  "switch project"
+      "pr"  'projectile-replace                         "replace"
+      "pss" 'projectile-ag                              "ag"
+      "psg" 'projectile-grep                            "grep"
+      "pu"  'projectile-run-project                     "run"
+      "pv"  'projectile-vc                              "vc in project")
     :config
     (projectile-global-mode))
 #+END_SRC
@@ -78,7 +114,8 @@ sbt、rebar 和 bundler 项目。如果项目目录不使用以上工具，可�
 
   [[https://github.com/bbatsov/helm-projectile][helm-projectile]] 让 Projectile 的许多功能使用 Helm 接口，还提供了一些
 有用的功能。
-  - helm-projectile :: 显示项目的 Buffer、File 和其他项目列表
+  - helm-projectile :: 显示项目的 Buffer、File 和其他项目列表，绑定到
+       C-c p h
   - Virtual directory
 
 #+BEGIN_SRC emacs-lisp
