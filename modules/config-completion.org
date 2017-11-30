@@ -89,7 +89,7 @@ completing-read-function 的地方会自动调用 Ivy 接口。
     (setq ivy-use-virtual-buffers t)
     (setq enable-recursive-minibuffers t)
     ;; 在 Ivy 补全界面中同时显示当前项序号和项目总数
-    (setq ivy-count-format "Ivy ")
+    (setq ivy-count-format "%d/%d> ")
     (bw/set-space-key-and-name
      "bs" 'counsel-grep-or-swiper    "find in buffer"
      "bm" 'counsel-imenu             "imenu"
