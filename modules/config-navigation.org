@@ -45,7 +45,13 @@ Windows。
 #+END_SRC
 
 * Tag
-** helm-gtags
+** GNU GLOBAL
+
+  [[https://www.gnu.org/software/global/][GNU GLOBAL]] 内置支持 6 种语言：C、C++、Yacc、Java、PHP4 和 Assembly。
+通过 Pygmentes 和 Ctags，可以支持 25 种语言，如 C#、JavaScript、Lisp、
+Python、Ruby、Tcl、Verilog、Vhdl 等。
+
+*** helm-gtags
 
   [[https://github.com/syohex/emacs-helm-gtags][helm-gtags]] 为 GNU Global 提供了 Helm 接口。
 
@@ -80,7 +86,7 @@ helm-gtags-find-tag，可以将其绑定到 helm-gtags.dwim 实现更灵活的�
     (add-hook 'c++-mode-hook 'helm-gtags-mode))
 #+END_SRC
 
-** counsel-gtags
+*** counsel-gtags
 
   [[https://github.com/syohex/emacs-counsel-gtags][counsel-gtags]] 为 GNU Global 提供了 Ivy 接口。
 
@@ -124,7 +130,7 @@ counsel-gtags-go-forward 两个命令浏览。
       (define-key counsel-gtags-mode-map (kbd "C-.") 'counsel-gtags-find-symbol))
 #+END_SRC
 
-** ggtags
+*** ggtags
 
   Projectile 后台依赖于 ggtags。在运行 projectile-regenerate-tags 命令
 的时候，如果检测到安装了 ggtags，会使用 gtags 创建 Tag，否则使用 ctags。
