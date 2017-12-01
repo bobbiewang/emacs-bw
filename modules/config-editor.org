@@ -40,8 +40,10 @@
     :ensure t
     :config
     (nlinum-relative-setup-evil)          ; 为 Evil 设置
+    ;; prog-mode 派生出各种编程语言的 mode
     (add-hook 'prog-mode-hook 'nlinum-relative-mode)
-    (add-hook 'org-mode-hook 'nlinum-relative-mode))
+    ;; text-mode 派生出 outline-mode、org-mode、nxml-mode 等
+    (add-hook 'text-mode-hook 'nlinum-relative-mode))
 #+END_SRC
 
 * Bookmark
