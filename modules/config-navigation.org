@@ -142,6 +142,18 @@ counsel-gtags-go-forward 两个命令浏览。
 #+END_SRC
 
 * Search
+** anzu
+
+  在 Emacs 中进行搜索的时候，[[https://github.com/syohex/emacs-anzu][anzu]] 在 mode-line 中显示匹配项的数目，以
+及当前项的序号。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package anzu
+    :ensure t
+    :init
+    (global-anzu-mode +1))
+#+END_SRC
+
 ** ag
 
   [[https://github.com/Wilfred/ag.el/][ag]] 支持在 Emacs 内用 ag 程序搜索。其他一些命令，比如 projectile-ag，
