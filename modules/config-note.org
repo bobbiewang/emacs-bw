@@ -1,5 +1,51 @@
 #+TITLE:     Notes
 
+* Hide Show
+
+  hs-minor-mode 可以根据语法区分文本块，从而隐藏或者显示文本。语法在变
+量 hs-special-modes-alist 里定义，该变量在 hs-minor-mode 的实现总缺省
+支持 c-mode、c++-mode、bibtex-mode、java-mode 和 js-mode，其他模式可以
+在其实现中通过修改 hs-special-modes-alist 以得到 hs-minor-mode 的支持。
+
+  目前支持 hs-minor-mode 的编程语言有：
+  - Lisp、Emacs Lisp、Scheme
+  - Java、C、C++ 
+  - Perl
+  - C#
+  - PHP
+  - Tcl
+  - VHDL
+  - Fortran
+  - Python
+
+#+BEGIN_SRC emacs-lisp
+  ;; 在一些编程语言的模式中启用 hs-minor-mode
+  (dolist (x '(c c++ emacs-lisp lisp java perl sh python))
+    (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'hs-minor-mode))
+
+  ;; 重定义键绑定
+  (setq hs-minor-mode-map
+        (let ((map (make-sparse-keymap)))
+          (define-key map (kbd "C-o C-o")   'hs-toggle-hiding)
+          (define-key map (kbd "C-o C-a")   'hs-show-all)
+          (define-key map (kbd "C-o C-t")   'hs-hide-all)
+          (define-key map (kbd "C-o C-s")   'hs-show-block)
+          (define-key map (kbd "C-o C-c")   'hs-hide-block)
+          (define-key map (kbd "C-o C-l")   'hs-hide-level)
+          (define-key map [(shift mouse-2)] 'hs-mouse-toggle-hiding)
+          map))
+
+  ;; 在 isearch 中自动展开折叠的文本块。缺省只展开代码部分，这里设置成注
+  ;; 释部分也自动展开
+  (setq hs-isearch-open t)
+
+  ;; goto-line 目标行处于折叠状态时，自动展开
+  (defadvice goto-line (after expand-after-goto-line
+                              activate compile)
+    (save-excursion
+      (hs-show-block)))
+#+END_SRC
+
 * Org
 
 #+BEGIN_SRC emacs-lisp
