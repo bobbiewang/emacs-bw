@@ -14,11 +14,13 @@
 
 (require 'ob-tangle)
 
+(defvar bw/core-dir (locate-user-emacs-file "core/"))
 (defun bw/load-core-files ()
   "加载 core 配置文件."
   (interactive)
+  (message "Loading core configuration files...")
   (dolist (pkg '(infrastructure packages ui misc))
-    (org-babel-load-file (locate-user-emacs-file (format "core/config-%s.org" pkg)))))
+    (org-babel-load-file (format "%sconfig-%s.org" bw/core-dir pkg))))
 
 (defvar bw/modules-dir (locate-user-emacs-file "modules/"))
 (defun bw/load-modules-files ()
