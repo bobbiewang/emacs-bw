@@ -328,6 +328,9 @@ emacsclient 的 --server-file 参数，设置 server 文件的路径。
   ;; 通过 Left、Right 键向后、向前搜索
   (define-key isearch-mode-map (kbd "<left>")  'isearch-repeat-backward)
   (define-key isearch-mode-map (kbd "<right>") 'isearch-repeat-forward)
+  ;; 通过 f3、S-f3 键向后、向前搜索
+  (define-key isearch-mode-map (kbd "<S-f3>") 'isearch-repeat-backward)
+  (define-key isearch-mode-map (kbd "<f3>")   'isearch-repeat-forward)
   ;; 通过 Up、Down 键翻搜索历史
   (define-key isearch-mode-map (kbd "<up>")   'isearch-ring-retreat)
   (define-key isearch-mode-map (kbd "<down>") 'isearch-ring-advance)
