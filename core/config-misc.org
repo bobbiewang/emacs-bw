@@ -174,9 +174,12 @@ Emacs Server 了，这时可以通过环境变量 EMACS_SERVER_FILE 或者
 emacsclient 的 --server-file 参数，设置 server 文件的路径。
 
 #+BEGIN_SRC emacs-lisp
-  (require 'server)
-  (when (not (server-running-p))
-    (server-start))
+  (use-package server
+    :ensure nil
+    :init
+    (require 'server)
+    (when (not (server-running-p))
+      (server-start)))
 #+END_SRC
 
 * 键绑定
