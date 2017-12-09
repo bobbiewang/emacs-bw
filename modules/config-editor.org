@@ -53,6 +53,10 @@
 #+BEGIN_SRC emacs-lisp
   (use-package bm
     :ensure t
+    :bind (("<C-f2>" . bm-toggle)
+           ("<f2>"   . bm-next)
+           ("<S-f2>" . bm-previous)
+           ("<M-f2>" . bm-show-all))
     :init
     (bw/set-space-key-and-name
      "bb" 'bm-toggle   "bookmark toggle"
