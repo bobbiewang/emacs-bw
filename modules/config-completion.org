@@ -140,7 +140,9 @@ smex 的数据，最近用的命令列在前面。
   YASnippet 的 Snippet 目录通过 yas-snippet-dirs 设置，其子目录以
 Major Mode 的名字组织。
 
-  运行 yas-new-snippet 创建新的 Snippet。
+  在使用 YASnippet 的过程中，如果需要新加一个 Snippet，可以运行
+yas-new-snippet 创建新的 Snippet；如果需要修改现成的 Snippet，可以 M-x
+yas-visit-snippet-file 打开相应的 Snippet 文件修改。
 
   参考资料：
   - [[http://joaotavora.github.io/yasnippet/][Yet another snippet extension]] 官方文档
