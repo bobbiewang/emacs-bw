@@ -153,6 +153,7 @@ yas-visit-snippet-file 打开相应的 Snippet 文件修改。
     :commands (yas-global-mode yas-minor-mode)
     :init
     (add-hook 'org-mode-hook #'yas-minor-mode)
+    (add-hook 'c-mode-common-hook #'yas-minor-mode)
     :config
     (yas-reload-all))
 #+END_SRC
