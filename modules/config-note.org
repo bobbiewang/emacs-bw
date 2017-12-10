@@ -120,3 +120,11 @@
   (use-package markdown-mode
     :ensure t)
 #+END_SRC
+
+* XML
+
+#+BEGIN_SRC emacs-lisp
+  (use-package nxml-mode
+    :ensure nil
+    :mode ("\\.vssettings\\'"))
+#+END_SRC
