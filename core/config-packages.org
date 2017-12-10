@@ -96,31 +96,79 @@ package-user-dir 目录下所有的内容被称为 Package Contents。
   - :ensure :: t 表示按需安装，也可以指定依赖的包
   - :pin :: 绑定到特定的 ELPA
 
-  下面是一个例子。
+  下面是一些例子。
 
 #+BEGIN_SRC emacs-lisp-example
+  ;; 在 X window 和 MS-Windows 系统才使用 color-moccur
+  ;; 调用 isearch-moccur、isearch-all 两个命令时自动加载 color-moccur
+  ;; M-s O 等是全局键绑定；M-o 是 isearch-mode 的键绑定
+  ;; 加载 color-moccur 前设置 isearch-lazy-highlight 为 t
+  ;; 加载 color-moccur 后递归使用 moccur-edit
   (use-package color-moccur
+    :if (memq window-system '(x w32))
+    :ensure t
     :commands (isearch-moccur isearch-all)
-    :bind (("M-s O" . moccur)
+    :bind (("M-s O"  . moccur)
+           ("M-<f5>" . moccur)
+           ([f10]    . moccur)
+           ([S-f10]  . moccur)
            :map isearch-mode-map
-           ("M-o" . isearch-moccur)
-           ("M-O" . isearch-moccur-all))
+           ("M-o" . isearch-moccur))
     :init
     (setq isearch-lazy-highlight t)
     :config
     (use-package moccur-edit))
 
-  (use-package helm
-    :bind (("M-x" . helm-M-x)
-           ("M-<f5>" . helm-find-files)
-           ([f10] . helm-buffers-list)
-           ([S-f10] . helm-recentf)))
+  ;; bind 是绑定到命令，而 bind-keymap 是绑定到 keymap
+  (use-package projectile
+    :bind-keymap
+    ("C-c p" . projectile-command-map)
 
-  (use-package exec-path-from-shell
-    :if (memq window-system '(mac ns))
-    :ensure t
-    :config
-    (exec-path-from-shell-initialize))
+  ;; 在 prog-mode 的 hook 里自动调用 ace-jump-mode
+  (use-package ace-jump-mode
+    :hook prog-mode)
+  (use-package ace-jump-mode
+    :hook (prog-mode . ace-jump-mode))
+  (use-package ace-jump-mode
+    :commands ace-jump-mode
+    :init
+    (add-hook 'prog-mode-hook #'ace-jump-mode))
+
+  ;; 设置 ruby 和 python 的 auto-mode-alist、interpreter-mode-alist，因
+  ;; 为 python 的包名和 mode 名不一样，所以要指定 mode 名
+  (use-package ruby-mode
+    :mode "\\.rb\\'"
+    :interpreter "ruby")
+  ;; The package is "python" but the mode is "python-mode":
+  (use-package python
+    :mode ("\\.py\\'" . python-mode)
+    :interpreter ("python" . python-mode))
+
+  ;; 指定包存在的时候才配置 abbrev，这个也可以通过 :if 实现
+  (use-package abbrev
+    :requires foo)
+  (use-package abbrev
+    :requires (foo bar baz))
+
+  ;; 在加载 ivy 和 hydra 后才配置 ivy-hydra
+  (use-package ivy-hydra
+    :after (ivy hydra))
+
+  ;; disabled 可以临时禁止一个 use-package
+  (use-package ess-site
+    :disabled
+    :commands R)
+
+  ;; 用了 :commands, :bind, :bind*, :bind-keymap, :bind-keymap*, :mode
+  ;; 或 :interpreter，该包会延迟加载。否则，可以用 :defer 强制延迟加载。
+  ;; 下面两个例子的效果是一样的
+  (use-package ace-jump-mode
+    :defer t
+    :init
+    (autoload 'ace-jump-mode "ace-jump-mode" nil t)
+    (bind-key "C-." 'ace-jump-mode))
+  (use-package ace-jump-mode
+    :bind ("C-." . ace-jump-mode))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
