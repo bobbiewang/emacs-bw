@@ -2,19 +2,20 @@
 
 * Scroll
 
-  Emacs 缺省的滚屏方式比较诡异，这里设置平滑的滚屏方式。
+  缺省情况下，光标超出 Window 边缘时，Emacs 会滚动半个 Window 的内容，
+同时光标会定位在 Window 的中间，用起来有点跳脱。这里设置的平滑的滚屏方
+式在终端下用会有文本错乱的现象，所以只在图形界面进行设置。
 
 #+BEGIN_SRC emacs-lisp
-  ;; 光标越出屏幕时，跳回屏幕的行数。设置为 0 的话，光标跳回屏幕中心；设
-  ;; 置为一个很大的值，相当于禁止这个功能。注意这时 scroll-margin 要用缺
-  ;; 省值 0，否则在终端下文本显示会错乱
-  (setq scroll-conservatively 9999)
-
-  ;; 和上面类似，只滚动一行，光标不会跳回多行
-  (setq scroll-step 1)
-
-  ;; 翻屏时保持光标在屏幕的位置
-  (setq scroll-preserve-screen-position 1)
+  (when window-system
+    ;; 翻屏时保持光标在屏幕的位置
+    (setq scroll-preserve-screen-position 1)
+    ;; 光标越出屏幕时，跳回屏幕的行数。设置为 0 的话，光标跳回屏幕中心；设
+    ;; 置为一个很大的值，相当于禁止这个功能
+    (setq scroll-conservatively 9999)
+    ;; 光标移动到离顶端/底端多少行开始滚动。设置为 0 表示到达顶端/底
+    ;; 端才滚动；设置为 3 表示距离顶端/底端 3 行就开始滚动
+    (setq scroll-margin 3))
 #+END_SRC
 
 * Line Number
@@ -35,8 +36,12 @@
        果是显示绝对行号
   - nlinum-relative-offset :: 第二行行号开始的 Offset，缺省为 0
 
+  但是，启用的 nlinum-relative 会造成终端下文本错乱的情况，所以只在图
+形界面启动。
+
 #+BEGIN_SRC emacs-lisp
   (use-package nlinum-relative
+    :if window-system
     :ensure t
     :config
     (nlinum-relative-setup-evil)          ; 为 Evil 设置
