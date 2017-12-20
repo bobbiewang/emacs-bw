@@ -58,7 +58,8 @@ package-user-dir 目录下所有的内容被称为 Package Contents。
        nil)))
  #+END_SRC
 
-* 使用 use-package
+* Package 管理
+** use-package
 
   [[https://github.com/jwiegley/use-package][use-package]] 提供了一个灵活、强大的配置 Emacs 扩展包的宏，把扩展包的
 安装、配置都封装在一段代码里。
@@ -69,32 +70,32 @@ package-user-dir 目录下所有的内容被称为 Package Contents。
 一下 package-refresh-contents 更新数据。
 
   use-package 宏支持许多关键字。
-  - :init :: 加载扩展之前执行的代码。:init 部分应该尽可能简单，把配置
+  + :init :: 加载扩展之前执行的代码。:init 部分应该尽可能简单，把配置
              放在 :config 部分
-  - :config :: 加载扩展之后的执行的代码
-  - :preface ::
-  - :magic :: 设置 magic-mode-alist
-  - :magic-fallback :: 设置 magic-fallback-mode-alist
-  - :mode :: 设置 auto-mode-alist
-  - :interpreter :: 设置 interpreter-mode-alist
-  - :commands :: 命令成为 autoload
-  - :bind :: 配置键绑定，对应的命令自动成为 autoload。可以结合 :map 设
+  + :config :: 加载扩展之后的执行的代码
+  + :preface ::
+  + :magic :: 设置 magic-mode-alist
+  + :magic-fallback :: 设置 magic-fallback-mode-alist
+  + :mode :: 设置 auto-mode-alist
+  + :interpreter :: 设置 interpreter-mode-alist
+  + :commands :: 命令成为 autoload
+  + :bind :: 配置键绑定，对应的命令自动成为 autoload。可以结合 :map 设
              置 keymap
-  - :bind* ::
-  - :bind-keymap ::
-  - :bind-keymap* ::
-  - :defer :: 强制延后加载
-  - :after :: 在指定 feature 加载后加载
-  - :demand :: 强制立即加载
-  - :if EXP :: 条件加载，比如某些配置仅适于 window-system
-  - :disabled :: 禁用扩展包
-  - :defines :: 用于抑制 byte-compile 时的警告
-  - :functions :: 用于抑制 byte-compile 时的警告
-  - :load-path :: 把指定目录加到 load-path
-  - :diminish :: 配合 diminish
-  - :delight :: 配合 delight
-  - :ensure :: t 表示按需安装，也可以指定依赖的包
-  - :pin :: 绑定到特定的 ELPA
+  + :bind* ::
+  + :bind-keymap ::
+  + :bind-keymap* ::
+  + :defer :: 强制延后加载
+  + :after :: 在指定 feature 加载后加载
+  + :demand :: 强制立即加载
+  + :if EXP :: 条件加载，比如某些配置仅适于 window-system
+  + :disabled :: 禁用扩展包
+  + :defines :: 用于抑制 byte-compile 时的警告
+  + :functions :: 用于抑制 byte-compile 时的警告
+  + :load-path :: 把指定目录加到 load-path
+  + :diminish :: 配合 diminish，在 Modeline 隐藏或改写 Minor Mode 名字
+  + :delight :: 配合 delight，在 Modeline 隐藏或改写 Minor Mode 名字
+  + :ensure :: t 表示按需安装，也可以指定依赖的包
+  + :pin :: 绑定到特定的 ELPA
 
   下面是一些例子。
 
@@ -174,4 +175,36 @@ package-user-dir 目录下所有的内容被称为 Package Contents。
 #+BEGIN_SRC emacs-lisp
   (bw/install-package-on-demand 'use-package)
   (setq use-package-always-ensure t)
+#+END_SRC
+
+** delight
+
+  [[https://elpa.gnu.org/packages/delight.html][delight]] 用于自定义 Mode Line 上的 Mode 的显示内容，可以将较长的字符
+串改短甚至不显示。
+
+  delight 可以配合 use-package 使用，下面是一些例子。
+
+#+BEGIN_SRC emacs-lisp-example
+  ;; 不显示 rainbow-mode。这里 Mode 名和 Package 名一致
+  (use-package rainbow-mode
+    :delight)
+
+  ;; 不显示 auto-revert-mode。这里 Mode 名和 Package 名不一致
+  (use-package autorevert
+    :delight auto-revert-mode)
+
+  ;; 不显示 projectile-mode，但显示项目名
+  (use-package projectile
+    :delight '(:eval (concat " " (projectile-project-name))))
+
+  ;; auto-fill-mode 显示为 AF，不显示 visual-line-mode
+  (use-package emacs
+    :delight
+    (auto-fill-function " AF")
+    (visual-line-mode))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (use-package delight
+    :ensure t)
 #+END_SRC
