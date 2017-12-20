@@ -150,6 +150,7 @@ counsel-gtags-go-forward 两个命令浏览。
 #+BEGIN_SRC emacs-lisp
   (use-package anzu
     :ensure t
+    :delight
     :init
     (global-anzu-mode +1))
 #+END_SRC
