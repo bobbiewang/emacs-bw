@@ -9,7 +9,7 @@
 #+BEGIN_SRC emacs-lisp
   (defun bw/smooth-scroll ()
     (interactive)
-    (progn
+    (when (display-graphic-p)
       ;; 翻屏时保持光标在屏幕的位置
       (setq scroll-preserve-screen-position 1)
       ;; 光标越出屏幕时，跳回屏幕的行数。设置为 0 的话，光标跳回屏幕中心；设
@@ -19,9 +19,11 @@
       ;; 端才滚动；设置为 3 表示距离顶端/底端 3 行就开始滚动
       (setq scroll-margin 3)))
 
-  (when window-system
-    (bw/smooth-scroll)
-    (add-hook 'after-make-frame-functions #'bw/smooth-scroll))
+  (bw/smooth-scroll)
+  (add-hook 'after-make-frame-functions
+            (lambda (frame)
+              (select-frame frame)
+              (bw/smooth-scroll)))
 #+END_SRC
 
 * Line Number
