@@ -10,6 +10,7 @@
 #+BEGIN_SRC emacs-lisp
   (use-package highlight-parentheses
     :ensure t
+    :delight
     :init
     (add-hook 'prog-mode-hook #'highlight-parentheses-mode)
     :config

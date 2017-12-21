@@ -179,6 +179,7 @@ yas-visit-snippet-file 打开相应的 Snippet 文件修改。
 #+BEGIN_SRC emacs-lisp
   (use-package company
     :ensure t
+    :delight
     :config
     ;; 全局激活 Company Mode
     (add-hook 'after-init-hook 'global-company-mode)

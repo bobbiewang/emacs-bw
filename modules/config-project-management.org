@@ -74,6 +74,7 @@ sbt、rebar 和 bundler 项目。如果项目目录不使用以上工具，可�
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :ensure t
+    :delight '(:eval (concat " [" (projectile-project-name) "]"))
     :init
     (setq projectile-cache-file
           (locate-user-emacs-file ".projectile.cache"))

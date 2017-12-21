@@ -119,6 +119,7 @@ counsel-gtags-go-forward 两个命令浏览。
     (use-package counsel-gtags
       :if (eq bw/completion-framework 'ivy)
       :ensure t
+      :delight  " gtags"
       :init
       (add-hook 'c-mode-hook 'counsel-gtags-mode)
       (add-hook 'c++-mode-hook 'counsel-gtags-mode)

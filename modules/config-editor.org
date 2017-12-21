@@ -1,5 +1,14 @@
 #+TITLE:     编辑器通用设置
 
+* Emacs
+
+#+BEGIN_SRC emacs-lisp
+  (use-package emacs
+    :ensure nil
+    :delight
+    (auto-fill-function " AF"))
+#+END_SRC
+
 * Scroll
 
   缺省情况下，光标超出 Window 边缘时，Emacs 会滚动半个 Window 的内容，
@@ -84,6 +93,7 @@
 #+BEGIN_SRC emacs-lisp
   (use-package auto-highlight-symbol
     :ensure t
+    :delight
     :init
     (setq ahs-idle-interval 1)
     (add-hook 'prog-mode-hook #'auto-highlight-symbol-mode))
@@ -194,4 +204,12 @@
     (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
     (bw/set-space-key-and-name
      "at" 'neotree-toggle "NeoTree"))
+#+END_SRC
+
+* undo-tree
+
+#+BEGIN_SRC emacs-lisp
+  (use-package undo-tree
+    :ensure t
+    :delight)
 #+END_SRC
