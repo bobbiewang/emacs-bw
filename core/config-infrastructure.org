@@ -61,15 +61,11 @@
              (set-window-start w2 s1))))
     (other-window 1))
 
-  (defun bw/copy-file-name-to-clipboard ()
-    "复制当前 Buffer 的文件名到剪贴板。"
+  (defun bw/copy-buffer-name-to-clipboard ()
+    "复制当前 Buffer 的名字到剪贴板。"
     (interactive)
-    (let ((filename (if (equal major-mode 'dired-mode)
-                        default-directory
-                      (buffer-file-name))))
-      (when filename
-        (kill-new filename)
-        (message "Copied buffer file name '%s' to the clipboard." filename))))
+    (kill-new (buffer-name))
+    (message "Copied buffer name '%s' to the clipboard." (buffer-name)))
 
   (defun bw/copy-file-path-to-clipboard ()
     "复制当前 Buffer 的路径到剪贴板。"
@@ -80,6 +76,7 @@
             (kill-new file-path)
             (message "Copied buffer file path '%s' to the clipboard." file-path))
         (error "Buffer is not visiting a file."))))
+
 #+END_SRC
 
 * 自定义常量
