@@ -208,8 +208,20 @@
 
 * undo-tree
 
+  Emacs 内置的 Undo 机制把 Undo 操作本身也加到 Undo 链，从而只用一个
+Undo 命令实现 Undo/Redo 操作，概念独特，但使用起来不太方便。undo-tree
+为 Emacs 提供了和其他软件类似的 Undo/Redo 功能。
+
+  Evil 依赖 undo-tree 实现 Undo/Redo 的功能，还提供了一个可视化 Undo
+Tree。
+
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
     :ensure t
-    :delight)
+    :delight
+    :config
+    ;; 在可视化 Undo Tree 显示时间戳
+    (setq undo-tree-visualizer-timestamps t)
+    ;; 在可视化 Undo Tree 显示 Diff
+    (setq undo-tree-visualizer-diff t))
 #+END_SRC
