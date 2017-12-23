@@ -210,10 +210,21 @@
 
   Emacs 内置的 Undo 机制把 Undo 操作本身也加到 Undo 链，从而只用一个
 Undo 命令实现 Undo/Redo 操作，概念独特，但使用起来不太方便。undo-tree
-为 Emacs 提供了和其他软件类似的 Undo/Redo 功能。
-
-  Evil 依赖 undo-tree 实现 Undo/Redo 的功能，还提供了一个可视化 Undo
+为 Emacs 提供了和其他软件类似的 Undo/Redo 功能，还提供了一个可视化 Undo
 Tree。
+
+  在配置文件中加上 (global-undo-tree-mode) 就可以在所有 Buffer 中用
+undo-tree 替换 Emacs 内置的 Undo 系统，并且设置了几个键绑定，下面是常
+用的键绑定。
+
+  | 键绑定   | 命令                |
+  |----------+---------------------|
+  | C-_  C-/ | undo-tree-undo      |
+  | M-_  C-? | undo-tree-redo      |
+  | C-x u    | undo-tree-visualize |
+
+  Evil 依赖 undo-tree 实现 Undo/Redo 的功能，所以使用 Evil 的话，会全
+局激活 undo-tree-mode。
 
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
