@@ -1,5 +1,34 @@
 #+TITLE:     搜索和替换
 
+* isearch
+
+#+BEGIN_SRC emacs-lisp
+  (use-package isearch
+    :ensure nil
+    :bind (("C-s"   . isearch-forward-regexp)
+           ("C-r"   . isearch-backward-regexp)
+           ("C-M-s" . isearch-forward)
+           ("C-M-r" . isearch-backward)
+           :map isearch-mode-map
+           ;; 通过 Left、Right 键向后、向前搜索
+           ("<left>"  . isearch-repeat-backward)
+           ("<right>" . isearch-repeat-forward)
+           ;; 通过 F3、S-F3 键向后、向前搜索
+           ("<S-f3>"  . isearch-repeat-backward)
+           ("<f3>"    . isearch-repeat-forward)
+           ;; 通过 Up、Down 键上翻、下翻搜索历史
+           ("<up>"    . isearch-ring-retreat)
+           ("<down>"  . isearch-ring-advance)
+           ;; 用 C-o 显示当前查找内容的 occur 结果
+           ("C-o"     . bw/isearch-switch-occur))
+    :init
+    (defun bw/isearch-switch-occur ()
+      (interactive)
+      (let ((case-fold-search isearch-case-fold-search))
+        (occur (if isearch-regexp isearch-string
+                 (regexp-quote isearch-string))))))
+#+END_SRC
+
 * anzu
 
   在 Emacs 中进行搜索的时候，[[https://github.com/syohex/emacs-anzu][anzu]] 在 mode-line 中显示匹配项的数目，以

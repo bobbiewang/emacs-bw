@@ -324,29 +324,6 @@ emacsclient 的 --server-file 参数，设置 server 文件的路径。
   ;; 用 ibuffer 代替 list-buffers
   (global-set-key (kbd "C-x C-b") 'ibuffer)
 
-  ;; 对换正则表达式和字符串 isearch
-  (global-set-key (kbd "C-s") 'isearch-forward-regexp)
-  (global-set-key (kbd "C-r") 'isearch-backward-regexp)
-  (global-set-key (kbd "C-M-s") 'isearch-forward)
-  (global-set-key (kbd "C-M-r") 'isearch-backward)
-
-  ;; 在 isearch 过程中，用 C-o 显示当前查找内容的 occur 结果
-  (define-key isearch-mode-map (kbd "C-o")
-    (lambda ()
-      (interactive)
-      (let ((case-fold-search isearch-case-fold-search))
-        (occur (if isearch-regexp isearch-string
-                 (regexp-quote isearch-string))))))
-  ;; 通过 Left、Right 键向后、向前搜索
-  (define-key isearch-mode-map (kbd "<left>")  'isearch-repeat-backward)
-  (define-key isearch-mode-map (kbd "<right>") 'isearch-repeat-forward)
-  ;; 通过 f3、S-f3 键向后、向前搜索
-  (define-key isearch-mode-map (kbd "<S-f3>") 'isearch-repeat-backward)
-  (define-key isearch-mode-map (kbd "<f3>")   'isearch-repeat-forward)
-  ;; 通过 Up、Down 键翻搜索历史
-  (define-key isearch-mode-map (kbd "<up>")   'isearch-ring-retreat)
-  (define-key isearch-mode-map (kbd "<down>") 'isearch-ring-advance)
-
   ;; 用更通用的 M-S-return 切换全屏，把 F11 节省下来用于其他功能
   (global-set-key (kbd "<M-S-return>") 'toggle-frame-fullscreen)
 #+END_SRC
