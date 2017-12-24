@@ -1,0 +1,39 @@
+#+TITLE:     搜索和替换
+
+* anzu
+
+  在 Emacs 中进行搜索的时候，[[https://github.com/syohex/emacs-anzu][anzu]] 在 mode-line 中显示匹配项的数目，以
+及当前项的序号。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package anzu
+    :ensure t
+    :delight
+    :init
+    (global-anzu-mode +1))
+#+END_SRC
+
+* ag
+
+  [[https://github.com/Wilfred/ag.el/][ag]] 支持在 Emacs 内用 ag 程序搜索。其他一些命令，比如 projectile-ag，
+也需要 ag 的支持。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ag
+    :ensure t
+    :config
+    (setq ag-highlight-search t))
+#+END_SRC
+
+* helm-ag
+
+  [[https://github.com/syohex/emacs-helm-ag][helm-ag]] 为 Silver Searcher 提供了 Helm 接口。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package helm-ag
+    :if (eq bw/completion-framework 'helm)
+    :ensure t
+    :init
+    (bw/set-space-key-and-name
+     "sg" 'helm-do-ag nil))
+#+END_SRC
