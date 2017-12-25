@@ -27,8 +27,7 @@
 
 ** winum
 
-  [[https://github.com/deb0ch/emacs-winum][winum]] 给每个 Window 编号，可以通过编号快速跳转到指定
-Windows。
+  [[https://github.com/deb0ch/emacs-winum][winum]] 给每个 Window 编号，可以通过编号快速跳转到指定 Windows。
 
 #+BEGIN_SRC emacs-lisp
   (use-package winum
@@ -42,6 +41,17 @@ Windows。
      "4" 'winum-select-window-4 "window 4")
     :config
     (winum-mode 1))
+#+END_SRC
+
+** back-button
+
+#+BEGIN_SRC emacs-lisp
+  (use-package back-button
+    :ensure t
+    :bind (("<C-left>"  . back-button-global-backward)
+           ("<C-right>" . back-button-global-forward))
+    :init
+    (back-button-mode 1))
 #+END_SRC
 
 * Tag
