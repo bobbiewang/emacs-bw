@@ -72,6 +72,15 @@ semantic-dependency-system-include-path。对于其他系统或第三方库的�
     (add-hook 'cmake-mode-hook 'cmake-font-lock-activate))
 #+END_SRC
 
+* bison-mode
+
+  bison-mode 为 bison、yacc 和 lex 等文件提供了支持。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package bison-mode
+    :ensure t)
+#+END_SRC
+
 * Debugging
 
 #+BEGIN_SRC emacs-lisp
