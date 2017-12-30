@@ -1,0 +1,28 @@
+# -*- mode: snippet -*-
+# name: cppbasic
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# key: cppbasic
+# --
+PROG = ${1:main}
+
+CC = g++
+CXXFLAGS = -Wall
+LDFLAGS =
+
+OBJECTS = $(PROG).o
+
+all : $(PROG)`(if bw/windows-p ".exe")`
+
+$(PROG)`(if bw/windows-p ".exe")` : $(OBJECTS)
+	$(CC) -o $(PROG)`(if bw/windows-p ".exe")` $(OBJECTS) $(LDFLAGS)
+
+%.o : %.cpp Makefile
+	$(CC) -c $< $(CXXFLAGS)
+
+.PHONY: run clean
+
+run :
+	@./$(PROG)`(if bw/windows-p ".exe")`$0
+
+clean :
+	-rm $(PROG)`(if bw/windows-p ".exe")` *.o
