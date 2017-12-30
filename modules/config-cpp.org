@@ -3,13 +3,16 @@
 * CC Mode
 
 #+BEGIN_SRC emacs-lisp
-  (defun bw/cc-mode-hook()
-    (c-set-style "stroustrup")
-    (c-set-offset 'inline-open 0)
-    ;; 将 _ 作为 Word 的一部分，这样 Evil 的 Word 相关命令能够正常工作
-    (modify-syntax-entry ?_ "w"))
+  (use-package cc-mode
+    :ensure nil
+    :init
+    (defun bw/cc-mode-hook()
+      (c-set-style "stroustrup")
+      (c-set-offset 'inline-open 0)
+      ;; 将 _ 作为 Word 的一部分，这样 Evil 的 Word 相关命令能够正常工作
+      (modify-syntax-entry ?_ "w"))
 
-  (add-hook 'c-mode-common-hook 'bw/cc-mode-hook)
+    (add-hook 'c-mode-common-hook 'bw/cc-mode-hook))
 #+END_SRC
 
 * Semantic
