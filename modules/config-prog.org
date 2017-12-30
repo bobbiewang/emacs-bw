@@ -1,0 +1,12 @@
+#+TITLE:     编程
+
+* Verilog
+
+#+BEGIN_SRC emacs-lisp
+  (use-package verilog-mode
+    :ensure nil
+    :bind (:map verilog-mode-map
+                ;; 取消原来绑定命令 electric-verilog-semi-with-comment
+                ;; 恢复到到全局的绑定
+                ("C-;" . set-mark-command)))
+#+END_SRC
