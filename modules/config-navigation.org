@@ -151,3 +151,13 @@ counsel-gtags-go-forward 两个命令浏览。
   (use-package ggtags
     :ensure t)
 #+END_SRC
+
+* Dumb Jump
+
+  [[https://github.com/jacktasia/dumb-jump][Dumb Jump]] 使用 ag、rg、grep 等工具搜索函数、变量的定义。虽然简单粗暴，
+但还是相当凑合的。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package dumb-jump
+    :ensure t)
+#+END_SRC
