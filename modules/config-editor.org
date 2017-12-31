@@ -194,6 +194,25 @@
 
   [[https://github.com/jaypei/emacs-neotree][NeoTree]] 在 Emacs 的 Frame 中嵌入一个树状的目录、文件浏览器。
 
+  下面是在 Evil Normal State 里的键绑定。
+
+  | j   | 向下                             |
+  | k   | 向上                             |
+  |-----+----------------------------------|
+  | TAB | 查看文件（光标留在 NeoTree）     |
+  | RET | 打开文件（光标切换到打开的文件） |
+  |-----+----------------------------------|
+  | c   | 切换目录                         |
+  | r   | 重命名文件或目录                 |
+  | p   | 复制文件或目录                   |
+  | d   | 删除文件或目录                   |
+  | n   | 创建文件或目录                   |
+  |-----+----------------------------------|
+  | A   | 切换 NeoTree 窗口大小            |
+  | H   | 切换隐藏文件的显示               |
+  | g   | 刷新列表                         |
+  | q   | 退出                             |
+
 #+BEGIN_SRC emacs-lisp
   (use-package neotree
     :ensure t
@@ -201,7 +220,15 @@
     ;; 定制 NeoTree 在 Evil Normal State 下的键绑定
     (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-quick-look)
     (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
-    (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+    (evil-define-key 'normal neotree-mode-map (kbd "c")   'neotree-change-root)
+    (evil-define-key 'normal neotree-mode-map (kbd "r")   'neotree-rename-node)
+    (evil-define-key 'normal neotree-mode-map (kbd "p")   'neotree-copy-node)
+    (evil-define-key 'normal neotree-mode-map (kbd "d")   'neotree-delete-node)
+    (evil-define-key 'normal neotree-mode-map (kbd "n")   'neotree-create-node)
+    (evil-define-key 'normal neotree-mode-map (kbd "A")   'neotree-stretch-toggle)
+    (evil-define-key 'normal neotree-mode-map (kbd "H")   'neotree-hidden-file-toggle)
+    (evil-define-key 'normal neotree-mode-map (kbd "g")   'neotree-refresh)
+    (evil-define-key 'normal neotree-mode-map (kbd "q")   'neotree-hide)
     (bw/set-space-key-and-name
      "at" 'neotree-toggle "NeoTree"))
 #+END_SRC
