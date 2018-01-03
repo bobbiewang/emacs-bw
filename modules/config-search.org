@@ -1,6 +1,27 @@
 #+TITLE:     搜索和替换
 
-* isearch
+* Incremental Search
+
+  Incremental Search 除了最直观的搜索，还有许多调整编辑内容、搜索选项、
+高亮结果等功能。进入 Incremental Search 后，可以通过 C-h C-h 查看帮助
+信息。
+
+  下面是常用的键绑定。
+
+  | RET        | 退出 isearch，光标停留在当前位置   |
+  | C-g        | 退出 isearch，光标返回到起始位置   |
+  |------------+------------------------------------|
+  | C-w        | 把光标处下一个 word 加入搜索字符串 |
+  | C-y        | 粘贴剪贴板中当前内容作为搜索字符串 |
+  | M-y        | 提取剪贴板中历史内容作为搜索字符串 |
+  | M-e        | 编辑搜索字符串                     |
+  |------------+------------------------------------|
+  | M-c, M-s c | 切换大小写敏感                     |
+  | M-r, M-s r | 切换正则表达式                     |
+  | M-%        | 切换到替换                         |
+
+  另外，M-s 是许多键绑定的前缀（如切换 Word、Symbol，高亮，调用 occur
+等），可以在 Incremental Search 中借助 which-key 查看提示并使用。
 
 #+BEGIN_SRC emacs-lisp
   (use-package isearch
@@ -10,13 +31,12 @@
            ("C-M-s" . isearch-forward)
            ("C-M-r" . isearch-backward)
            :map isearch-mode-map
-           ;; 通过 Left、Right 键向后、向前搜索
+           ;; 增加向后、向前搜索的键绑定（缺省是 C-s、C-r）
            ("<left>"  . isearch-repeat-backward)
            ("<right>" . isearch-repeat-forward)
-           ;; 通过 F3、S-F3 键向后、向前搜索
            ("<S-f3>"  . isearch-repeat-backward)
            ("<f3>"    . isearch-repeat-forward)
-           ;; 通过 Up、Down 键上翻、下翻搜索历史
+           ;; 增加上翻、下翻搜索历史的键绑定（缺省是 M-p、M-n）
            ("<up>"    . isearch-ring-retreat)
            ("<down>"  . isearch-ring-advance)
            ;; 用 C-o 显示当前查找内容的 occur 结果
