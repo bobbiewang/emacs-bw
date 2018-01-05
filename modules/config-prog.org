@@ -1,5 +1,13 @@
 #+TITLE:     编程
 
+* Compile
+
+#+BEGIN_SRC emacs-lisp
+  (use-package compile
+    :ensure nil
+    :bind (([f6] . compile)))
+#+END_SRC
+
 * Verilog
 
 #+BEGIN_SRC emacs-lisp
