@@ -10,6 +10,17 @@
 (setq package-enable-at-startup nil)    ; 不在 init 文件加载后重复初始化
 (package-initialize)
 
+;; 将 site-lisp 下的包加到 load-path
+;; 忽略 .git、.svn、RCS、CVS 等目录，以及包含 .nosearch 文件的目录
+(defvar bw/site-lisp-dir (locate-user-emacs-file "site-lisp/"))
+(if (and (fboundp 'normal-top-level-add-subdirs-to-load-path)
+         (file-exists-p bw/site-lisp-dir))
+    (let* ((default-directory bw/site-lisp-dir)
+           (orig-load-path load-path))
+      (setq load-path (list default-directory))
+      (normal-top-level-add-subdirs-to-load-path)
+      (setq load-path (append load-path orig-load-path))))
+
 ;; 通过 Org Babel 加载 core 文件和 modules 文件
 
 (require 'ob-tangle)
