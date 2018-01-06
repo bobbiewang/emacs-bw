@@ -86,3 +86,16 @@
     (bw/set-space-key-and-name
      "sg" 'helm-do-ag nil))
 #+END_SRC
+
+* wgrep
+
+  和 counsel-ag 配合：
+  - 在 counsel-ag 搜索结果中 C-c C-o 打开 ivy-occur
+  - C-x C-q 进入 wgrep 模式，修改内容
+  - C-c C-c 完成修改，这时修改只在 Buffer 里，没有保存到文件
+  - M-x wgrep-save-all-buffers 保存修改
+
+#+BEGIN_SRC emacs-lisp
+  (use-package wgrep
+    :ensure t)
+#+END_SRC
