@@ -9,7 +9,9 @@
 
 #+BEGIN_SRC emacs-lisp
   (use-package enh-ruby-mode
-    :ensure t)
+    :ensure t
+    :mode "\\.rb\\'"
+    :interpreter "ruby")
 #+END_SRC
 
 * inf-ruby
