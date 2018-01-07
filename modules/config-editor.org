@@ -102,25 +102,38 @@
 * indent
 
 #+BEGIN_SRC emacs-lisp
-  (defun bw/indent-whole-buffer ()
-    "indent whole buffer"
-    (interactive)
-    (delete-trailing-whitespace)
-    (indent-region (point-min) (point-max) nil)
-    (untabify (point-min) (point-max)))
-
   (defun bw/indent-current-paragraph ()
-    "indent current paragraph"
+    "缩进当前 Paragraph。"
     (interactive)
     (save-excursion
       (delete-trailing-whitespace)
       (mark-paragraph)
       (indent-region (region-beginning) (region-end) nil)))
 
+  (defun bw/indent-buffer ()
+    "缩进 Buffer"
+    (interactive)
+    (delete-trailing-whitespace)
+    (indent-region (point-min) (point-max) nil)
+    (untabify (point-min) (point-max)))
+
+  (defun bw/indent-buffer-or-region ()
+    "如果有选择 Region，缩进 Region，否则缩进 Buffer。"
+    (interactive)
+    (save-excursion
+      (if (region-active-p)
+          (progn
+            (delete-trailing-whitespace (region-beginning) (region-end))
+            (indent-region (region-beginning) (region-end))
+            (untabify (region-beginning) (region-end))
+            (message "Indent selected region."))
+        (progn
+          (bw/indent-buffer)
+          (message "Indent bufer.")))))
+
+
   (bw/set-space-key-and-name
-   "bib" 'bw/indent-whole-buffer      "indent buffer"
-   "bip" 'bw/indent-current-paragraph "indent paragraph"
-   "bir" 'bw/indent-region            "indent region")
+   "bi" 'bw/indent-buffer-or-region "indent")
 #+END_SRC
 
 * expand-region
