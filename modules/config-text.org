@@ -55,6 +55,8 @@
               (lambda ()
                 (auto-fill-mode 1)))
     :config
+    ;; SRC 块内支持语法高亮
+    (setq org-src-fontify-natively t)
     ;; 键绑定
     (setq org-special-ctrl-a/e t)         ; 微调 C-a/e 的行为
     (evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle)
