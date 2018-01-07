@@ -1,5 +1,12 @@
 #+TITLE:     Emacs Lisp 开发环境
 
+* elisp-mode
+
+#+BEGIN_SRC emacs-lisp
+  (use-package elisp-mode
+    :ensure nil)
+#+END_SRC
+
 * highlight-parentheses
 
   [[https://github.com/tsdh/highlight-parentheses.el][highlight-parentheses]] 将对应的括号用不同的颜色显示，在写 Emacs Lisp
@@ -35,16 +42,23 @@ smartparens-global-mode 全局激活。
   参考资料：
   - [[https://ebzzry.io/en/emacs-pairs/][Emacs and Pairs]]
   - [[https://github.com/Fuco1/smartparens/wiki][smartparens Wiki]]
-
+'
 #+BEGIN_SRC emacs-lisp
   (use-package smartparens
     :ensure t
     :init
-    (add-hook 'emacs-lisp-mode-hook #'smartparens-mode))
+    (add-hook 'emacs-lisp-mode-hook #'smartparens-mode)
+    :config
+    ;; 输入 ' 时不要自动输入一对
+    (sp-local-pair 'emacs-lisp-mode       "'" nil :actions nil)
+    (sp-local-pair 'lisp-interaction-mode "'" nil :actions nil))
 #+END_SRC
 
 * eldoc
 
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+  (use-package eldoc
+    :ensure nil
+    :init
+    (add-hook 'emacs-lisp-mode-hook 'eldoc-mode))
 #+END_SRC
