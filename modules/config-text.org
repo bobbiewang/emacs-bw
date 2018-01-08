@@ -23,7 +23,7 @@
     :ensure nil
     :init
     ;; 在一些编程语言的模式中启用 hs-minor-mode
-    (dolist (x '(c c++ emacs-lisp lisp java perl sh python))
+    (dolist (x '(c c++ emacs-lisp lisp java perl sh python ruby))
       (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'hs-minor-mode))
     ;; 重定义键绑定
     (setq hs-minor-mode-map
@@ -44,8 +44,14 @@
     (defadvice goto-line (after expand-after-goto-line
                                 activate compile)
       (save-excursion
-        (hs-show-block))))
-
+        (hs-show-block)))
+    ;; 支持 ruby-mode
+    (add-to-list 'hs-special-modes-alist
+                 `(ruby-mode
+                   ,(rx (or "def" "class" "module" "do" "{" "[")) ; Block start
+                   ,(rx (or "}" "]" "end"))                       ; Block end
+                   ,(rx (or "#" "=begin"))                        ; Comment start
+                   ruby-forward-sexp nil)))
 #+END_SRC
 
 * Org
