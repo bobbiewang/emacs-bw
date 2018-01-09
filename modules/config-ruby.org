@@ -71,6 +71,22 @@ Spacemacs [[https://github.com/syl20bnr/spacemacs/issues/1584][Issue #1584]] 找
     :ensure t)
 #+END_SRC
 
+* robe
+
+  [[https://github.com/dgutov/robe][robe]] 提供了代码浏览、代码补全、文档查找等功能。
+
+  要使用 robe，需要先开一个 Ruby REPL（如 Pry），然后 M-x robe-start
+启动服务。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package robe
+    :ensure t
+    :hook (enh-ruby-mode . robe-mode)
+    :config
+    (eval-after-load 'company
+      '(push 'company-robe company-backends)))
+#+END_SRC
+
 * 参考资料
 
   - [[http://crypt.codemancers.com/posts/2013-09-26-setting-up-emacs-as-development-environment-on-osx/][Setting up Emacs as Ruby development environment on OSX]]
