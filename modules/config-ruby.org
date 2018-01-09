@@ -16,8 +16,15 @@
 
 * inf-ruby
 
-  [[http://github.com/nonsequitur/inf-ruby][inf-ruby]] 可以在 Emacs 中运行 Ruby 的交互界面。inf-ruby 缺省运行 irb，
-如果要运行 pry，可以将 inf-ruby-default-implementation 设置为 pry。
+  [[http://github.com/nonsequitur/inf-ruby][inf-ruby]] 可以在 Emacs 中运行 Ruby 的交互界面，如 irb 或 pry。
+inf-ruby 缺省运行的是 irb，如果要运行 pry 的话，可以将变量
+inf-ruby-default-implementation 设置为 pry。
+
+  以下 inf-ruby 中常用的快捷键。
+
+  | C-c C-s | 启动 inf-ruby             |
+  | C-c C-l | 在 irb/pry 中加载当前文件 |
+  | C-c C-r | 将 Region 发送到 irb/pry  |
 
   Pry 在 Windows 上存在问题：在 Emacs 中启动 pry 后会挂住。后来在
 Spacemacs [[https://github.com/syl20bnr/spacemacs/issues/1584][Issue #1584]] 找到解决方法：安装 pry-byebug Gem，并在 .pryrc
