@@ -11,7 +11,12 @@
   (use-package enh-ruby-mode
     :ensure t
     :mode ("\\.rb\\'" "\\.pryrc\\'")
-    :interpreter "ruby")
+    :interpreter "ruby"
+    :bind (("C-c C-c" . bw/ruby-eval-buffer))
+    :config
+    (defun bw/ruby-eval-buffer () (interactive)
+        "以 Ruby 执行当前 Buffer 的代码。"
+        (shell-command-on-region (point-min) (point-max) "ruby" "*ruby-output*")))
 #+END_SRC
 
 * inf-ruby
@@ -20,7 +25,7 @@
 inf-ruby 缺省运行的是 irb，如果要运行 pry 的话，可以将变量
 inf-ruby-default-implementation 设置为 pry。
 
-  以下 inf-ruby 中常用的快捷键。
+  以下 inf-ruby 中常用的键绑定。
 
   | C-c C-s | 启动 inf-ruby             |
   | C-c C-l | 在 irb/pry 中加载当前文件 |
