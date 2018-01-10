@@ -9,7 +9,7 @@
 #+BEGIN_SRC emacs-lisp
   (use-package enh-ruby-mode
     :ensure t
-    :mode ("\\.rb\\'" "\\.pryrc\\'")
+    :mode "\\(?:\\.rb\\|rake\\|gemspec\\|/\\(?:Gem\\|Rake\\)file\\)\\'"
     :interpreter "ruby"
     :bind (("C-c C-c" . bw/ruby-eval-buffer))
     :config
