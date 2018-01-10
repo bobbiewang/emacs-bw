@@ -1,6 +1,5 @@
 #+TITLE:     Ruby 开发环境
 
-
 * Enhanced Ruby Mode
 
   [[http://github.com/zenspider/Enhanced-Ruby-Mode][Enhanced Ruby Mode]] 使用 Ruby 自带的 Ripper 解析代码，能够更准确地分
@@ -17,6 +16,16 @@
     (defun bw/ruby-eval-buffer () (interactive)
         "以 Ruby 执行当前 Buffer 的代码。"
         (shell-command-on-region (point-min) (point-max) "ruby" "*ruby-output*")))
+#+END_SRC
+
+* ruby-electric
+
+  [[https://github.com/knu/ruby-electric.el][ruby-electric]] 可以在写 Ruby 代码时自动插入 end。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ruby-electric
+    :ensure t
+    :hook (enh-ruby-mode . ruby-electric-mode))
 #+END_SRC
 
 * inf-ruby
