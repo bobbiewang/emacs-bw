@@ -10,14 +10,49 @@
 #+BEGIN_SRC emacs-lisp
   (use-package enh-ruby-mode
     :ensure t
-    :mode "\\.rb\\'"
-    :interpreter "ruby")
+    :mode ("\\.rb\\'" "\\.pryrc\\'")
+    :interpreter "ruby"
+    :bind (("C-c C-c" . bw/ruby-eval-buffer))
+    :config
+    (defun bw/ruby-eval-buffer () (interactive)
+        "以 Ruby 执行当前 Buffer 的代码。"
+        (shell-command-on-region (point-min) (point-max) "ruby" "*ruby-output*")))
 #+END_SRC
 
 * inf-ruby
 
-  [[http://github.com/nonsequitur/inf-ruby][inf-ruby]] 可以在 Emacs 中运行 Ruby 的交互界面。inf-ruby 缺省运行 irb，
-如果要运行 pry，可以将 inf-ruby-default-implementation 设置为 pry。
+  [[http://github.com/nonsequitur/inf-ruby][inf-ruby]] 可以在 Emacs 中运行 Ruby 的交互界面，如 irb 或 pry。
+inf-ruby 缺省运行的是 irb，如果要运行 pry 的话，可以将变量
+inf-ruby-default-implementation 设置为 pry。
+
+  以下 inf-ruby 中常用的键绑定。
+
+  | C-c C-s | 启动 inf-ruby             |
+  | C-c C-l | 在 irb/pry 中加载当前文件 |
+  | C-c C-r | 将 Region 发送到 irb/pry  |
+
+  Pry 在 Windows 上存在问题：在 Emacs 中启动 pry 后会挂住。后来在
+Spacemacs [[https://github.com/syl20bnr/spacemacs/issues/1584][Issue #1584]] 找到解决方法：安装 pry-byebug Gem，并在 .pryrc
+中进行如下设置，这样 pry 就可以在 Emacs 中使用了。为了输出更美观的内容，
+该解决方法还建议安装 awesome_print Gem。
+
+#+BEGIN_SRC ruby
+  class Emacsable
+    def self.readline(prompt)
+      print prompt
+      (gets || '').chomp
+    end
+  end
+  Pry.config.input = Emacsable
+
+  Pry.config.pager = false if ENV["INSIDE_EMACS"]
+  Pry.config.correct_indent = false if ENV["INSIDE_EMACS"]
+  Pry.config.print = proc { |output, value| output.puts "=> #{value.inspect}" }
+  Pry.config.exception_handler = proc do |output, exception, _|
+    output.puts "#{exception.class}: #{exception.message}"
+    output.puts "from #{exception.backtrace.first}"
+  end
+#+END_SRC
 
 #+BEGIN_SRC emacs-lisp
   (use-package inf-ruby
@@ -34,6 +69,22 @@
 #+BEGIN_SRC emacs-lisp
   (use-package yari
     :ensure t)
+#+END_SRC
+
+* robe
+
+  [[https://github.com/dgutov/robe][robe]] 提供了代码浏览、代码补全、文档查找等功能。
+
+  要使用 robe，需要先开一个 Ruby REPL（如 Pry），然后 M-x robe-start
+启动服务。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package robe
+    :ensure t
+    :hook (enh-ruby-mode . robe-mode)
+    :config
+    (eval-after-load 'company
+      '(push 'company-robe company-backends)))
 #+END_SRC
 
 * 参考资料

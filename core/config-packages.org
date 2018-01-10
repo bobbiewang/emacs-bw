@@ -175,6 +175,7 @@ package-user-dir 目录下所有的内容被称为 Package Contents。
 #+BEGIN_SRC emacs-lisp
   (bw/install-package-on-demand 'use-package)
   (setq use-package-always-ensure t)
+  (setq use-package-verbose t)
 #+END_SRC
 
 ** delight
