@@ -88,7 +88,7 @@
                       "    + \n"
                       "  - 今日打分 %u [%]\n"
                       "    + [ ] 锻炼英语听力\n"
-                      "    + [ ] 学习 10 个新单词、词组\n"
+                      "    + [ ] 练习 10 个新单词、词组\n"
                       "    + [ ] 对工作进展满意\n")
              :kill-buffer t)
             ("w" "WeeklyReview" entry (file+datetree+prompt "journal.org.gpg")
