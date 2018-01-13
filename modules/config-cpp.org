@@ -61,7 +61,8 @@ semantic-dependency-system-include-path。对于其他系统或第三方库的�
     :init (global-flycheck-mode))
 #+END_SRC
 
-* cmake-font-lock
+* CMake
+** cmake-font-lock
 
   [[https://github.com/Lindydancer/cmake-font-lock][cmake-font-lock]] 为 CMakeLists.txt 提供了语法高亮。
 
@@ -70,6 +71,27 @@ semantic-dependency-system-include-path。对于其他系统或第三方库的�
     :ensure t
     :init
     (add-hook 'cmake-mode-hook 'cmake-font-lock-activate))
+#+END_SRC
+
+** cmake-project
+
+  Emacs 的 compile 命令缺省使用 Makefile，而 [[http://github.com/alamaison/emacs-cmake-project][cmake-project]] 让 compile
+命令支持 CMake。
+
+  使用 cmake-project 的方法。
+  - M-x cmake-project-mode 启用 cmake-project
+  - M-x cmake-project-configure-project 生成构建文件
+  - M-x compile 进行构建
+
+#+BEGIN_SRC emacs-lisp
+  (use-package cmake-project
+    :ensure t
+    :init
+    (defun bw/maybe-cmake-project-hook ()
+      (if (file-exists-p "CMakeLists.txt") (cmake-project-mode)))
+    (add-hook 'c-mode-common-hook 'bw/maybe-cmake-project-hook)
+    :config
+    (setq cmake-project-default-build-dir-name "build/"))
 #+END_SRC
 
 * bison-mode
