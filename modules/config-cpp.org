@@ -94,6 +94,29 @@ semantic-dependency-system-include-path。对于其他系统或第三方库的�
     (setq cmake-project-default-build-dir-name "build/"))
 #+END_SRC
 
+** cmake-ide
+
+  [[https://github.com/atilaneves/cmake-ide][cmake-ide]] 不是 IDE，而是通过 CMakeLists.txt 或者 [[http://clang.llvm.org/docs/JSONCompilationDatabase.html][JSON Compilation
+Database]]，为其他“IDE”扩展提供数据支持。cmake-ide 支持的扩展有：
+  - rtags
+  - flycheck
+  - auto-completion-mode
+  - company-clang
+  - irony
+
+  cmake-ide 的原理是自动在系统临时目录（或者 cmake-ide-build-pool-dir
+设置的目录）下调用 CMake，然后为其他扩展设置必要的信息。
+
+  目前似乎有 Bug，暂时不启用。
+
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package cmake-ide
+  ;;   :disabled
+  ;;   :ensure nil
+  ;;   :init
+  ;;   (cmake-ide-setup))
+#+END_SRC
+
 * bison-mode
 
   bison-mode 为 bison、yacc 和 lex 等文件提供了支持。
