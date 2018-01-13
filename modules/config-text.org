@@ -139,3 +139,10 @@
     :ensure nil
     :mode ("\\.vssettings\\'"))
 #+END_SRC
+
+* YAML
+
+#+BEGIN_SRC emacs-lisp
+  (use-package yaml-mode
+    :ensure t)
+#+END_SRC
