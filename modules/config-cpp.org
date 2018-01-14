@@ -117,6 +117,40 @@ Database]]，为其他“IDE”扩展提供数据支持。cmake-ide 支持的扩
   ;;   (cmake-ide-setup))
 #+END_SRC
 
+* irony
+
+  [[https://github.com/Sarcasm/irony-mode][irony]] 以 Server/Client 模式，为 C/C++ 开发的代码补全、语法检查、
+eldoc 等功能提供基础支持。Server 是基于 libclang 开发的程序，Client 是
+Emacs 扩展。
+
+  irony 扩展自带用 C++ 实现的服务端的代码（irony/server），在第一次使
+用的时候要通过 irony-install-server 命令编译安装。下面是相应的命令行，
+可以先手工编译、安装好。
+
+#+BEGIN_SRC sh
+  cmake -DCMAKE_INSTALL_PREFIX=~/.emacs.d/irony ~/.emacs.d/.elpa/irony/server
+  cmake --build . --use-stderr --config Release --target install
+#+END_SRC
+
+  目前配置不能工作，暂时禁止。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package irony
+    :disabled
+    :ensure t
+    :config
+    (setq irony-server-install-prefix
+          (locate-user-emacs-file ".irony"))
+    (setq irony-user-dir
+          (locate-user-emacs-file ".irony"))
+    ;; Windows performance tweaks
+    (when (boundp 'w32-pipe-read-delay)
+      (setq w32-pipe-read-delay 0))
+    ;; Set the buffer size to 64K on Windows (from the original 4K)
+    (when (boundp 'w32-pipe-buffer-size)
+      (setq irony-server-w32-pipe-buffer-size (* 64 1024))))
+#+END_SRC
+
 * bison-mode
 
   bison-mode 为 bison、yacc 和 lex 等文件提供了支持。
@@ -145,6 +179,8 @@ Database]]，为其他“IDE”扩展提供数据支持。cmake-ide 支持的扩
   - [[https://vxlabs.com/2016/04/11/step-by-step-guide-to-c-navigation-and-completion-with-emacs-and-the-clang-based-rtags/][C++ navigation and completion with Emacs and the Clang-based rtags]]
   - [[https://github.com/redguardtoo/mastering-emacs-in-one-year-guide/blob/master/emacs_cpp_developer_guide-en.org][Practical Emacs Guide for C++ developers]]
   - [[http://nilsdeppe.com/posts/emacs-c%2B%2B-ide][Using Emacs as a C++ IDE]]
+  - [[https://oremacs.com/2017/03/28/emacs-cpp-ide/][Using Emacs as a C++ IDE - or emacs]] 用 rtags 跳转，用 irony 补全
+  - [[https://maskray.me/blog/2017-12-03-c%2B%2B-language-server-cquery][使用 cquery：C++ language server]]
   - [[https://github.com/emacs-tw/awesome-emacs][Awesome Emacs]] 推荐的扩展
     - CC Mode
     - rtags :: 基于 Clang 的 Tag
