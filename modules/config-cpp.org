@@ -132,6 +132,20 @@ Emacs 扩展。
   cmake --build . --use-stderr --config Release --target install
 #+END_SRC
 
+  irony 需要支持 C/C++ 文件的编译选项才能正常工作，这些信息可以通过
+[[http://clang.llvm.org/docs/JSONCompilationDatabase.html][JSON Compilation Database]] 或 [[https://github.com/Rip-Rip/clang_complete/blob/c8673142759b87316265eb0edd1f620196ec1fba/doc/clang_complete.txt#L55][.clang_complete]] 提供。下面是一个用 CMake
+生成的 JSON Compilation Database 的例子。
+
+#+BEGIN_SRC javascript
+  [
+      {
+          "directory": "/path/to/cmake/build/directory",
+          "command": "/usr/bin/c++.exe -I/path/to/include -o CMakeFiles/example.dir/example.cpp.o -c /path/to/exmaple.cpp",
+          "file": "/path/to/example.cpp"
+      }
+  ]
+#+END_SRC
+
   目前配置不能工作，暂时禁止。
 
 #+BEGIN_SRC emacs-lisp
@@ -148,7 +162,9 @@ Emacs 扩展。
       (setq w32-pipe-read-delay 0))
     ;; Set the buffer size to 64K on Windows (from the original 4K)
     (when (boundp 'w32-pipe-buffer-size)
-      (setq irony-server-w32-pipe-buffer-size (* 64 1024))))
+      (setq irony-server-w32-pipe-buffer-size (* 64 1024)))
+    (add-hook 'c++-mode-hook 'irony-mode)
+    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
 #+END_SRC
 
 * bison-mode
