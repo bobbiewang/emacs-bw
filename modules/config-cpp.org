@@ -192,6 +192,7 @@ Emacs 扩展。
   - [[https://tuhdo.github.io/c-ide.html][Setup C/C++ Development Environment for Emacs]]
   - [[https://github.com/mawenbao/emacs.d][awenbao/emacs.d]] 以上文为基础配置的 C/C++、Golang 和 Python 的开发
     环境
+  - [[https://trivialfis.github.io/emacs/2017/08/02/C-C%2B%2B-Development-Environment-on-Emacs.html][C/C++ Development Environment for Emacs - Trivial Fis]]
   - [[https://vxlabs.com/2016/04/11/step-by-step-guide-to-c-navigation-and-completion-with-emacs-and-the-clang-based-rtags/][C++ navigation and completion with Emacs and the Clang-based rtags]]
   - [[https://github.com/redguardtoo/mastering-emacs-in-one-year-guide/blob/master/emacs_cpp_developer_guide-en.org][Practical Emacs Guide for C++ developers]]
   - [[http://nilsdeppe.com/posts/emacs-c%2B%2B-ide][Using Emacs as a C++ IDE]]
