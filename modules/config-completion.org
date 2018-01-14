@@ -170,8 +170,11 @@ yas-visit-snippet-file 打开相应的 Snippet 文件修改。
   | M-n、M-p             | 在候选内容中选择       |
   | C-s、C-r、C-o        | 在候选内容中搜索       |
 
-  如果使用 company-clang 的话，需要通过 .dir-locals 文件让 Clang 知道
-编译参数，尤其是 include 目录的路径。下面是一个例子。
+  Company 自带 company-clang，利用 Clang 分析 C/C++ 源文件，从而实现准
+确的补全。如果使用 company-clang 的话，需要通过 .dir-locals 文件让
+Clang 知道编译参数，尤其是 include 目录的路径，下面是一个例子。注意，
+每个参数一个字符串，不要把多个参数合并在一个字符串，否则 Clang 不能正
+确处理。
 
 #+BEGIN_SRC emacs-lisp-example
   ((nil . ((company-clang-arguments . ("-I/path/to/include1/"
