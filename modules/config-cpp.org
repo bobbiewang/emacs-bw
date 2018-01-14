@@ -189,15 +189,19 @@ Emacs 扩展。
 
 * 参考资料
 
-  - [[https://tuhdo.github.io/c-ide.html][Setup C/C++ Development Environment for Emacs]]
+  - [[https://tuhdo.github.io/c-ide.html][Setup C/C++ Development Environment for Emacs - tuhdo]]
   - [[https://github.com/mawenbao/emacs.d][awenbao/emacs.d]] 以上文为基础配置的 C/C++、Golang 和 Python 的开发
     环境
+  - [[http://syamajala.github.io/c-ide.html][Emacs as C++ IDE - syamajala]] 基于 tuhdo 的文章做了一些改进，主要是
+    rtags、irony、cmake-ide
   - [[https://trivialfis.github.io/emacs/2017/08/02/C-C%2B%2B-Development-Environment-on-Emacs.html][C/C++ Development Environment for Emacs - Trivial Fis]]
   - [[https://vxlabs.com/2016/04/11/step-by-step-guide-to-c-navigation-and-completion-with-emacs-and-the-clang-based-rtags/][C++ navigation and completion with Emacs and the Clang-based rtags]]
   - [[https://github.com/redguardtoo/mastering-emacs-in-one-year-guide/blob/master/emacs_cpp_developer_guide-en.org][Practical Emacs Guide for C++ developers]]
   - [[http://nilsdeppe.com/posts/emacs-c%2B%2B-ide][Using Emacs as a C++ IDE]]
   - [[https://oremacs.com/2017/03/28/emacs-cpp-ide/][Using Emacs as a C++ IDE - or emacs]] 用 rtags 跳转，用 irony 补全
   - [[https://maskray.me/blog/2017-12-03-c%2B%2B-language-server-cquery][使用 cquery：C++ language server]]
+  - [[https://github.com/redguardtoo/cpputils-cmake][redguardtoo/cpputils-cmake: Easy real time C++ syntax check and
+    intellisense if you use CMake]] 基于 CMake 的 C/C++ 开发环境的配置
   - [[https://github.com/emacs-tw/awesome-emacs][Awesome Emacs]] 推荐的扩展
     - CC Mode
     - rtags :: 基于 Clang 的 Tag
