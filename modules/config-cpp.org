@@ -107,14 +107,11 @@ Database]]，为其他“IDE”扩展提供数据支持。cmake-ide 支持的扩
   cmake-ide 的原理是自动在系统临时目录（或者 cmake-ide-build-pool-dir
 设置的目录）下调用 CMake，然后为其他扩展设置必要的信息。
 
-  目前似乎有 Bug，暂时不启用。
-
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package cmake-ide
-  ;;   :disabled
-  ;;   :ensure nil
-  ;;   :init
-  ;;   (cmake-ide-setup))
+  (use-package cmake-ide
+    :ensure t
+    :init
+    (cmake-ide-setup))
 #+END_SRC
 
 * irony
@@ -146,25 +143,23 @@ Emacs 扩展。
   ]
 #+END_SRC
 
-  目前配置不能工作，暂时禁止。
-
 #+BEGIN_SRC emacs-lisp
   (use-package irony
-    :disabled
     :ensure t
-    :config
+    :init
+    (add-hook 'c++-mode-hook 'irony-mode)
+    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
     (setq irony-server-install-prefix
           (locate-user-emacs-file ".irony"))
     (setq irony-user-dir
-          (locate-user-emacs-file ".irony"))
+          (locate-user-emacs-file ".irony/"))
+    :config
     ;; Windows performance tweaks
     (when (boundp 'w32-pipe-read-delay)
       (setq w32-pipe-read-delay 0))
     ;; Set the buffer size to 64K on Windows (from the original 4K)
     (when (boundp 'w32-pipe-buffer-size)
-      (setq irony-server-w32-pipe-buffer-size (* 64 1024)))
-    (add-hook 'c++-mode-hook 'irony-mode)
-    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+      (setq irony-server-w32-pipe-buffer-size (* 64 1024))))
 #+END_SRC
 
 * bison-mode
