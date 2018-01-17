@@ -105,7 +105,14 @@ Database]]，为其他“IDE”扩展提供数据支持。cmake-ide 支持的扩
   - irony
 
   cmake-ide 的原理是自动在系统临时目录（或者 cmake-ide-build-pool-dir
-设置的目录）下调用 CMake，然后为其他扩展设置必要的信息。
+设置的目录）下调用 CMake，生成 [[http://clang.llvm.org/docs/JSONCompilationDatabase.html][JSON Compilation Database]] 文件，从中读
+取编译参数，然后为其他扩展设置必要的信息。
+
+  在 Windows 环境，如果使用单独安装的 CMake 而且系统有安装 Visual
+Studio， CMake 缺省生成 Visual C++ 的项目文件，这时没有 JSON
+Compilation Database 生成，cmake-ide 就不能工作了。解决方法是使用
+Cygwin 里的 CMake。另外，cmake-ide 有 cmake-ide-cmake-opts 变量，也许
+可以通过这个变量设置使用 GCC 或 Clang，
 
 #+BEGIN_SRC emacs-lisp
   (use-package cmake-ide
