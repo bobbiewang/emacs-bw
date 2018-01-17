@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: shared library template
+# key: ft
+# --
+cmake_minimum_required(VERSION 2.6)
+
+project($1)
+add_library($2 SHARED $3)
