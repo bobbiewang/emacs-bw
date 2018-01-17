@@ -5,6 +5,7 @@
 #+BEGIN_SRC emacs-lisp
   (use-package cc-mode
     :ensure nil
+    :mode ("\\.h\\'" . c++-mode)
     :init
     (defun bw/cc-mode-hook()
       (c-set-style "stroustrup")

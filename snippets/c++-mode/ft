@@ -1,0 +1,21 @@
+# -*- mode: snippet -*-
+# name: file tempalte
+# key: ft
+# --
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <iterator>
+#include <algorithm>
+
+using std::cout;
+using std::cin;
+using std::string;
+using std::vector;
+
+int main(int argc, char *argv[])
+{
+    $0
+    return 0;
+}

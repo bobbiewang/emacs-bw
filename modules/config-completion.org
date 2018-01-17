@@ -132,7 +132,7 @@ smex 的数据，最近用的命令列在前面。
 
 * YASnippet
 
-  [[https://github.com/joaotavora/yasnippet][YASnippet]] 是 Emacs 中一个流行的模版系统。
+  [[https://github.com/joaotavora/yasnippet][YASnippet]] 是一个留下的 Emacs 模版系统。
 
   安装 YASnippet 后，有两种方式激活。
   - M-x yas-global-mode 全局激活
