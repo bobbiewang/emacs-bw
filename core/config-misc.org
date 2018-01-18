@@ -91,6 +91,24 @@
     (save-place-mode 1))
 #+END_SRC
 
+* Recentf
+
+  Recentf 记录近期打开的文件。如果需要在列表中排除或者保留指定的文件，
+可以定制 recentf-exclude 和 recentf-keep。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package recentf
+    :ensure nil
+    :init
+    ;; 自定义数据文件
+    (setq recentf-save-file (locate-user-emacs-file ".recentf"))
+    :config
+    ;; 记录最近 1000 个访问项，而不是缺省的 20 个
+    (setq recentf-max-saved-items 1000)
+    ;; 排除一些文件
+    (add-to-list 'recentf-exclude "/tmp/"))
+#+END_SRC
+
 * Desktop
 
   Desktop 可以保存当前打开的文件列表，下次运行 Emacs 时自动打开这些文
@@ -445,7 +463,6 @@ emacsclient 的 --server-file 参数，设置 server 文件的路径。
                               (setq show-trailing-whitespace 1)))
 
   (setq savehist-file (locate-user-emacs-file ".history"))
-  (setq recentf-save-file (locate-user-emacs-file ".recentf"))
 
   (setq bookmark-default-file "~/.emacs.d/.bookmarks") ; 自定义 bookmark 文件的位置
 
