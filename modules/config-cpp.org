@@ -52,16 +52,6 @@ semantic-dependency-system-include-path。对于其他系统或第三方库的�
                'global-semantic-stickyfunc-mode)
 #+END_SRC
 
-* Flycheck - Syntax checking for GNU Emacs
-
-  [[http://www.flycheck.org/][Flycheck]] 是个现代的实时语法检查工具，可以替代 Flymake。
-
-#+BEGIN_SRC emacs-lisp
-  (use-package flycheck
-    :ensure t
-    :init (global-flycheck-mode))
-#+END_SRC
-
 * CMake
 ** cmake-font-lock
 

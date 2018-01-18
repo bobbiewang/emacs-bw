@@ -8,6 +8,16 @@
     :bind (([f6] . compile)))
 #+END_SRC
 
+* Flycheck
+
+  [[http://www.flycheck.org/][Flycheck]] 是个现代的实时语法检查工具，可以替代 Flymake。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :ensure t
+    :init (global-flycheck-mode))
+#+END_SRC
+
 * AutoHotkey
 
   [[https://github.com/ralesi/ahk-mode][ahk-mode]] 支持 AutoHotkey 脚本（.ahk）的开发。
