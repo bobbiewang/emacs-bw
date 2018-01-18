@@ -226,6 +226,8 @@ Emacs 扩展。
   - [[https://maskray.me/blog/2017-12-03-c%2B%2B-language-server-cquery][使用 cquery：C++ language server]]
   - [[https://github.com/redguardtoo/cpputils-cmake][redguardtoo/cpputils-cmake: Easy real time C++ syntax check and
     intellisense if you use CMake]] 基于 CMake 的 C/C++ 开发环境的配置
+  - [[https://emacs.stackexchange.com/questions/474/using-emacs-as-a-full-featured-c-c-ide/][Using Emacs as a full-featured C/C++ IDE - Emacs Stack Exchange]] 一
+    些讨论，可以参考一下
   - [[https://github.com/emacs-tw/awesome-emacs][Awesome Emacs]] 推荐的扩展
     - CC Mode
     - rtags
