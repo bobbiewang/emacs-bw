@@ -89,15 +89,30 @@ semantic-dependency-system-include-path。对于其他系统或第三方库的�
 
   [[https://github.com/atilaneves/cmake-ide][cmake-ide]] 不是 IDE，而是通过 CMakeLists.txt 或者 [[http://clang.llvm.org/docs/JSONCompilationDatabase.html][JSON Compilation
 Database]]，为其他“IDE”扩展提供数据支持。cmake-ide 支持的扩展有：
-  - rtags
-  - flycheck
-  - auto-completion-mode
+  - auto-complete-clang
   - company-clang
+  - company-c-headers
   - irony
+  - semantic
+  - flycheck
+  - rtags
 
-  cmake-ide 的原理是自动在系统临时目录（或者 cmake-ide-build-pool-dir
-设置的目录）下调用 CMake，生成 [[http://clang.llvm.org/docs/JSONCompilationDatabase.html][JSON Compilation Database]] 文件，从中读
-取编译参数，然后为其他扩展设置必要的信息。
+  分析 cmake-ide-run-cmake 的源代码，可以看到 cmake-ide 的原理是自动在
+系统临时目录（或者 cmake-ide-build-pool-dir 设置的目录）下调用 CMake，
+生成 [[http://clang.llvm.org/docs/JSONCompilationDatabase.html][JSON Compilation Database]] 文件，从中读取编译参数，然后为其他扩展
+设置必要的信息。这个过程可以在 *Message* Buffer 看到相应的消息。
+
+  分析 cmake-ide-set-compiler-flags 的源代码，可以看到 cmake-ide 是如
+何为其他扩展设置信息的。
+  - auto-complete-clang :: 设置 ac-clang-flags
+  - company-clang :: 设置 company-clang-arguments
+  - company-c-headers :: 设置 company-c-headers-path-user 和
+       company-c-headers-path-system
+  - irony :: 通过 irony-cdb-json-add-compile-commands-path 设置项目根
+             目录和 JSON Compilation Database 所在目录
+  - semantic :: 通过 semantic-add-system-include 和
+                semantic-remove-system-include 设置 Include Path
+  - flycheck :: 设置 flycheck-clang-include-path 等
 
   在 Windows 环境，如果使用单独安装的 CMake 而且系统有安装 Visual
 Studio， CMake 缺省生成 Visual C++ 的项目文件，这时没有 JSON
@@ -203,23 +218,26 @@ Emacs 扩展。
   - [[https://trivialfis.github.io/emacs/2017/08/02/C-C%2B%2B-Development-Environment-on-Emacs.html][C/C++ Development Environment for Emacs - Trivial Fis]]
   - [[https://vxlabs.com/2016/04/11/step-by-step-guide-to-c-navigation-and-completion-with-emacs-and-the-clang-based-rtags/][C++ navigation and completion with Emacs and the Clang-based rtags]]
   - [[https://github.com/redguardtoo/mastering-emacs-in-one-year-guide/blob/master/emacs_cpp_developer_guide-en.org][Practical Emacs Guide for C++ developers]]
-  - [[http://nilsdeppe.com/posts/emacs-c%2B%2B-ide][Using Emacs as a C++ IDE]]
+  - [[http://nilsdeppe.com/posts/emacs-c%2B%2B-ide][Using Emacs as a C++ IDE - Nils]] 使用 flycheck、cmake-ide、rtags、
+    Helm、Irony、Semantic、flyspell 配置 C++ IDE，在一年多后的 [[http://nilsdeppe.com/posts/emacs-c%2B%2B-ide2][Take 2]]
+    中因为性能问题改为 Ivy/Swiper、counsel-etags、ClangFormat、
+    YouCompleteMe 等
   - [[https://oremacs.com/2017/03/28/emacs-cpp-ide/][Using Emacs as a C++ IDE - or emacs]] 用 rtags 跳转，用 irony 补全
   - [[https://maskray.me/blog/2017-12-03-c%2B%2B-language-server-cquery][使用 cquery：C++ language server]]
   - [[https://github.com/redguardtoo/cpputils-cmake][redguardtoo/cpputils-cmake: Easy real time C++ syntax check and
     intellisense if you use CMake]] 基于 CMake 的 C/C++ 开发环境的配置
   - [[https://github.com/emacs-tw/awesome-emacs][Awesome Emacs]] 推荐的扩展
     - CC Mode
-    - rtags :: 基于 Clang 的 Tag
+    - rtags
     - ggtags
-    - irony-mode :: 基于 Clang 的补全
+    - irony-mode
     - cmake-font-lock
     - function-args
     - Ebrowse
   - Spacemacs 使用的扩展
     - flycheck
     - disaster
-    - clang-format :: 基于 Clang 的格式化
+    - clang-format
     - Semantic
     - cscope
     - company-clang
