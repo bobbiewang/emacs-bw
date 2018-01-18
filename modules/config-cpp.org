@@ -122,7 +122,8 @@ Cygwin 里的 CMake。另外，cmake-ide 有 cmake-ide-cmake-opts 变量，也�
     (cmake-ide-setup))
 #+END_SRC
 
-* irony
+* 补全
+** irony
 
   [[https://github.com/Sarcasm/irony-mode][irony]] 以 Server/Client 模式，为 C/C++ 开发的代码补全、语法检查、
 eldoc 等功能提供基础支持。Server 是基于 libclang 开发的程序，Client 是
@@ -168,6 +169,18 @@ Emacs 扩展。
     ;; Set the buffer size to 64K on Windows (from the original 4K)
     (when (boundp 'w32-pipe-buffer-size)
       (setq irony-server-w32-pipe-buffer-size (* 64 1024))))
+#+END_SRC
+
+** company-irony
+
+  [[https://github.com/Sarcasm/company-irony/][company-irony]] 基于 irony 提供补全功能。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company-irony
+    :ensure t
+    :after (company irony)
+    :init
+    (add-to-list 'company-backends 'company-irony))
 #+END_SRC
 
 * bison-mode
