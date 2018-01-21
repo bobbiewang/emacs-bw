@@ -140,13 +140,28 @@ Cygwin 里的 CMake。另外，cmake-ide 有 cmake-ide-cmake-opts 变量，也�
 eldoc 等功能提供基础支持。Server 是基于 libclang 开发的程序，Client 是
 Emacs 扩展。
 
-  irony 扩展自带用 C++ 实现的服务端的代码（irony/server），在第一次使
-用的时候要通过 irony-install-server 命令编译安装。下面是相应的命令行，
-可以先手工编译、安装好。
+  irony 扩展自带用 C++ 实现的服务端程序 irony-server 的代码
+（irony/server），在第一次使用的时候要通过 irony-install-server 命令编
+译安装。下面是相应的命令行，可以先手工编译、安装好。
 
 #+BEGIN_SRC sh
   cmake -DCMAKE_INSTALL_PREFIX=~/.emacs.d/irony ~/.emacs.d/.elpa/irony/server
   cmake --build . --use-stderr --config Release --target install
+#+END_SRC
+
+  irony-server 安装后，可以在命令行下交互使用，下面是一些例子。
+
+#+BEGIN_SRC sh
+  # 启动 irony-server 交互界面
+  irony-server -i
+  # 补全指定文件的指定位置
+  complete /path/to/file.cpp 7 8
+  # 可以加额外的参数
+  complete /path/to/file.cpp 7 8 -- -I/path/to/include
+  # 查看补全选项
+  candidates "" exact
+  # 输出分析信息
+  diagnostics
 #+END_SRC
 
   irony 需要支持 C/C++ 文件的编译选项才能正常工作，这些信息可以通过
