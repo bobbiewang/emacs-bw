@@ -98,9 +98,14 @@ Database]]，为其他“IDE”扩展提供数据支持。cmake-ide 支持的扩
   - rtags
 
   分析 cmake-ide-run-cmake 的源代码，可以看到 cmake-ide 的原理是自动在
-系统临时目录（或者 cmake-ide-build-pool-dir 设置的目录）下调用 CMake，
-生成 [[http://clang.llvm.org/docs/JSONCompilationDatabase.html][JSON Compilation Database]] 文件，从中读取编译参数，然后为其他扩展
-设置必要的信息。这个过程可以在 *Message* Buffer 看到相应的消息。
+系统临时目录（或者 cmake-ide-build-dir 设置的目录）下调用 CMake，生成
+[[http://clang.llvm.org/docs/JSONCompilationDatabase.html][JSON Compilation Database]] 文件，从中读取编译参数，然后为其他扩展设置必
+要的信息。这个过程可以在 *Message* Buffer 看到一些的消息。
+
+  具体地说，先是 cmake-ide--cdb-json-file-to-idb 从 JSON Compilation
+Databae 读取信息转为 idb。然后在 cmake-ide--set-flags-for-file 中，调
+用 cmake-ide--idb-file-to-obj 根据当前 Buffer 的文件名，从 idb 中查表
+得到编译信息，然后调用 cmake-ide-set-compiler-flags 设置信息。
 
   分析 cmake-ide-set-compiler-flags 的源代码，可以看到 cmake-ide 是如
 何为其他扩展设置信息的。
@@ -108,8 +113,9 @@ Database]]，为其他“IDE”扩展提供数据支持。cmake-ide 支持的扩
   - company-clang :: 设置 company-clang-arguments
   - company-c-headers :: 设置 company-c-headers-path-user 和
        company-c-headers-path-system
-  - irony :: 通过 irony-cdb-json-add-compile-commands-path 设置项目根
-             目录和 JSON Compilation Database 所在目录
+  - irony :: 调用 irony-cdb-json-add-compile-commands-path 传入项目根
+             目录和 JSON Compilation Database 路径，让 Irony 自己读取
+             信息
   - semantic :: 通过 semantic-add-system-include 和
                 semantic-remove-system-include 设置 Include Path
   - flycheck :: 设置 flycheck-clang-include-path 等
