@@ -219,6 +219,28 @@ Database 读取信息。
     (setq irony-user-dir
           (locate-user-emacs-file ".irony/"))
     :config
+    ;; Windows 平台补丁
+    (when bw/windows-p
+      (defun bw/conv-to-cygpath-list (args)
+        (message "irony--server-send-command> %S" args)
+        (mapcar (lambda (arg)
+                   (replace-regexp-in-string "^\\([c-zC-Z]\\):\\(/.*\\)"
+                                            "/cygdrive/\\1\\2" arg))
+                args))
+      (advice-add 'irony--server-send-command :filter-args #'bw/conv-to-cygpath-list))
+    ;; 输出一些日志信息，便于分析
+    (defadvice irony-iotask-send-string (before log-me (string))
+      (message "irony-iotask-send-string> %s" string))
+    (ad-activate 'irony-iotask-send-string)
+    (defadvice irony-cdb-json-add-compile-commands-path (before log-me
+                                                                (project-root
+                                                                 compile-commands-path))
+      (message "irony-cdb-json-add-compile-commands-path> %s %s" project-root
+               compile-commands-path))
+    (ad-activate 'irony-cdb-json-add-compile-commands-path)
+    (defun bw/log-irony-iotask-process-filter (process output)
+      (message "irony-iotask-process-filter> %s" output))
+    (advice-add 'irony-iotask-process-filter :before #'bw/log-irony-iotask-process-filter)
     ;; Windows performance tweaks
     (when (boundp 'w32-pipe-read-delay)
       (setq w32-pipe-read-delay 0))
