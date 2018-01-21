@@ -178,6 +178,12 @@ Emacs 扩展。
   ]
 #+END_SRC
 
+  M-x irony-cdb-json-add-compile-commands-path 从指定 JSON Compilation
+Database 读取信息。
+
+  如果编译信息被正确读取和设置了，可以在 irony--compile-options 中查看。
+另外，变量 irony--working-directory 也在同时被设置。
+
 #+BEGIN_SRC emacs-lisp
   (use-package irony
     :ensure t
