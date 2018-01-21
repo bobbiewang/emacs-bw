@@ -130,7 +130,31 @@ Cygwin 里的 CMake。另外，cmake-ide 有 cmake-ide-cmake-opts 变量，也�
   (use-package cmake-ide
     :ensure t
     :init
-    (cmake-ide-setup))
+    ;; 在 ~/.cmake-ide 目录下运行 CMake，而不是系统临时目录
+    (setq cmake-ide-build-pool-dir (locate-user-emacs-file ".cmake-ide/"))
+    ;; CMake 构建目录使用固定的名字，从而可以重用
+    (setq cmake-ide-build-pool-use-persistent-naming t)
+    ;; 将 cmake-ide--mode-hook 加到 C/C++ Mode Hook
+    (cmake-ide-setup)
+    :config
+    ;; Windows 平台的补丁
+    (when bw/windows-p
+      ;; cmake-ide 使用固定名字的构建目录时，是根据项目的绝对路径转成目
+      ;; 录名的，在 Windows 平台要把冒号 : 替换成下划线 _
+      (defadvice cmake-ide--get-project-key (after cleanup-colon act)
+        (setq ad-return-value (replace-regexp-in-string ":" "_" ad-return-value)))
+      (ad-activate 'cmake-ide--get-project-key)
+      ;; 使用 Cygwin 的 CMake 时，将项目路径以绝对路径传给 CMake 时应该
+      ;; 使用 Cygwin 风格，否则 CMake 会报错： Found relative path while
+      ;; evaluating include directories of ...
+      (defadvice cmake-ide--run-cmake-impl (before cygpath-conv (project-dir cmake-dir))
+        (ad-set-arg 0 (replace-regexp-in-string "\\([c-zC-Z]\\):\\(/.*\\)"
+                       "/cygdrive/\\1\\2" project-dir)))
+      (ad-activate 'cmake-ide--run-cmake-impl)
+      (defadvice cmake-ide--idb-file-to-obj (before cygpath-conv (idb file-name))
+        (ad-set-arg 1 (replace-regexp-in-string "\\([c-zC-Z]\\):\\(/.*\\)"
+                                                "/cygdrive/\\1\\2" file-name)))
+      (ad-activate 'cmake-ide--idb-file-to-obj)))
 #+END_SRC
 
 * 补全
