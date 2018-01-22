@@ -225,14 +225,22 @@ Database 读取信息。
     (when bw/windows-p
       (defun bw/conv-to-cygpath-list (args)
         (message "irony--server-send-command> %S" args)
+        ;; 删掉 complete 命令最后一个参数（当前文件，在第一个参数也出现），
+        ;; 否则 libclang 提示解析错误，不清楚是什么原因
+        (if (string= "complete" (car args))
+            (nbutlast args 1))
         (mapcar (lambda (arg)
-                   (replace-regexp-in-string "^\\([c-zC-Z]\\):\\(/.*\\)"
-                                            "/cygdrive/\\1\\2" arg))
+                  (if (sequencep arg)
+                      (replace-regexp-in-string "^\\([c-zC-Z]\\):\\(/.*\\)"
+                                                "/cygdrive/\\1\\2" arg)
+                  arg))
                 args))
       (advice-add 'irony--server-send-command :filter-args #'bw/conv-to-cygpath-list))
     ;; 输出一些日志信息，便于分析
     (defadvice irony-iotask-send-string (before log-me (string))
-      (message "irony-iotask-send-string> %s" string))
+      (setq inhibit-message t)
+      (message "irony-iotask-send-string> %s" string)
+      (setq inhibit-message nil))
     (ad-activate 'irony-iotask-send-string)
     (defadvice irony-cdb-json-add-compile-commands-path (before log-me
                                                                 (project-root
@@ -241,7 +249,9 @@ Database 读取信息。
                compile-commands-path))
     (ad-activate 'irony-cdb-json-add-compile-commands-path)
     (defun bw/log-irony-iotask-process-filter (process output)
-      (message "irony-iotask-process-filter> %s" output))
+      (setq inhibit-message t)
+      (message "irony-iotask-process-filter> %s" output)
+      (setq inhibit-message nil))
     (advice-add 'irony-iotask-process-filter :before #'bw/log-irony-iotask-process-filter)
     ;; Windows performance tweaks
     (when (boundp 'w32-pipe-read-delay)
