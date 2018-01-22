@@ -137,6 +137,8 @@ Cygwin 里的 CMake。另外，cmake-ide 有 cmake-ide-cmake-opts 变量，也�
     ;; 将 cmake-ide--mode-hook 加到 C/C++ Mode Hook
     (cmake-ide-setup)
     :config
+    (unless (file-directory-p cmake-ide-build-pool-dir)
+      (make-directory cmake-ide-build-pool-dir))
     ;; Windows 平台的补丁
     (when bw/windows-p
       ;; cmake-ide 使用固定名字的构建目录时，是根据项目的绝对路径转成目
