@@ -95,6 +95,34 @@
                                         (setq i (+ 32 i)) i i (single-key-description i)
                                         (setq i (+ 32 i)) i i (single-key-description i)))
                         (setq i (- i 96))))))
+
+  (defun bw/cygpath-to-winpath (string)
+    "将 Cygwin 风格的路径转为 Windows 风格的路径，比如
+  /cygdrive/c/path 转为 c:/path。支持 -I。"
+    (replace-regexp-in-string "\\(-I\\)?/cygdrive/\\([c-zC-Z]\\)\\(/.*\\)"
+                              "\\1\\2:\\3" string))
+
+  (defun bw/winpath-to-cygpath (string)
+    "将 Windows 风格的路径转为 Cygwin 风格的路径，比如 c:/path 转为
+  /cygdrive/c/path。支持 -I。"
+    (replace-regexp-in-string "\\(-I\\)?\\([c-zC-Z]\\):\\(/.*\\)"
+                              "\\1/cygdrive/\\2\\3" string))
+
+  (defun bw/use-cygpath-in-list (args)
+    "将 list 中的 Windows 风格的路径转为 Cygwin 风格的路径。"
+    (mapcar (lambda (arg)
+              (if (stringp arg)
+                  (bw/winpath-to-cygpath arg)
+                arg))
+            args))
+
+  (defun bw/use-winpath-in-list (args)
+    "将 list 中的 Cygwin 风格的路径转为 Windows 风格的路径。"
+    (mapcar (lambda (arg)
+              (if (stringp arg)
+                  (bw/cygpath-to-winpath arg)
+                arg))
+            args))
 #+END_SRC
 
 * 自定义常量
