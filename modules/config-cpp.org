@@ -150,13 +150,17 @@ Cygwin 里的 CMake。另外，cmake-ide 有 cmake-ide-cmake-opts 变量，也�
       ;; 使用 Cygwin 风格，否则 CMake 会报错： Found relative path while
       ;; evaluating include directories of ...
       (defadvice cmake-ide--run-cmake-impl (before cygpath-conv (project-dir cmake-dir))
-        (ad-set-arg 0 (replace-regexp-in-string "\\([c-zC-Z]\\):\\(/.*\\)"
-                       "/cygdrive/\\1\\2" project-dir)))
+        (ad-set-arg 0 (bw/winpath-to-cygpath project-dir)))
       (ad-activate 'cmake-ide--run-cmake-impl)
       (defadvice cmake-ide--idb-file-to-obj (before cygpath-conv (idb file-name))
-        (ad-set-arg 1 (replace-regexp-in-string "\\([c-zC-Z]\\):\\(/.*\\)"
-                                                "/cygdrive/\\1\\2" file-name)))
-      (ad-activate 'cmake-ide--idb-file-to-obj)))
+        (ad-set-arg 1 (bw/winpath-to-cygpath file-name)))
+      (ad-activate 'cmake-ide--idb-file-to-obj)
+      ;; cmake-ide--flags-to-include-paths 里调用 expand-file-name 时会
+      ;; 将 /cygdrive/c/path 扩展为 c:/cygdrive/c/path
+      (defun bw/preprocess-cmake-ide-flags (flags)
+        (list (bw/use-winpath-in-list (car flags))))
+      (advice-add 'cmake-ide--flags-to-include-paths :filter-args
+                  #'bw/preprocess-cmake-ide-flags)))
 #+END_SRC
 
 * 补全
@@ -223,19 +227,14 @@ Database 读取信息。
     :config
     ;; Windows 平台补丁
     (when bw/windows-p
-      (defun bw/conv-to-cygpath-list (args)
+      (defun bw/preprocess-irony-server-send-command (args)
         (message "irony--server-send-command> %S" args)
         ;; 删掉 complete 命令最后一个参数（当前文件，在第一个参数也出现），
         ;; 否则 libclang 提示解析错误，不清楚是什么原因
         (if (string= "complete" (car args))
             (nbutlast args 1))
-        (mapcar (lambda (arg)
-                  (if (sequencep arg)
-                      (replace-regexp-in-string "^\\([c-zC-Z]\\):\\(/.*\\)"
-                                                "/cygdrive/\\1\\2" arg)
-                  arg))
-                args))
-      (advice-add 'irony--server-send-command :filter-args #'bw/conv-to-cygpath-list))
+        (bw/use-cygpath-in-list args))
+      (advice-add 'irony--server-send-command :filter-args #'bw/preprocess-irony-server-send-command))
     ;; 输出一些日志信息，便于分析
     (defadvice irony-iotask-send-string (before log-me (string))
       (setq inhibit-message t)
