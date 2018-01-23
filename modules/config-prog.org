@@ -32,6 +32,15 @@
     :ensure t)
 #+END_SRC
 
+* bison-mode
+
+  bison-mode 为 bison、yacc 和 lex 等文件提供了支持。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package bison-mode
+    :ensure t)
+#+END_SRC
+
 * C#
 
 #+BEGIN_SRC emacs-lisp

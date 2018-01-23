@@ -272,15 +272,6 @@ Database 读取信息。
     (add-to-list 'company-backends 'company-irony))
 #+END_SRC
 
-* bison-mode
-
-  bison-mode 为 bison、yacc 和 lex 等文件提供了支持。
-
-#+BEGIN_SRC emacs-lisp
-  (use-package bison-mode
-    :ensure t)
-#+END_SRC
-
 * Debugging
 
 #+BEGIN_SRC emacs-lisp
