@@ -418,6 +418,9 @@ emacsclient 的 --server-file 参数，设置 server 文件的路径。
 * 其他
 
 #+BEGIN_SRC emacs-lisp
+  ;; 把 yes/no 提示换为 y/n
+  (defalias 'yes-or-no-p 'y-or-n-p)
+
   ;; 当光标在括号上时，用实心框光标显示匹配括号
   (show-paren-mode 1)
 
