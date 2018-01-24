@@ -27,6 +27,8 @@ clang.exe。可是 Cygwin 缺省是安装 /bin/clang-N.0.exe，然后创建
     ;; 禁用 emacs-lisp-checkdoc，以免在编辑 Org 中的 Emacs Lisp 代码时显
     ;; 示多余的错误信息
     (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
+    ;; 使用 C++11 标准，这个也可以在 c++-mode-hook 中设置
+    (setq flycheck-clang-language-standard "c++11")
     (global-flycheck-mode))
 #+END_SRC
 

@@ -137,6 +137,7 @@ Cygwin 里的 CMake。另外，cmake-ide 有 cmake-ide-cmake-opts 变量，也�
     ;; 将 cmake-ide--mode-hook 加到 C/C++ Mode Hook
     (cmake-ide-setup)
     :config
+    (setq cmake-ide-flags-c++ (append '("-std=c++11")))
     (unless (file-directory-p cmake-ide-build-pool-dir)
       (make-directory cmake-ide-build-pool-dir))
     ;; Windows 平台的补丁
@@ -296,7 +297,7 @@ Database 读取信息。
   - [[http://nilsdeppe.com/posts/emacs-c%2B%2B-ide][Using Emacs as a C++ IDE - Nils]] 使用 flycheck、cmake-ide、rtags、
     Helm、Irony、Semantic、flyspell 配置 C++ IDE，在一年多后的 [[http://nilsdeppe.com/posts/emacs-c%2B%2B-ide2][Take 2]]
     中因为性能问题改为 Ivy/Swiper、counsel-etags、ClangFormat、
-    YouCompleteMe 等
+    ycmd/emacs-ycmd 等
   - [[https://oremacs.com/2017/03/28/emacs-cpp-ide/][Using Emacs as a C++ IDE - or emacs]] 用 rtags 跳转，用 irony 补全
   - [[https://maskray.me/blog/2017-12-03-c%2B%2B-language-server-cquery][使用 cquery：C++ language server]]
   - [[https://github.com/redguardtoo/cpputils-cmake][redguardtoo/cpputils-cmake: Easy real time C++ syntax check and
