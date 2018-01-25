@@ -288,3 +288,17 @@ undo-tree 替换 Emacs 内置的 Undo 系统，并且设置了几个键绑定，
     ;; 在可视化 Undo Tree 显示 Diff
     (setq undo-tree-visualizer-diff t))
 #+END_SRC
+* Misc
+** pcache
+
+  某些包依赖于 pcache，这里定制 pcache-directory。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package pcache
+    :ensure nil
+    :init
+    (setq pcache-directory
+          (let ((dir (concat user-emacs-directory ".var/pcache/")))
+            (make-directory dir t)
+            dir)))
+#+END_SRC
