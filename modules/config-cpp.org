@@ -120,11 +120,40 @@ Databae 读取信息转为 idb。然后在 cmake-ide--set-flags-for-file 中，�
                 semantic-remove-system-include 设置 Include Path
   - flycheck :: 设置 flycheck-clang-include-path 等
 
-  在 Windows 环境，如果使用单独安装的 CMake 而且系统有安装 Visual
-Studio， CMake 缺省生成 Visual C++ 的项目文件，这时没有 JSON
-Compilation Database 生成，cmake-ide 就不能工作了。解决方法是使用
-Cygwin 里的 CMake。另外，cmake-ide 有 cmake-ide-cmake-opts 变量，也许
-可以通过这个变量设置使用 GCC 或 Clang，
+  cmake-ide 设置变量。
+  - cmake-ide-cmake-opts :: 调用 CMake 时的参数，缺省是
+       -DCMAKE_BUILD_TYPE=Release
+
+  *Windows 环境注意事项*
+
+  Windows 环境有几种 CMake 可以选择：
+  1. 官方网站下载的 Windows 包，不需要依赖其他软件
+     - 系统有安装 Visual Studio 时，CMake 缺省生成 Visual C++ 的项目
+       文件，这时没有 JSON Compilation Database 生成，cmake-ide 不能
+       工作
+  2. Cygwin 的 CMake
+     - 缺省情况下，CMake 使用 cc、c++ 编译器，使用 Unix Makefiles 生成
+       器
+     - CMake 生成的 JSON Compilation Database 里使用 Cygwin 风格的路径
+       （如 /cygdrive/c/path），而 Emacs 使用 Windows 斜杠风格的路径
+       （如 c:/path）。路径风格的不一致是许多坑的根源
+     - 在传递 CMakeLists.txt 文件所在目录（cmake-ide 称其为项目目录
+       project-dir）给 CMake 时，传递的是绝对路径。这时应该使用 Cygwin
+       风格的路径，否则 CMake 在处理 CMakeLists.txt 中的
+       include_directories 时会报错： Found relative path while
+       evaluating include directories of ...。需要进行路径风格的转换
+     - 在生成 JSON Compilation Database 后，cmake-ide 会读取这个文件，
+       并将信息存在 idb 数据结构中。然后，Emacs 会将当前文件路径
+       （Windows 风格）传给 cmake-ide，在 idb 中查表得到该路径（Cygwin
+       风格）对应的编译参数。因为两者路径风格不一致，所以查不到信息，
+       需要进行路径风格的转换
+     - cmake-ide 得到文件的编译参数后，要从中提取 Include Path，并将这
+       些信息设置给其他扩展。提取的 Include Path 当然是 Cygwin 风格的
+       路径，要转换为 Windows 风格的路径，否则其他扩展不一定支持
+       Cygwin 风格的路径
+  3. MinGW 的 CMake
+     - 缺省情况下，CMake 使用 Visual Studio 15 2017 生成器，出错退出。
+       指定 Unix Makefiles 后才使用 MinGW 带的 cc 和 c++ 编译器
 
 #+BEGIN_SRC emacs-lisp
   (use-package cmake-ide
