@@ -103,7 +103,7 @@ Database]]，为其他“IDE”扩展提供数据支持。cmake-ide 支持的扩
 要的信息。这个过程可以在 *Message* Buffer 看到一些的消息。
 
   具体地说，先是 cmake-ide--cdb-json-file-to-idb 从 JSON Compilation
-Databae 读取信息转为 idb。然后在 cmake-ide--set-flags-for-file 中，调
+Database 读取信息转为 idb。然后在 cmake-ide--set-flags-for-file 中，调
 用 cmake-ide--idb-file-to-obj 根据当前 Buffer 的文件名，从 idb 中查表
 得到编译信息，然后调用 cmake-ide-set-compiler-flags 设置信息。
 
@@ -157,6 +157,7 @@ Databae 读取信息转为 idb。然后在 cmake-ide--set-flags-for-file 中，�
 
 #+BEGIN_SRC emacs-lisp
   (use-package cmake-ide
+    :disabled t
     :ensure t
     :init
     ;; 在 ~/.cmake-ide 目录下运行 CMake，而不是系统临时目录
@@ -225,8 +226,9 @@ Emacs 扩展。
 #+END_SRC
 
   irony 需要支持 C/C++ 文件的编译选项才能正常工作，这些信息可以通过
-[[http://clang.llvm.org/docs/JSONCompilationDatabase.html][JSON Compilation Database]] 或 [[https://github.com/Rip-Rip/clang_complete/blob/c8673142759b87316265eb0edd1f620196ec1fba/doc/clang_complete.txt#L55][.clang_complete]] 提供。下面是一个用 CMake
-生成的 JSON Compilation Database 的例子。
+[[http://clang.llvm.org/docs/JSONCompilationDatabase.html][JSON Compilation Database]] 或 [[https://github.com/Rip-Rip/clang_complete/blob/c8673142759b87316265eb0edd1f620196ec1fba/doc/clang_complete.txt#L55][.clang_complete]] 提供。
+
+  下面是一个用 CMake 生成的 JSON Compilation Database 的例子。
 
 #+BEGIN_SRC javascript
   [
@@ -238,11 +240,29 @@ Emacs 扩展。
   ]
 #+END_SRC
 
-  M-x irony-cdb-json-add-compile-commands-path 从指定 JSON Compilation
-Database 读取信息。
+  Irony 推荐在 c++-mode-hook 中调用 irony-mode，然后在 irony-mode-hook
+中调用 irony-cdb-autosetup-compile-options 函数自动定位记录编译参数的
+文件。这个函数依次尝试 irony-cdb-compilation-databases 中定义的方法，
+定位 Compilation Database 文件。
+  - irony-cdb-clang-complete :: irony-cdb-clang-complete--locate-db 函
+       数调用 locate-dominating-file，从当前目录遍历到根目录，检查是否
+       有 .clang_complete 文件
+  - irony-cdb-libclang :: irony-cdb-json--locate-db 函数先检查当前文件
+       是否 irony-cdb-json--project-alist 列表中的项目中；如果没有话再
+       调用 irony-cdb--locate-dominating-file-with-dirs 函数，从当前目
+       录遍历到根目录，在每级目录尝试 irony-cdb-search-directory-list
+       中定义的相对目录，检查里面有没有 compile_commands.json 文件。因
+       为 irony-cdb-search-directory-list 的缺省值是 "." 和 "build"，
+       所以是尝试查找每级目录下或者其 build 子目录下有没有
+       compile_commands.json 文件
+  - irony-cdb-json :: 和 irony-cdb-libclang 一样
 
-  如果编译信息被正确读取和设置了，可以在 irony--compile-options 中查看。
-另外，变量 irony--working-directory 也在同时被设置。
+  此外，可以 M-x irony-cdb-json-add-compile-commands-path 从指定 JSON
+Compilation Database 读取信息。
+
+  如果编译信息被正确读取和设置了，可以在 irony--compile-options 中查看
+编译参数，在变量 irony--working-directory 中查看 JSON Compilation
+Database 所在目录。也可以 M-x irony-cdb-menu 中查看这些信息。
 
   *Windows 平台注意事项*
 
