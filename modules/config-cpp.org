@@ -157,7 +157,6 @@ Database 读取信息转为 idb。然后在 cmake-ide--set-flags-for-file 中，
 
 #+BEGIN_SRC emacs-lisp
   (use-package cmake-ide
-    :disabled t
     :ensure t
     :init
     ;; 在 ~/.cmake-ide 目录下运行 CMake，而不是系统临时目录
@@ -167,6 +166,7 @@ Database 读取信息转为 idb。然后在 cmake-ide--set-flags-for-file 中，
     ;; 将 cmake-ide--mode-hook 加到 C/C++ Mode Hook
     (cmake-ide-setup)
     :config
+    (defvar bw/cmake-ide-diagnosis nil "输出一些 cmake-ide 内部信息用于诊断")
     (setq cmake-ide-flags-c++ (append '("-std=c++11")))
     (unless (file-directory-p cmake-ide-build-pool-dir)
       (make-directory cmake-ide-build-pool-dir))
@@ -323,10 +323,11 @@ CR（ASCII 13）。下面是实例代码。
     (setq irony-user-dir
           (locate-user-emacs-file ".irony/"))
     :config
+    (defvar bw/irony-diagnosis nil "输出一些 Irony 内部信息用于诊断")
     ;; Windows 平台补丁
     (when bw/windows-p
       (defun bw/preprocess-irony-server-send-command (args)
-        (message "irony--server-send-command> %S" args)
+        (bw/log-to-message-buffer "irony--server-send-command" args)
         ;; 删掉 complete 命令最后一个参数（当前文件，在第一个参数也出现），
         ;; 否则 libclang 提示解析错误，不清楚是什么原因
         (if (string= "complete" (car args))
@@ -335,22 +336,20 @@ CR（ASCII 13）。下面是实例代码。
       (advice-add 'irony--server-send-command :filter-args
                   #'bw/preprocess-irony-server-send-command))
     ;; 输出一些日志信息，便于分析
-    (defadvice irony-iotask-send-string (before log-me (string))
-      (setq inhibit-message t)
-      (message "irony-iotask-send-string> %s" string)
-      (setq inhibit-message nil))
-    (ad-activate 'irony-iotask-send-string)
-    (defadvice irony-cdb-json-add-compile-commands-path (before log-me
-                                                                (project-root
-                                                                 compile-commands-path))
-      (message "irony-cdb-json-add-compile-commands-path> %s %s" project-root
-               compile-commands-path))
-    (ad-activate 'irony-cdb-json-add-compile-commands-path)
-    (defun bw/log-irony-iotask-process-filter (process output)
-      (setq inhibit-message t)
-      (message "irony-iotask-process-filter> %s" output)
-      (setq inhibit-message nil))
-    (advice-add 'irony-iotask-process-filter :before #'bw/log-irony-iotask-process-filter)
+    (when bw/irony-diagnosis
+      (defadvice irony-iotask-send-string (before log-me (string))
+        (bw/log-to-message-buffer "irony-iotask-send-string" string))
+      (ad-activate 'irony-iotask-send-string)
+      (defadvice irony-cdb-json-add-compile-commands-path (before log-me
+                                                                  (project-root
+                                                                   compile-commands-path))
+        (bw/log-to-message-buffer "irony-cdb-json-add-compile-commands-path"
+                                  project-root
+                                  compile-commands-path))
+      (ad-activate 'irony-cdb-json-add-compile-commands-path)
+      (defun bw/log-irony-iotask-process-filter (process output)
+        (bw/log-to-message-buffer "irony-iotask-process-filter" output))
+      (advice-add 'irony-iotask-process-filter :before #'bw/log-irony-iotask-process-filter))
     ;; Windows performance tweaks
     (when (boundp 'w32-pipe-read-delay)
       (setq w32-pipe-read-delay 0))
