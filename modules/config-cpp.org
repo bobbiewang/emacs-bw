@@ -264,6 +264,17 @@ Compilation Database 读取信息。
 编译参数，在变量 irony--working-directory 中查看 JSON Compilation
 Database 所在目录。也可以 M-x irony-cdb-menu 中查看这些信息。
 
+  如果编译信息没有正确设置，或者补全不能正常工作，可以跟踪以下函数分析
+问题。
+  - irony--server-send-command :: 其参数列表用来生成向 irony-server 发
+       送的字符串
+  - irony-iotask-send-string :: 其参数字符串 string 是实际向 irony-server
+       发送的字符串
+  - irony-iotask-process-filter :: 其参数字符串 output 是 irony-server
+       输出的字符串
+  - irony-cdb-json-add-compile-commands-path :: cmake-ide 调用这个函数
+       设置 Irony 的 Compilation Database 文件的路径
+
   *Windows 平台注意事项*
 
   首先，必须确保 irony-server 可以正常工作，而且是在 Emacs 中可以正常
