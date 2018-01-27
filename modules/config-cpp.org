@@ -124,9 +124,9 @@ Databae 读取信息转为 idb。然后在 cmake-ide--set-flags-for-file 中，�
   - cmake-ide-cmake-opts :: 调用 CMake 时的参数，缺省是
        -DCMAKE_BUILD_TYPE=Release
 
-  *Windows 环境注意事项*
+  *Windows 平台注意事项*
 
-  Windows 环境有几种 CMake 可以选择：
+  Windows 平台有几种 CMake 可以选择：
   1. 官方网站下载的 Windows 包，不需要依赖其他软件
      - 系统有安装 Visual Studio 时，CMake 缺省生成 Visual C++ 的项目
        文件，这时没有 JSON Compilation Database 生成，cmake-ide 不能
@@ -244,6 +244,43 @@ Database 读取信息。
   如果编译信息被正确读取和设置了，可以在 irony--compile-options 中查看。
 另外，变量 irony--working-directory 也在同时被设置。
 
+  *Windows 平台注意事项*
+
+  首先，必须确保 irony-server 可以正常工作，而且是在 Emacs 中可以正常
+工作。我遇到过在 Cygwin 编译的 irony-server 可以在 CMD 和 Cygwin 中工
+作，但在 Emacs M-x shell 中不能工作的情况（找不到补全信息），最后发现
+是下文中的 CRLF 问题。所以，必须在 Emacs 内的 shell 中测试
+irony-server。
+
+  在 Windows 平台可以用不同的工具链编译 irony-server。
+  1. Cygwin
+     - Cygwin 编译的程序是以 LF 为换行符的，而 irony-server 从 cin 接
+       收到的文本是以 CRLF 为换行符，这样 irony-server 处理命令的时候，
+       最后一个参数末尾多了一个 CR，不能正确处理
+     - Cygwin 编译的 irony-server 在执行 complete 命令时，文件路径和
+       Include 路径都要使用 Cygwin 的风格
+  2. MinGW
+
+  要解决 Cygwin 编译的 irony-server 处理 CRLF 的问题，可以在
+nextCommand 函数中，对 std::getline 得到的字符串处理一下行末的
+CR（ASCII 13）。下面是实例代码。
+
+#+BEGIN_SRC c++
+  struct InteractiveCommandProvider : CommandProviderInterface {
+    std::vector<std::string> nextCommand() {
+      std::string line;
+
+      if (std::getline(std::cin, line)) {
+        if (line[line.size()-1] == char(13))
+            line = line.substr(0, line.size()-1);
+        return unescapeCommandLine(line);
+      }
+
+      return std::vector<std::string>(1, "exit");
+    }
+  };
+#+END_SRC
+
 #+BEGIN_SRC emacs-lisp
   (use-package irony
     :ensure t
@@ -264,7 +301,8 @@ Database 读取信息。
         (if (string= "complete" (car args))
             (nbutlast args 1))
         (bw/use-cygpath-in-list args))
-      (advice-add 'irony--server-send-command :filter-args #'bw/preprocess-irony-server-send-command))
+      (advice-add 'irony--server-send-command :filter-args
+                  #'bw/preprocess-irony-server-send-command))
     ;; 输出一些日志信息，便于分析
     (defadvice irony-iotask-send-string (before log-me (string))
       (setq inhibit-message t)
