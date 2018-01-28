@@ -176,8 +176,13 @@ Database 读取信息转为 idb。然后在 cmake-ide--set-flags-for-file 中，
     (setq cmake-ide-build-pool-dir (locate-user-emacs-file ".cmake-ide/"))
     ;; CMake 构建目录使用固定的名字，从而可以重用
     (setq cmake-ide-build-pool-use-persistent-naming t)
-    ;; 将 cmake-ide--mode-hook 加到 C/C++ Mode Hook
-    (cmake-ide-setup)
+    ;; cmake-ide 的官方文档推荐直接运行 cmake-ide-setup 完成一些 Hook 的
+    ;; 设置。这里的设置从当前目录遍历到根目录，检查 CMakeLists.txt 是否
+    ;; 存在，存在的话在 C/C++ 文件中启用 cmake-ide
+    (defun bw/maybe-cmake-ide-hook ()
+      (when (locate-dominating-file (buffer-file-name) "CMakeLists.txt")
+        (cmake-ide--mode-hook)))
+    (add-hook 'c-mode-common-hook 'bw/maybe-cmake-ide-hook)
     :config
     (defvar bw/cmake-ide-diagnosis nil "输出一些 cmake-ide 内部信息用于诊断")
     (setq cmake-ide-flags-c++ (append '("-std=c++11")))
@@ -342,7 +347,8 @@ CR（ASCII 13）。下面是实例代码。
     (when bw/windows-p
       (defun bw/preprocess-irony-server-send-command (args)
         (if bw/irony-diagnosis
-            (bw/log-to-message-buffer "irony--server-send-command" args))
+            (if bw/irony-diagnosis
+                (bw/log-to-message-buffer "irony--server-send-command" args)))
         ;; 删掉 complete 命令最后一个参数（当前文件，在第一个参数也出现），
         ;; 否则 libclang 提示解析错误，不清楚是什么原因
         (if (string= "complete" (car args))
