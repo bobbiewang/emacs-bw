@@ -97,10 +97,23 @@ Database]]，为其他“IDE”扩展提供数据支持。cmake-ide 支持的扩
   - flycheck
   - rtags
 
-  分析 cmake-ide-run-cmake 的源代码，可以看到 cmake-ide 的原理是自动在
-系统临时目录（或者 cmake-ide-build-dir 设置的目录）下调用 CMake，生成
-[[http://clang.llvm.org/docs/JSONCompilationDatabase.html][JSON Compilation Database]] 文件，从中读取编译参数，然后为其他扩展设置必
-要的信息。这个过程可以在 *Message* Buffer 看到一些的消息。
+  分析 cmake-ide--locate-cmakelists 函数，可以看到 cmake-ide 是如何定
+位 CMakeLists.txt 文件的。该函数先检查 cmake-ide-project-dir（缺省为
+nil）设置的目录下有没有 CMakeLists.txt 文件；找不到的话调用
+cmake-ide--locate-cmakelists-impl 函数，从当前目录遍历到根目录，找到最
+顶层的 CMakeLists.txt 文件。如果没有找到 CMakeLists.txt，结果为 nil。
+定位结果返回给 cmake-ide--locate-project-dir 函数。
+
+  分析 cmake-ide--get-build-dir-from-hash 函数，可以看到 cmake-ide 是
+如何确定运行 CMake 的目录的。对于 build-parent-directory，优先选择
+cmake-ide-build-pool-dir 的设置，否则的话用系统临时目录。对于具体的目
+录，如果设置了 cmake-ide-build-pool-use-persistent-naming，则根据项目
+路径生成一个固定而且唯一的目录名，否则调用 make-temp-name 函数生成一个
+临时的名字。
+
+  分析 cmake-ide-run-cmake 的源代码，可以看到 cmake-ide 的原理是自动运
+行 CMake，生成 [[http://clang.llvm.org/docs/JSONCompilationDatabase.html][JSON Compilation Database]] 文件，从中读取编译参数，然后为
+其他扩展设置必要的信息。这个过程可以在 *Message* Buffer 看到一些的消息。
 
   具体地说，先是 cmake-ide--cdb-json-file-to-idb 从 JSON Compilation
 Database 读取信息转为 idb。然后在 cmake-ide--set-flags-for-file 中，调
@@ -175,7 +188,8 @@ Database 读取信息转为 idb。然后在 cmake-ide--set-flags-for-file 中，
       ;; cmake-ide 使用固定名字的构建目录时，是根据项目的绝对路径转成目
       ;; 录名的，在 Windows 平台要把冒号 : 替换成下划线 _
       (defadvice cmake-ide--get-project-key (after cleanup-colon act)
-        (setq ad-return-value (replace-regexp-in-string ":" "_" ad-return-value)))
+        (if (stringp ad-return-value)
+            (setq ad-return-value (replace-regexp-in-string ":" "_" ad-return-value))))
       (ad-activate 'cmake-ide--get-project-key)
       ;; 使用 Cygwin 的 CMake 时，将项目路径以绝对路径传给 CMake 时应该
       ;; 使用 Cygwin 风格，否则 CMake 会报错： Found relative path while
@@ -327,7 +341,8 @@ CR（ASCII 13）。下面是实例代码。
     ;; Windows 平台补丁
     (when bw/windows-p
       (defun bw/preprocess-irony-server-send-command (args)
-        (bw/log-to-message-buffer "irony--server-send-command" args)
+        (if bw/irony-diagnosis
+            (bw/log-to-message-buffer "irony--server-send-command" args))
         ;; 删掉 complete 命令最后一个参数（当前文件，在第一个参数也出现），
         ;; 否则 libclang 提示解析错误，不清楚是什么原因
         (if (string= "complete" (car args))
