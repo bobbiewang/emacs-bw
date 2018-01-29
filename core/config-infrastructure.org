@@ -123,6 +123,12 @@
                   (bw/cygpath-to-winpath arg)
                 arg))
             args))
+
+  (defun bw/log-to-message-buffer (name &rest args)
+    "发送消息到 *Message* Buffer，而不显示在 minibuffer。"
+    (setq inhibit-message t)
+    (message "%s> %S" name args)
+    (setq inhibit-message nil))
 #+END_SRC
 
 * 自定义常量

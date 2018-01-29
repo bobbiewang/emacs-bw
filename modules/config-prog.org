@@ -12,8 +12,21 @@
 
   [[http://www.flycheck.org/][Flycheck]] 是个现代的实时语法检查工具，可以替代 Flymake。
 
-  Flycheck 对于不同的语言使用不同的 Chcker。M-x flycheck-verify-setup
-检查当前的 Checker 是否正确设置了。
+  | flycheck-list-errors      | 列出当前 Buffer 的错误         |
+  | flycheck-buffer           | 检查当前 Buffer                |
+  | flycheck-verify-setup     | 检查当前的 Checker 的设置      |
+  | flycheck-describe-checker | 查看指定 Checker 的介绍        |
+  | flycheck-select-checker   | 为当前 Buffer 选用指定 Checker |
+  | flycheck-disable-checker  | 为当前 Buffer 禁用指定 Checker |
+
+  对于不同的语言，Flycheck 支持不同的 Checker，比如 C/C++ 可选
+c/c++-clang、c/c++-gcc 和 c/c++-cppcheck。
+
+  - C/C++
+    - c/c++-clang
+      - flycheck-clang-include-path :: 当前 C/C++ 文件的 Include Path
+      - flycheck-clang-definitions :: 当前 C/C++ 文件的编译参数的宏
+      - flycheck-clang-args :: 当前 C/C++ 文件的其他编译参数
 
   如果在 Windows 平台使用 Cygwin，Flycheck 的 c/c++-lang Checker 使用
 clang.exe。可是 Cygwin 缺省是安装 /bin/clang-N.0.exe，然后创建

@@ -97,13 +97,26 @@ Database]]，为其他“IDE”扩展提供数据支持。cmake-ide 支持的扩
   - flycheck
   - rtags
 
-  分析 cmake-ide-run-cmake 的源代码，可以看到 cmake-ide 的原理是自动在
-系统临时目录（或者 cmake-ide-build-dir 设置的目录）下调用 CMake，生成
-[[http://clang.llvm.org/docs/JSONCompilationDatabase.html][JSON Compilation Database]] 文件，从中读取编译参数，然后为其他扩展设置必
-要的信息。这个过程可以在 *Message* Buffer 看到一些的消息。
+  分析 cmake-ide--locate-cmakelists 函数，可以看到 cmake-ide 是如何定
+位 CMakeLists.txt 文件的。该函数先检查 cmake-ide-project-dir（缺省为
+nil）设置的目录下有没有 CMakeLists.txt 文件；找不到的话调用
+cmake-ide--locate-cmakelists-impl 函数，从当前目录遍历到根目录，找到最
+顶层的 CMakeLists.txt 文件。如果没有找到 CMakeLists.txt，结果为 nil。
+定位结果返回给 cmake-ide--locate-project-dir 函数。
+
+  分析 cmake-ide--get-build-dir-from-hash 函数，可以看到 cmake-ide 是
+如何确定运行 CMake 的目录的。对于 build-parent-directory，优先选择
+cmake-ide-build-pool-dir 的设置，否则的话用系统临时目录。对于具体的目
+录，如果设置了 cmake-ide-build-pool-use-persistent-naming，则根据项目
+路径生成一个固定而且唯一的目录名，否则调用 make-temp-name 函数生成一个
+临时的名字。
+
+  分析 cmake-ide-run-cmake 的源代码，可以看到 cmake-ide 的原理是自动运
+行 CMake，生成 [[http://clang.llvm.org/docs/JSONCompilationDatabase.html][JSON Compilation Database]] 文件，从中读取编译参数，然后为
+其他扩展设置必要的信息。这个过程可以在 *Message* Buffer 看到一些的消息。
 
   具体地说，先是 cmake-ide--cdb-json-file-to-idb 从 JSON Compilation
-Databae 读取信息转为 idb。然后在 cmake-ide--set-flags-for-file 中，调
+Database 读取信息转为 idb。然后在 cmake-ide--set-flags-for-file 中，调
 用 cmake-ide--idb-file-to-obj 根据当前 Buffer 的文件名，从 idb 中查表
 得到编译信息，然后调用 cmake-ide-set-compiler-flags 设置信息。
 
@@ -120,11 +133,40 @@ Databae 读取信息转为 idb。然后在 cmake-ide--set-flags-for-file 中，�
                 semantic-remove-system-include 设置 Include Path
   - flycheck :: 设置 flycheck-clang-include-path 等
 
-  在 Windows 环境，如果使用单独安装的 CMake 而且系统有安装 Visual
-Studio， CMake 缺省生成 Visual C++ 的项目文件，这时没有 JSON
-Compilation Database 生成，cmake-ide 就不能工作了。解决方法是使用
-Cygwin 里的 CMake。另外，cmake-ide 有 cmake-ide-cmake-opts 变量，也许
-可以通过这个变量设置使用 GCC 或 Clang，
+  cmake-ide 设置变量。
+  - cmake-ide-cmake-opts :: 调用 CMake 时的参数，缺省是
+       -DCMAKE_BUILD_TYPE=Release
+
+  *Windows 平台注意事项*
+
+  Windows 平台有几种 CMake 可以选择：
+  1. 官方网站下载的 Windows 包，不需要依赖其他软件
+     - 系统有安装 Visual Studio 时，CMake 缺省生成 Visual C++ 的项目
+       文件，这时没有 JSON Compilation Database 生成，cmake-ide 不能
+       工作
+  2. Cygwin 的 CMake
+     - 缺省情况下，CMake 使用 cc、c++ 编译器，使用 Unix Makefiles 生成
+       器
+     - CMake 生成的 JSON Compilation Database 里使用 Cygwin 风格的路径
+       （如 /cygdrive/c/path），而 Emacs 使用 Windows 斜杠风格的路径
+       （如 c:/path）。路径风格的不一致是许多坑的根源
+     - 在传递 CMakeLists.txt 文件所在目录（cmake-ide 称其为项目目录
+       project-dir）给 CMake 时，传递的是绝对路径。这时应该使用 Cygwin
+       风格的路径，否则 CMake 在处理 CMakeLists.txt 中的
+       include_directories 时会报错： Found relative path while
+       evaluating include directories of ...。需要进行路径风格的转换
+     - 在生成 JSON Compilation Database 后，cmake-ide 会读取这个文件，
+       并将信息存在 idb 数据结构中。然后，Emacs 会将当前文件路径
+       （Windows 风格）传给 cmake-ide，在 idb 中查表得到该路径（Cygwin
+       风格）对应的编译参数。因为两者路径风格不一致，所以查不到信息，
+       需要进行路径风格的转换
+     - cmake-ide 得到文件的编译参数后，要从中提取 Include Path，并将这
+       些信息设置给其他扩展。提取的 Include Path 当然是 Cygwin 风格的
+       路径，要转换为 Windows 风格的路径，否则其他扩展不一定支持
+       Cygwin 风格的路径
+  3. MinGW 的 CMake
+     - 缺省情况下，CMake 使用 Visual Studio 15 2017 生成器，出错退出。
+       指定 Unix Makefiles 后才使用 MinGW 带的 cc 和 c++ 编译器
 
 #+BEGIN_SRC emacs-lisp
   (use-package cmake-ide
@@ -134,9 +176,15 @@ Cygwin 里的 CMake。另外，cmake-ide 有 cmake-ide-cmake-opts 变量，也�
     (setq cmake-ide-build-pool-dir (locate-user-emacs-file ".cmake-ide/"))
     ;; CMake 构建目录使用固定的名字，从而可以重用
     (setq cmake-ide-build-pool-use-persistent-naming t)
-    ;; 将 cmake-ide--mode-hook 加到 C/C++ Mode Hook
-    (cmake-ide-setup)
+    ;; cmake-ide 的官方文档推荐直接运行 cmake-ide-setup 完成一些 Hook 的
+    ;; 设置。这里的设置从当前目录遍历到根目录，检查 CMakeLists.txt 是否
+    ;; 存在，存在的话在 C/C++ 文件中启用 cmake-ide
+    (defun bw/maybe-cmake-ide-hook ()
+      (when (locate-dominating-file (buffer-file-name) "CMakeLists.txt")
+        (cmake-ide--mode-hook)))
+    (add-hook 'c-mode-common-hook 'bw/maybe-cmake-ide-hook)
     :config
+    (defvar bw/cmake-ide-diagnosis nil "输出一些 cmake-ide 内部信息用于诊断")
     (setq cmake-ide-flags-c++ (append '("-std=c++11")))
     (unless (file-directory-p cmake-ide-build-pool-dir)
       (make-directory cmake-ide-build-pool-dir))
@@ -145,7 +193,8 @@ Cygwin 里的 CMake。另外，cmake-ide 有 cmake-ide-cmake-opts 变量，也�
       ;; cmake-ide 使用固定名字的构建目录时，是根据项目的绝对路径转成目
       ;; 录名的，在 Windows 平台要把冒号 : 替换成下划线 _
       (defadvice cmake-ide--get-project-key (after cleanup-colon act)
-        (setq ad-return-value (replace-regexp-in-string ":" "_" ad-return-value)))
+        (if (stringp ad-return-value)
+            (setq ad-return-value (replace-regexp-in-string ":" "_" ad-return-value))))
       (ad-activate 'cmake-ide--get-project-key)
       ;; 使用 Cygwin 的 CMake 时，将项目路径以绝对路径传给 CMake 时应该
       ;; 使用 Cygwin 风格，否则 CMake 会报错： Found relative path while
@@ -196,8 +245,9 @@ Emacs 扩展。
 #+END_SRC
 
   irony 需要支持 C/C++ 文件的编译选项才能正常工作，这些信息可以通过
-[[http://clang.llvm.org/docs/JSONCompilationDatabase.html][JSON Compilation Database]] 或 [[https://github.com/Rip-Rip/clang_complete/blob/c8673142759b87316265eb0edd1f620196ec1fba/doc/clang_complete.txt#L55][.clang_complete]] 提供。下面是一个用 CMake
-生成的 JSON Compilation Database 的例子。
+[[http://clang.llvm.org/docs/JSONCompilationDatabase.html][JSON Compilation Database]] 或 [[https://github.com/Rip-Rip/clang_complete/blob/c8673142759b87316265eb0edd1f620196ec1fba/doc/clang_complete.txt#L55][.clang_complete]] 提供。
+
+  下面是一个用 CMake 生成的 JSON Compilation Database 的例子。
 
 #+BEGIN_SRC javascript
   [
@@ -209,11 +259,77 @@ Emacs 扩展。
   ]
 #+END_SRC
 
-  M-x irony-cdb-json-add-compile-commands-path 从指定 JSON Compilation
-Database 读取信息。
+  Irony 推荐在 c++-mode-hook 中调用 irony-mode，然后在 irony-mode-hook
+中调用 irony-cdb-autosetup-compile-options 函数自动定位记录编译参数的
+文件。这个函数依次尝试 irony-cdb-compilation-databases 中定义的方法，
+定位 Compilation Database 文件。
+  - irony-cdb-clang-complete :: irony-cdb-clang-complete--locate-db 函
+       数调用 locate-dominating-file，从当前目录遍历到根目录，检查是否
+       有 .clang_complete 文件
+  - irony-cdb-libclang :: irony-cdb-json--locate-db 函数先检查当前文件
+       是否 irony-cdb-json--project-alist 列表中的项目中；如果没有话再
+       调用 irony-cdb--locate-dominating-file-with-dirs 函数，从当前目
+       录遍历到根目录，在每级目录尝试 irony-cdb-search-directory-list
+       中定义的相对目录，检查里面有没有 compile_commands.json 文件。因
+       为 irony-cdb-search-directory-list 的缺省值是 "." 和 "build"，
+       所以是尝试查找每级目录下或者其 build 子目录下有没有
+       compile_commands.json 文件
+  - irony-cdb-json :: 和 irony-cdb-libclang 一样
 
-  如果编译信息被正确读取和设置了，可以在 irony--compile-options 中查看。
-另外，变量 irony--working-directory 也在同时被设置。
+  此外，可以 M-x irony-cdb-json-add-compile-commands-path 从指定 JSON
+Compilation Database 读取信息。
+
+  如果编译信息被正确读取和设置了，可以在 irony--compile-options 中查看
+编译参数，在变量 irony--working-directory 中查看 JSON Compilation
+Database 所在目录。也可以 M-x irony-cdb-menu 中查看这些信息。
+
+  如果编译信息没有正确设置，或者补全不能正常工作，可以跟踪以下函数分析
+问题。
+  - irony--server-send-command :: 其参数列表用来生成向 irony-server 发
+       送的字符串
+  - irony-iotask-send-string :: 其参数字符串 string 是实际向 irony-server
+       发送的字符串
+  - irony-iotask-process-filter :: 其参数字符串 output 是 irony-server
+       输出的字符串
+  - irony-cdb-json-add-compile-commands-path :: cmake-ide 调用这个函数
+       设置 Irony 的 Compilation Database 文件的路径
+
+  *Windows 平台注意事项*
+
+  首先，必须确保 irony-server 可以正常工作，而且是在 Emacs 中可以正常
+工作。我遇到过在 Cygwin 编译的 irony-server 可以在 CMD 和 Cygwin 中工
+作，但在 Emacs M-x shell 中不能工作的情况（找不到补全信息），最后发现
+是下文中的 CRLF 问题。所以，必须在 Emacs 内的 shell 中测试
+irony-server。
+
+  在 Windows 平台可以用不同的工具链编译 irony-server。
+  1. Cygwin
+     - Cygwin 编译的程序是以 LF 为换行符的，而 irony-server 从 cin 接
+       收到的文本是以 CRLF 为换行符，这样 irony-server 处理命令的时候，
+       最后一个参数末尾多了一个 CR，不能正确处理
+     - Cygwin 编译的 irony-server 在执行 complete 命令时，文件路径和
+       Include 路径都要使用 Cygwin 的风格
+  2. MinGW
+
+  要解决 Cygwin 编译的 irony-server 处理 CRLF 的问题，可以在
+nextCommand 函数中，对 std::getline 得到的字符串处理一下行末的
+CR（ASCII 13）。下面是实例代码。
+
+#+BEGIN_SRC c++
+  struct InteractiveCommandProvider : CommandProviderInterface {
+    std::vector<std::string> nextCommand() {
+      std::string line;
+
+      if (std::getline(std::cin, line)) {
+        if (line[line.size()-1] == char(13))
+            line = line.substr(0, line.size()-1);
+        return unescapeCommandLine(line);
+      }
+
+      return std::vector<std::string>(1, "exit");
+    }
+  };
+#+END_SRC
 
 #+BEGIN_SRC emacs-lisp
   (use-package irony
@@ -226,33 +342,35 @@ Database 读取信息。
     (setq irony-user-dir
           (locate-user-emacs-file ".irony/"))
     :config
+    (defvar bw/irony-diagnosis nil "输出一些 Irony 内部信息用于诊断")
     ;; Windows 平台补丁
     (when bw/windows-p
       (defun bw/preprocess-irony-server-send-command (args)
-        (message "irony--server-send-command> %S" args)
+        (if bw/irony-diagnosis
+            (if bw/irony-diagnosis
+                (bw/log-to-message-buffer "irony--server-send-command" args)))
         ;; 删掉 complete 命令最后一个参数（当前文件，在第一个参数也出现），
         ;; 否则 libclang 提示解析错误，不清楚是什么原因
         (if (string= "complete" (car args))
             (nbutlast args 1))
         (bw/use-cygpath-in-list args))
-      (advice-add 'irony--server-send-command :filter-args #'bw/preprocess-irony-server-send-command))
+      (advice-add 'irony--server-send-command :filter-args
+                  #'bw/preprocess-irony-server-send-command))
     ;; 输出一些日志信息，便于分析
-    (defadvice irony-iotask-send-string (before log-me (string))
-      (setq inhibit-message t)
-      (message "irony-iotask-send-string> %s" string)
-      (setq inhibit-message nil))
-    (ad-activate 'irony-iotask-send-string)
-    (defadvice irony-cdb-json-add-compile-commands-path (before log-me
-                                                                (project-root
-                                                                 compile-commands-path))
-      (message "irony-cdb-json-add-compile-commands-path> %s %s" project-root
-               compile-commands-path))
-    (ad-activate 'irony-cdb-json-add-compile-commands-path)
-    (defun bw/log-irony-iotask-process-filter (process output)
-      (setq inhibit-message t)
-      (message "irony-iotask-process-filter> %s" output)
-      (setq inhibit-message nil))
-    (advice-add 'irony-iotask-process-filter :before #'bw/log-irony-iotask-process-filter)
+    (when bw/irony-diagnosis
+      (defadvice irony-iotask-send-string (before log-me (string))
+        (bw/log-to-message-buffer "irony-iotask-send-string" string))
+      (ad-activate 'irony-iotask-send-string)
+      (defadvice irony-cdb-json-add-compile-commands-path (before log-me
+                                                                  (project-root
+                                                                   compile-commands-path))
+        (bw/log-to-message-buffer "irony-cdb-json-add-compile-commands-path"
+                                  project-root
+                                  compile-commands-path))
+      (ad-activate 'irony-cdb-json-add-compile-commands-path)
+      (defun bw/log-irony-iotask-process-filter (process output)
+        (bw/log-to-message-buffer "irony-iotask-process-filter" output))
+      (advice-add 'irony-iotask-process-filter :before #'bw/log-irony-iotask-process-filter))
     ;; Windows performance tweaks
     (when (boundp 'w32-pipe-read-delay)
       (setq w32-pipe-read-delay 0))
