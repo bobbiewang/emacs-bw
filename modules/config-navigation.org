@@ -59,7 +59,19 @@
 
   [[https://www.gnu.org/software/global/][GNU GLOBAL]] 内置支持 6 种语言：C、C++、Yacc、Java、PHP4 和 Assembly。
 通过 Pygmentes 和 Ctags，可以支持 25 种语言，如 C#、JavaScript、Lisp、
-Python、Ruby、Tcl、Verilog、Vhdl 等。
+Python、Ruby、Scheme、Tcl、Verilog、Vhdl 等。
+
+  如果要集成 Ctags，需要在编译 GLOBAL 时指定 Ctags 的路径。
+
+#+BEGIN_SRC sh
+  ./configure --with-exuberant-ctags=/path/to/ctags_executable
+#+END_SRC
+
+  一般情况下，Ctags 是指 Exuberant Ctags。值得注意的是传承自 Exuberant
+Ctags 的 [[https://ctags.io][Universal Ctags]]，重写并增加了许多 Parser。
+
+  GLOBAL 6.3.2 开始内置了 Pygments 的支持，只要运行 pip install
+pygments 安装 Pygments，然后在 gtags.conf 或 .globalrc 中激活。
 
 *** helm-gtags
 
@@ -145,7 +157,6 @@ counsel-gtags-go-forward 两个命令浏览。
 
   Projectile 后台依赖于 ggtags。在运行 projectile-regenerate-tags 命令
 的时候，如果检测到安装了 ggtags，会使用 gtags 创建 Tag，否则使用 ctags。
-所以，即使使用 helm-gtags，还是要安装 ggtags。
 
 #+BEGIN_SRC emacs-lisp
   (use-package ggtags
