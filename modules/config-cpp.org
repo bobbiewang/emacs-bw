@@ -351,7 +351,8 @@ CR（ASCII 13）。下面是实例代码。
                 (bw/log-to-message-buffer "irony--server-send-command" args)))
         ;; 删掉 complete 命令最后一个参数（当前文件，在第一个参数也出现），
         ;; 否则 libclang 提示解析错误，不清楚是什么原因
-        (if (string= "complete" (car args))
+        (if (and (string= "complete" (car args))
+                 (bw/is-cygpath (car (last args))))
             (nbutlast args 1))
         (bw/use-cygpath-in-list args))
       (advice-add 'irony--server-send-command :filter-args
