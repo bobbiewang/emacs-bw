@@ -96,6 +96,11 @@
                                         (setq i (+ 32 i)) i i (single-key-description i)))
                         (setq i (- i 96))))))
 
+  (defun bw/is-cygpath (string)
+    "是否 Cygwin 风格的路径。"
+    (or (string-prefix-p "/cygdrive/" string)
+        (string-prefix-p "-I/cygdrive" string)))
+
   (defun bw/cygpath-to-winpath (string)
     "将 Cygwin 风格的路径转为 Windows 风格的路径，比如
   /cygdrive/c/path 转为 c:/path。支持 -I。"
