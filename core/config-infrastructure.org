@@ -174,38 +174,38 @@
     (setq inhibit-message nil))
 #+END_SRC
 
-* 自定义常量
+* 自定义变量
 ** 运行环境
 
   Emacs 内置了一些 display-*-p 函数可以用于判断运行环境，其中的
 display-graphic-p 可以检测当前是否运行于图形界面，可以代替将变量
 window-system 当作 boolean 的用法。
 
-  下面自定义一些表示运行环境的常量，可以在后面的配置文件中使用。
+  下面自定义一些表示运行环境的变量，可以在后面的配置文件中使用。
 
 #+BEGIN_SRC emacs-lisp
-  (defconst bw/windows-p
+  (defvar bw/windows-p
       (eq system-type 'windows-nt)
-    "是否运行在 MS Windows 环境")
+    "运行在 MS Windows 环境。")
 
-  (defconst bw/cygwin-p
-      (eq system-type 'cygwin)
-    "是否运行在 Cygwin 环境")
-
-  (defconst bw/linux-p
+  (defvar bw/linux-p
       (or (eq system-type 'gnu/linux)
           (eq system-type 'linux))
-    "是否运行在 Linux 环境")
+    "运行在 Linux 环境。")
 
-  (defconst bw/x-window-p
+  (defvar bw/x-window-p
       (and window-system bw/linux-p)
-    "是否运行在 Linux 的 X Window 环境")
+    "运行在 Linux 的 X Window 环境。")
 
-  (defcustom bw/office-p nil
-    "是否运行在公司的网络环境")
+  (defvar bw/office-p nil
+    "运行在公司的网络环境。")
 
-  (defcustom bw/home-p t
-    "是否运行在家庭的网络环境")
+  (defvar bw/home-p t
+    "运行在家庭的网络环境。")
+
+  (when bw/windows-p
+    (defvar bw/use-cygwin-tools t   "在 Windows 平台使用 Cygwin 工具。")
+    (defvar bw/use-msys-tools   nil "在 Windows 平台使用 MSYS 工具。"))
 #+END_SRC
 
 * 个人设置
