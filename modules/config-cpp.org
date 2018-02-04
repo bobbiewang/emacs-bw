@@ -183,65 +183,72 @@ cmake-ide-set-compiler-flags，为其他扩展设置必要的信息。
        换为小写
 
 #+BEGIN_SRC emacs-lisp
-    (use-package cmake-ide
-      :ensure t
-      :init
-      (defvar bw/cmake-ide-diagnosis nil "输出一些 cmake-ide 内部信息用于诊断")
-      ;; 在 ~/.cmake-ide 目录下运行 CMake，而不是系统临时目录
-      (setq cmake-ide-build-pool-dir (locate-user-emacs-file ".cmake-ide/"))
-      ;; CMake 构建目录使用固定的名字，从而可以重用
-      (setq cmake-ide-build-pool-use-persistent-naming t)
-      ;; cmake-ide 的官方文档推荐直接运行 cmake-ide-setup 完成一些 Hook 的
-      ;; 设置。这里的设置从当前目录遍历到根目录，检查 CMakeLists.txt 是否
-      ;; 存在，存在的话在 C/C++ 文件中启用 cmake-ide
-      (defun bw/maybe-cmake-ide-hook ()
-        (when (locate-dominating-file (buffer-file-name) "CMakeLists.txt")
-          (cmake-ide--mode-hook)))
-      (add-hook 'c-mode-common-hook 'bw/maybe-cmake-ide-hook)
-      :config
-      (setq cmake-ide-flags-c++ (append '("-std=c++11")))
-      (unless (file-directory-p cmake-ide-build-pool-dir)
-        (make-directory cmake-ide-build-pool-dir))
+  (use-package cmake-ide
+    :ensure t
+    :init
+    (defvar bw/cmake-ide-diagnosis nil "输出一些 cmake-ide 内部信息用于诊断")
+    ;; 在 ~/.cmake-ide 目录下运行 CMake，而不是系统临时目录
+    (setq cmake-ide-build-pool-dir (locate-user-emacs-file ".cmake-ide/"))
+    ;; CMake 构建目录使用固定的名字，从而可以重用
+    (setq cmake-ide-build-pool-use-persistent-naming t)
+    ;; cmake-ide 的官方文档推荐直接运行 cmake-ide-setup 完成一些 Hook 的
+    ;; 设置。这里的设置从当前目录遍历到根目录，检查 CMakeLists.txt 是否
+    ;; 存在，存在的话在 C/C++ 文件中启用 cmake-ide
+    (defun bw/maybe-cmake-ide-hook ()
+      (when (locate-dominating-file (buffer-file-name) "CMakeLists.txt")
+        (cmake-ide--mode-hook)))
+    (add-hook 'c-mode-common-hook 'bw/maybe-cmake-ide-hook)
+    :config
+    (setq cmake-ide-flags-c++ (append '("-std=c++11")))
+    (unless (file-directory-p cmake-ide-build-pool-dir)
+      (make-directory cmake-ide-build-pool-dir))
 
-      ;; Windows 平台通用补丁
-      (when bw/windows-p
-        ;; cmake-ide 使用固定名字的构建目录时，是根据项目的绝对路径转成目
-        ;; 录名的，在 Windows 平台要把冒号 : 替换成下划线 _
-        (defadvice cmake-ide--get-project-key (after cleanup-colon act)
-          (if (stringp ad-return-value)
-              (setq ad-return-value (replace-regexp-in-string ":" "_" ad-return-value))))
-        (ad-activate 'cmake-ide--get-project-key))
+    ;; Windows 平台通用补丁
+    (when bw/windows-p
+      ;; cmake-ide 使用固定名字的构建目录时，是根据项目的绝对路径转成目
+      ;; 录名的，在 Windows 平台要把冒号 : 替换成下划线 _
+      (defadvice cmake-ide--get-project-key (after cleanup-colon act)
+        (if (stringp ad-return-value)
+            (setq ad-return-value (replace-regexp-in-string ":" "_" ad-return-value))))
+      (ad-activate 'cmake-ide--get-project-key))
 
-      ;; 使用 Cygwin 工具时的补丁
-      (when bw/use-cygwin-tools
-        ;; 使用 Cygwin 的 CMake 时，将项目路径以绝对路径传给 CMake 时应该
-        ;; 使用 Cygwin 风格，否则 CMake 会报错： Found relative path while
-        ;; evaluating include directories of ...
-        (defadvice cmake-ide--run-cmake-impl (before cygpath-conv (project-dir cmake-dir))
-          (ad-set-arg 0 (bw/winpath-to-cygpath project-dir)))
-        (ad-activate 'cmake-ide--run-cmake-impl)
-        (defadvice cmake-ide--idb-file-to-obj (before cygpath-conv (idb file-name))
-          (ad-set-arg 1 (bw/winpath-to-cygpath file-name)))
-        (ad-activate 'cmake-ide--idb-file-to-obj)
-        ;; cmake-ide--flags-to-include-paths 里调用 expand-file-name 时会
-        ;; 将 /cygdrive/c/path 扩展为 c:/cygdrive/c/path
-        (defun bw/preprocess-cmake-ide-flags (flags)
-          (list (bw/use-winpath-in-list (car flags))))
-        (advice-add 'cmake-ide--flags-to-include-paths :filter-args
-                    #'bw/preprocess-cmake-ide-flags))
+    ;; 使用 Cygwin 工具时的补丁
+    (when bw/use-cygwin-tools
+      ;; 使用 Cygwin 的 CMake 时，将项目路径以绝对路径传给 CMake 时应该
+      ;; 使用 Cygwin 风格，否则 CMake 会报错： Found relative path while
+      ;; evaluating include directories of ...
+      (defadvice cmake-ide--run-cmake-impl (before cygpath-conv (project-dir cmake-dir))
+        (ad-set-arg 0 (bw/winpath-to-cygpath project-dir)))
+      (ad-activate 'cmake-ide--run-cmake-impl)
+      (defadvice cmake-ide--idb-file-to-obj (before cygpath-conv (idb file-name))
+        (ad-set-arg 1 (bw/winpath-to-cygpath file-name)))
+      (ad-activate 'cmake-ide--idb-file-to-obj)
+      ;; cmake-ide--flags-to-include-paths 里调用 expand-file-name 时会
+      ;; 将 /cygdrive/c/path 扩展为 c:/cygdrive/c/path
+      (defun bw/preprocess-cmake-ide-flags (flags)
+        (list (bw/use-winpath-in-list (car flags))))
+      (advice-add 'cmake-ide--flags-to-include-paths :filter-args
+                  #'bw/preprocess-cmake-ide-flags))
 
-      ;; 使用 MSYS 工具时的补丁
-      (when bw/use-msys-tools
-        (setq cmake-ide-cmake-opts (concat cmake-ide-cmake-opts
-                                           " " "-G Ninja"))
-        ;; 将 compile_commands.json 中的 \\ 转为 /
-        (defun bw/process-ninja-compile-commands ()
-          (let ((file-name (cmake-ide--comp-db-file-name)))
-            (when (file-exists-p file-name)
-              (message "Run sed on '%s'." file-name)
-              (call-process "sed" nil "*sed*" nil "-i" "s#\\\\\\\\#/#g" file-name))))
-        (advice-add 'cmake-ide--on-cmake-finished :before
-                    #'bw/process-ninja-compile-commands)))
+    ;; 使用 MSYS 工具时的补丁
+    (when bw/use-msys-tools
+      (setq cmake-ide-cmake-opts (concat cmake-ide-cmake-opts
+                                         " " "-G Ninja"))
+      ;; 将 compile_commands.json 中的 \\ 转为 /
+      (defun bw/process-ninja-compile-commands ()
+        (let ((file-name (cmake-ide--comp-db-file-name)))
+          (when (file-exists-p file-name)
+            (message "Run sed on \"%s\"." file-name)
+            (with-temp-file file-name
+              (insert-file-contents file-name)
+              (goto-char (point-min))
+              (while (re-search-forward "\\\\\\\\" nil t)
+                (replace-match "/"))
+              (goto-char (point-min))
+              (while (re-search-forward "\\([a-zA-Z]:\\)" nil t)
+                (downcase-region (- (point) 2) (point)))))))
+      (advice-add 'cmake-ide--on-cmake-finished :before
+                  #'bw/process-ninja-compile-commands)))
 #+END_SRC
 
 * 补全
