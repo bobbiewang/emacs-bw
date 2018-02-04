@@ -238,7 +238,7 @@ cmake-ide-set-compiler-flags，为其他扩展设置必要的信息。
       (defun bw/process-ninja-compile-commands ()
         (let ((file-name (cmake-ide--comp-db-file-name)))
           (when (file-exists-p file-name)
-            (message "Run sed on \"%s\"." file-name)
+            (message "cmake-ide [%s]: Post-processing %s" (current-time-string) file-name)
             (with-temp-file file-name
               (insert-file-contents file-name)
               (goto-char (point-min))
