@@ -112,13 +112,12 @@ cmake-ide-build-pool-dir 的设置，否则的话用系统临时目录。对于�
 临时的名字。
 
   分析 cmake-ide-run-cmake 的源代码，可以看到 cmake-ide 的原理是自动运
-行 CMake，生成 [[http://clang.llvm.org/docs/JSONCompilationDatabase.html][JSON Compilation Database]] 文件，从中读取编译参数，然后为
-其他扩展设置必要的信息。这个过程可以在 *Message* Buffer 看到一些的消息。
-
-  具体地说，先是 cmake-ide--cdb-json-file-to-idb 从 JSON Compilation
-Database 读取信息转为 idb。然后在 cmake-ide--set-flags-for-file 中，调
-用 cmake-ide--idb-file-to-obj 根据当前 Buffer 的文件名，从 idb 中查表
-得到编译信息，然后调用 cmake-ide-set-compiler-flags 设置信息。
+行 CMake，生成 [[http://clang.llvm.org/docs/JSONCompilationDatabase.html][JSON Compilation Database]] 文件，里面有编译参数。调用
+cmake-ide--cdb-json-file-to-idb 函数，从 JSON Compilation Database 读
+取内容转为 idb 数据结构，记录在变量 cmake-ide--idbs 中。然后在
+cmake-ide--set-flags-for-file 函数中，调用 cmake-ide--idb-file-to-obj
+根据当前 Buffer 的文件名，从 idb 中查表得到编译信息。最后，调用
+cmake-ide-set-compiler-flags，为其他扩展设置必要的信息。
 
   分析 cmake-ide-set-compiler-flags 的源代码，可以看到 cmake-ide 是如
 何为其他扩展设置信息的。
@@ -132,6 +131,9 @@ Database 读取信息转为 idb。然后在 cmake-ide--set-flags-for-file 中，
   - semantic :: 通过 semantic-add-system-include 和
                 semantic-remove-system-include 设置 Include Path
   - flycheck :: 设置 flycheck-clang-include-path 等
+
+  调用 CMake 的过程可以在 *Message* Buffer 看到一些的消息，CMake 程序
+输出可以在 *cmake* Buffer 中看到。
 
   cmake-ide 设置变量。
   - cmake-ide-cmake-opts :: 调用 CMake 时的参数，缺省是
@@ -166,12 +168,25 @@ Database 读取信息转为 idb。然后在 cmake-ide--set-flags-for-file 中，
        Cygwin 风格的路径
   3. MinGW 的 CMake
      - 缺省情况下，CMake 使用 Visual Studio 15 2017 生成器，出错退出。
-       指定 Unix Makefiles 后才使用 MinGW 带的 cc 和 c++ 编译器
+       指定 Unix Makefiles、Ninja 等 Generator 后才使用 MinGW 带的 cc
+       和 c++ 编译器
+     - 可以通过设置 cmake-ide-cmake-opts 在 CMake 的命令行中定制
+       Generator。但是，cmake-ide 在调用 start-process 时是用
+       split-string 函数将 cmake-ide-cmake-opts 按空格分隔得到 CMake
+       的命令行参数，所以 NNN Makefiles 是不能用的，只能用 Ninja
+     - Ninja 生成的 Compilation JSON Database 中的 Include Path 使用
+       C:/path 风格的路径，而 File Path 使用 C:\\path 风格的路径。因为
+       Emacs 内部使用前者风格，需要将文件中后者风格的路径转化为前者的
+       风格
+     - Ninja 生成的 Compilation JSON Database 中的路径中的盘符使用大写
+       字符如 C:，而 Emacs 内部使用小写字母如 c:，需要将文件中的盘符转
+       换为小写
 
 #+BEGIN_SRC emacs-lisp
   (use-package cmake-ide
     :ensure t
     :init
+    (defvar bw/cmake-ide-diagnosis nil "输出一些 cmake-ide 内部信息用于诊断")
     ;; 在 ~/.cmake-ide 目录下运行 CMake，而不是系统临时目录
     (setq cmake-ide-build-pool-dir (locate-user-emacs-file ".cmake-ide/"))
     ;; CMake 构建目录使用固定的名字，从而可以重用
@@ -184,18 +199,21 @@ Database 读取信息转为 idb。然后在 cmake-ide--set-flags-for-file 中，
         (cmake-ide--mode-hook)))
     (add-hook 'c-mode-common-hook 'bw/maybe-cmake-ide-hook)
     :config
-    (defvar bw/cmake-ide-diagnosis nil "输出一些 cmake-ide 内部信息用于诊断")
     (setq cmake-ide-flags-c++ (append '("-std=c++11")))
     (unless (file-directory-p cmake-ide-build-pool-dir)
       (make-directory cmake-ide-build-pool-dir))
-    ;; Windows 平台的补丁
+
+    ;; Windows 平台通用补丁
     (when bw/windows-p
       ;; cmake-ide 使用固定名字的构建目录时，是根据项目的绝对路径转成目
       ;; 录名的，在 Windows 平台要把冒号 : 替换成下划线 _
       (defadvice cmake-ide--get-project-key (after cleanup-colon act)
         (if (stringp ad-return-value)
             (setq ad-return-value (replace-regexp-in-string ":" "_" ad-return-value))))
-      (ad-activate 'cmake-ide--get-project-key)
+      (ad-activate 'cmake-ide--get-project-key))
+
+    ;; 使用 Cygwin 工具时的补丁
+    (when bw/use-cygwin-tools
       ;; 使用 Cygwin 的 CMake 时，将项目路径以绝对路径传给 CMake 时应该
       ;; 使用 Cygwin 风格，否则 CMake 会报错： Found relative path while
       ;; evaluating include directories of ...
@@ -210,7 +228,27 @@ Database 读取信息转为 idb。然后在 cmake-ide--set-flags-for-file 中，
       (defun bw/preprocess-cmake-ide-flags (flags)
         (list (bw/use-winpath-in-list (car flags))))
       (advice-add 'cmake-ide--flags-to-include-paths :filter-args
-                  #'bw/preprocess-cmake-ide-flags)))
+                  #'bw/preprocess-cmake-ide-flags))
+
+    ;; 使用 MSYS 工具时的补丁
+    (when bw/use-msys-tools
+      (setq cmake-ide-cmake-opts (concat cmake-ide-cmake-opts
+                                         " " "-G Ninja"))
+      ;; 将 compile_commands.json 中的 \\ 转为 /
+      (defun bw/process-ninja-compile-commands ()
+        (let ((file-name (cmake-ide--comp-db-file-name)))
+          (when (file-exists-p file-name)
+            (message "cmake-ide [%s]: Post-processing %s" (current-time-string) file-name)
+            (with-temp-file file-name
+              (insert-file-contents file-name)
+              (goto-char (point-min))
+              (while (re-search-forward "\\\\\\\\" nil t)
+                (replace-match "/"))
+              (goto-char (point-min))
+              (while (re-search-forward "\\([a-zA-Z]:\\)" nil t)
+                (downcase-region (- (point) 2) (point)))))))
+      (advice-add 'cmake-ide--on-cmake-finished :before
+                  #'bw/process-ninja-compile-commands)))
 #+END_SRC
 
 * 补全
@@ -229,11 +267,15 @@ Emacs 扩展。
   cmake --build . --use-stderr --config Release --target install
 #+END_SRC
 
-  irony-server 安装后，可以在命令行下交互使用，下面是一些例子。
+  irony-server 安装后，可以在命令行下使用，下面是一些例子。
 
 #+BEGIN_SRC sh
+  # 查看 irony-server 的版本信息
+  irony-server -v
   # 启动 irony-server 交互界面
   irony-server -i
+  # 从 Compilation JSON Database 读取指定文件的编译信息
+  get-compile-options /path/to/compile_commands.json/dir /path/to/c++/source/file
   # 补全指定文件的指定位置
   complete /path/to/file.cpp 7 8
   # 可以加额外的参数
@@ -343,17 +385,23 @@ CR（ASCII 13）。下面是实例代码。
           (locate-user-emacs-file ".irony/"))
     :config
     (defvar bw/irony-diagnosis nil "输出一些 Irony 内部信息用于诊断")
-    ;; Windows 平台补丁
-    (when bw/windows-p
+    ;; 使用 Cygwin 工具时的补丁
+    (when (or bw/use-cygwin-tools
+              bw/use-msys-tools)
       (defun bw/preprocess-irony-server-send-command (args)
         (if bw/irony-diagnosis
             (if bw/irony-diagnosis
                 (bw/log-to-message-buffer "irony--server-send-command" args)))
         ;; 删掉 complete 命令最后一个参数（当前文件，在第一个参数也出现），
         ;; 否则 libclang 提示解析错误，不清楚是什么原因
-        (if (string= "complete" (car args))
+        (if (and (string= "complete" (car args))
+                 (or (string-suffix-p ".c" (car (last args)))
+                     (string-suffix-p ".cpp" (car (last args)))
+                     (string-suffix-p ".cc" (car (last args)))))
             (nbutlast args 1))
-        (bw/use-cygpath-in-list args))
+        (if bw/use-cygwin-tools
+            (bw/use-cygpath-in-list args)
+          args))
       (advice-add 'irony--server-send-command :filter-args
                   #'bw/preprocess-irony-server-send-command))
     ;; 输出一些日志信息，便于分析
@@ -361,13 +409,6 @@ CR（ASCII 13）。下面是实例代码。
       (defadvice irony-iotask-send-string (before log-me (string))
         (bw/log-to-message-buffer "irony-iotask-send-string" string))
       (ad-activate 'irony-iotask-send-string)
-      (defadvice irony-cdb-json-add-compile-commands-path (before log-me
-                                                                  (project-root
-                                                                   compile-commands-path))
-        (bw/log-to-message-buffer "irony-cdb-json-add-compile-commands-path"
-                                  project-root
-                                  compile-commands-path))
-      (ad-activate 'irony-cdb-json-add-compile-commands-path)
       (defun bw/log-irony-iotask-process-filter (process output)
         (bw/log-to-message-buffer "irony-iotask-process-filter" output))
       (advice-add 'irony-iotask-process-filter :before #'bw/log-irony-iotask-process-filter))
@@ -445,4 +486,3 @@ CR（ASCII 13）。下面是实例代码。
     - cscope
     - company-clang
     - company-ycmd
-

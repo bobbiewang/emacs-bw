@@ -66,6 +66,19 @@ clang.exe。可是 Cygwin 缺省是安装 /bin/clang-N.0.exe，然后创建
     :ensure t)
 #+END_SRC
 
+* Scheme
+
+  [[https://github.com/greghendershott/racket-mode][racket-mode]] 为 [[http://www.racket-lang.org/][Racket]] 提供了语法高亮、REPL 等功能的支持。
+
+  如果安装的是 Minimal Racket，需要运行 raco pkg install drracket 在
+Racket 中安装必要的包，才能使用 racket-mode。在 Windows 系统中，这些包
+安装在 %APPDATA%/Racket。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package racket-mode
+    :ensure t)
+#+END_SRC
+
 * Verilog
 
 #+BEGIN_SRC emacs-lisp
