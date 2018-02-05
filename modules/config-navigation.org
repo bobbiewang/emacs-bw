@@ -57,21 +57,9 @@
 * Tag
 ** GNU GLOBAL
 
-  [[https://www.gnu.org/software/global/][GNU GLOBAL]] 内置支持 6 种语言：C、C++、Yacc、Java、PHP4 和 Assembly。
-通过 Pygmentes 和 Ctags，可以支持 25 种语言，如 C#、JavaScript、Lisp、
-Python、Ruby、Scheme、Tcl、Verilog、Vhdl 等。
-
-  如果要集成 Ctags，需要在编译 GLOBAL 时指定 Ctags 的路径。
-
-#+BEGIN_SRC sh
-  ./configure --with-exuberant-ctags=/path/to/ctags_executable
-#+END_SRC
-
-  一般情况下，Ctags 是指 Exuberant Ctags。值得注意的是传承自 Exuberant
-Ctags 的 [[https://ctags.io][Universal Ctags]]，重写并增加了许多 Parser。
-
-  GLOBAL 6.3.2 开始内置了 Pygments 的支持，只要运行 pip install
-pygments 安装 Pygments，然后在 gtags.conf 或 .globalrc 中激活。
+  [[https://www.gnu.org/software/global/][GNU GLOBAL]] 是一个开源的 Tag 系统，内置支持 6 种语言：C、C++、Yacc、
+Java、PHP4 和 Assembly。通过 Pygmentes 和 Ctags，可以支持 25 种语言，
+如 C#、JavaScript、Lisp、Python、Ruby、Scheme、Tcl、Verilog、Vhdl 等。
 
 *** helm-gtags
 
