@@ -213,7 +213,7 @@ cmake-ide-set-compiler-flags，为其他扩展设置必要的信息。
       (ad-activate 'cmake-ide--get-project-key))
 
     ;; 使用 Cygwin 工具时的补丁
-    (when bw/use-cygwin-tools
+    (when (eq bw/windows-toolchain 'cygwin)
       ;; 使用 Cygwin 的 CMake 时，将项目路径以绝对路径传给 CMake 时应该
       ;; 使用 Cygwin 风格，否则 CMake 会报错： Found relative path while
       ;; evaluating include directories of ...
@@ -231,7 +231,7 @@ cmake-ide-set-compiler-flags，为其他扩展设置必要的信息。
                   #'bw/preprocess-cmake-ide-flags))
 
     ;; 使用 MSYS 工具时的补丁
-    (when bw/use-msys-tools
+    (when (eq bw/windows-toolchain 'mingw)
       (setq cmake-ide-cmake-opts (concat cmake-ide-cmake-opts
                                          " " "-G Ninja"))
       ;; 将 compile_commands.json 中的 \\ 转为 /
@@ -385,9 +385,8 @@ CR（ASCII 13）。下面是实例代码。
           (locate-user-emacs-file ".irony/"))
     :config
     (defvar bw/irony-diagnosis nil "输出一些 Irony 内部信息用于诊断")
-    ;; 使用 Cygwin 工具时的补丁
-    (when (or bw/use-cygwin-tools
-              bw/use-msys-tools)
+    ;; Windows 平台的补丁
+    (when bw/windows-p
       (defun bw/preprocess-irony-server-send-command (args)
         (if bw/irony-diagnosis
             (if bw/irony-diagnosis
@@ -399,7 +398,7 @@ CR（ASCII 13）。下面是实例代码。
                      (string-suffix-p ".cpp" (car (last args)))
                      (string-suffix-p ".cc" (car (last args)))))
             (nbutlast args 1))
-        (if bw/use-cygwin-tools
+        (if (eq bw/windows-toolchain 'cygwin)
             (bw/use-cygpath-in-list args)
           args))
       (advice-add 'irony--server-send-command :filter-args
