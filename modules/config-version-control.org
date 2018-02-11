@@ -1,3 +1,11 @@
+#+TITLE:     Version Control
+
+* VC
+
+  VC 是 Emacs 内置的各版本管理工具的接口，支持 Bazaar、CVS、Git、
+Mercurial、Monotone、RCS、SCCS/CSSC、Subversion、Git 等工具。变量
+vc-handled-backends 用于配置需要使用的版本管理工具。
+
 * evil-magit
 
   [[https://github.com/justbur/evil-magit][evil-magit]]
