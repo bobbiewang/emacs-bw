@@ -171,12 +171,33 @@ yas-visit-snippet-file 打开相应的 Snippet 文件修改。
   | C-s、C-r、C-o        | 在候选内容中搜索       |
 
   Company 自带多个补全后端（Backend），每个补全后端都是一个函数，可以
-从这个函数开始阅读，了解该后端实现的原理。
+从这个函数开始阅读，了解该后端实现的原理。另外，还有许多第三方的补全后
+端，可以参考 [[https://github.com/company-mode/company-mode/wiki/Third-Party-Packages][Third Party Packages]]。
 
-  company-clang，利用 Clang 分析 C/C++ 源文件，从而实现准确的补全。如
-果使用 company-clang 的话，需要通过 .dir-locals 文件让Clang 知道编译参
-数，尤其是 include 目录的路径，下面是一个例子。注意，每个参数一个字符
-串，不要把多个参数合并在一个字符串，否则 Clang 不能正确处理。
+  变量 company-backends 列表中记录了可供使用的 Backend。在补全时，
+Company 依次尝试每个 Backend，并使用第一个能匹配的 Backend 返回的补全
+项。如果要使用使用多个 Backend，可以将其分为一组（放在一个列表中），这
+样它们的补选项会被合并显示。比如， ((a b) c d e) 中的 a、b 可以同时使
+用 。下面的示例代码将 company-yasnippet 加到 company-backends 的每个
+Backend 组中。
+
+#+BEGIN_SRC emacs-lisp-example
+  (defun add-yasnippet-to-company-backend (backend)
+    (if (and (listp backend) (member 'company-yasnippet backend))
+        backend
+      (append (if (consp backend)
+                  backend
+                (list backend))
+              '(:with company-yasnippet))))
+
+  (setq company-backends
+        (mapcar #'add-yasnippet-to-company-backend company-backends))
+#+END_SRC
+
+  company-clang 利用 Clang 分析 C/C++ 源文件，从而实现准确的补全。如果
+使用 company-clang 的话，需要通过 .dir-locals 文件让Clang 知道编译参数，
+尤其是 include 目录的路径，下面是一个例子。注意，每个参数一个字符串，
+不要把多个参数合并在一个字符串，否则 Clang 不能正确处理。
 
 #+BEGIN_SRC emacs-lisp-example
   ((nil . ((company-clang-arguments . ("-I/path/to/include1/"
