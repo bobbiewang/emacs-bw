@@ -6,6 +6,15 @@
 Mercurial、Monotone、RCS、SCCS/CSSC、Subversion、Git 等工具。变量
 vc-handled-backends 用于配置需要使用的版本管理工具。
 
+#+BEGIN_SRC emacs-lisp
+  (use-package vc
+    :ensure nil
+    :init
+    (when bw/windows-p
+      ;; Windows 上调用 Git 的性能比较差，在 VC 中禁用
+      (setq vc-handled-backends (delq 'Git vc-handled-backends))))
+#+END_SRC
+
 * evil-magit
 
   [[https://github.com/justbur/evil-magit][evil-magit]]
