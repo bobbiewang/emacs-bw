@@ -469,6 +469,8 @@ CR（ASCII 13）。下面是实例代码。
     intellisense if you use CMake]] 基于 CMake 的 C/C++ 开发环境的配置
   - [[https://emacs.stackexchange.com/questions/474/using-emacs-as-a-full-featured-c-c-ide/][Using Emacs as a full-featured C/C++ IDE - Emacs Stack Exchange]] 一
     些讨论，可以参考一下
+  - [[https://onze.io/emacs/c%2B%2B/2017/03/16/emacs-cpp.html][Emacs as C++ IDE - onze]] 使用 emacs-ycmd、company-mode、
+    company-ycmd、yasnippet、flycheck、flycheck-ycmd、eldoc
   - [[https://github.com/emacs-tw/awesome-emacs][Awesome Emacs]] 推荐的扩展
     - CC Mode
     - rtags
