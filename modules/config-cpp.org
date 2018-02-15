@@ -32,24 +32,23 @@ semantic-dependency-system-include-path。对于其他系统或第三方库的�
   (semantic-add-system-include "/usr/include/boost" 'c++-mode) ; 用于 C++ Mode
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp-example
-  (setq semanticdb-default-save-directory
-        (locate-user-emacs-file ".semanticdb"))
-
-  (require 'semantic)
-
-  ;; 将 Semantic 解析后的数据缓存到文件中
-  (global-semanticdb-minor-mode 1)
-
-  ;; 在用户不操作是自动更新数据，否则只在执行某些命令时更新
-  (global-semantic-idle-scheduler-mode 1)
-
-  ;; 激活 Semantic Mode，解析文件
-  (semantic-mode 1)
-
-  ;; 在 buffer 的第一行显示当前光标所在函数的函数名
-  (add-to-list 'semantic-default-submodes
-               'global-semantic-stickyfunc-mode)
+#+BEGIN_SRC emacs-lisp
+  (use-package semantic
+    :disabled
+    :ensure nil
+    :init
+    (setq semanticdb-default-save-directory
+          (locate-user-emacs-file ".semanticdb"))
+    :config
+    ;; 将 Semantic 解析后的数据缓存到文件中
+    (global-semanticdb-minor-mode 1)
+    ;; 在用户不操作是自动更新数据，否则只在执行某些命令时更新
+    (global-semantic-idle-scheduler-mode 1)
+    ;;; 激活 Semantic Mode，解析文件
+    (semantic-mode 1)
+    ;; 在 buffer 的第一行显示当前光标所在函数的函数名
+    (add-to-list 'semantic-default-submodes
+                 'global-semantic-stickyfunc-mode))
 #+END_SRC
 
 * CMake
