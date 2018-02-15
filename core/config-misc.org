@@ -40,6 +40,13 @@
   (load custom-file 'noerror)
 #+END_SRC
 
+* Fill
+
+#+BEGIN_SRC emacs-lisp
+  ;; 缺省 fill 宽度是 70，改为 80
+  (setq-default fill-column 80)
+#+END_SRC
+
 * Sentence
 
 #+BEGIN_SRC emacs-lisp
