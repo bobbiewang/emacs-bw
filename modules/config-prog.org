@@ -80,7 +80,9 @@ Racket 中安装必要的包，才能使用 racket-mode。在 Windows 系统中�
 
 #+BEGIN_SRC emacs-lisp
   (use-package racket-mode
-    :ensure t)
+    :ensure t
+    :config
+    (evil-set-initial-state 'racket-repl-mode 'insert))
 #+END_SRC
 
 * Verilog
