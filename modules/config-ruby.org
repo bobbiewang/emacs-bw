@@ -67,6 +67,7 @@ Spacemacs [[https://github.com/syl20bnr/spacemacs/issues/1584][Issue #1584]] 找
   (use-package inf-ruby
     :ensure t
     :config
+    (evil-set-initial-state 'inf-ruby-mode 'insert)
     (if (executable-find "pry")
         (setq inf-ruby-default-implementation "pry")))
 #+END_SRC
