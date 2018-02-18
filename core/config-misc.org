@@ -481,4 +481,7 @@ emacsclient 的 --server-file 参数，设置 server 文件的路径。
 
   ;; 鼠标选择文本时自动复制
   (setq mouse-drag-copy-region t)
+
+  ;; 缺省 800K 就进行 GC，修改为 100M
+  (setq gc-cons-threshold 100000000)
 #+END_SRC
