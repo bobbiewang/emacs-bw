@@ -74,6 +74,7 @@ sbt、rebar 和 bundler 项目。如果项目目录不使用以上工具，可�
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :ensure t
+    :defer t
     :delight '(:eval (concat " [" (projectile-project-name) "]"))
     :init
     (setq projectile-cache-file
@@ -150,7 +151,8 @@ sbt、rebar 和 bundler 项目。如果项目目录不使用以上工具，可�
   如果不喜欢，可以 M-x counsel-projectile-off 撤销这些替换。
 
 #+BEGIN_SRC emacs-lisp
-    (use-package counsel-projectile
-      :if (eq bw/completion-framework 'ivy)
-      :ensure t)
+  (use-package counsel-projectile
+    :if (eq bw/completion-framework 'ivy)
+    :ensure t
+    :after (projectile))
 #+END_SRC

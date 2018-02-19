@@ -106,6 +106,7 @@
 #+BEGIN_SRC emacs-lisp
   (use-package recentf
     :ensure nil
+    :defer t
     :init
     ;; 自定义数据文件
     (setq recentf-save-file (locate-user-emacs-file ".recentf"))

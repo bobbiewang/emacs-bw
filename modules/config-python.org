@@ -11,7 +11,8 @@ Python 包完成的，在运行 anaconda-mode 的命令时会自动通过 pip �
 
 #+BEGIN_SRC emacs-lisp
   (use-package anaconda-mode
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 * 参考资料

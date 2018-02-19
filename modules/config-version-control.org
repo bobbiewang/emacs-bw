@@ -9,6 +9,7 @@ vc-handled-backends 用于配置需要使用的版本管理工具。
 #+BEGIN_SRC emacs-lisp
   (use-package vc
     :ensure nil
+    :defer t
     :init
     (when bw/windows-p
       ;; Windows 上调用 Git 的性能比较差，在 VC 中禁用
@@ -21,7 +22,8 @@ vc-handled-backends 用于配置需要使用的版本管理工具。
 
 #+BEGIN_SRC emacs-lisp
   (use-package evil-magit
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 * Magit
@@ -29,6 +31,7 @@ vc-handled-backends 用于配置需要使用的版本管理工具。
 #+BEGIN_SRC emacs-lisp
   (use-package magit
     :ensure t
+    :defer t
     :init
     (bw/set-space-key-and-name
      "ag" 'magit-status nil)

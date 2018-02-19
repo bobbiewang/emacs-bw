@@ -70,6 +70,7 @@
 #+BEGIN_SRC emacs-lisp
   (use-package ag
     :ensure t
+    :defer t
     :config
     (setq ag-highlight-search t))
 #+END_SRC
@@ -82,6 +83,7 @@
   (use-package helm-ag
     :if (eq bw/completion-framework 'helm)
     :ensure t
+    :after (helm)
     :init
     (bw/set-space-key-and-name
      "sg" 'helm-do-ag nil))
@@ -97,5 +99,6 @@
 
 #+BEGIN_SRC emacs-lisp
   (use-package wgrep
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC

@@ -114,7 +114,8 @@ completing-read-function 的地方会自动调用 Ivy 接口。
 #+BEGIN_SRC emacs-lisp
   (use-package ivy-hydra
     :if (eq bw/completion-framework 'ivy)
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 ** smex
@@ -126,6 +127,7 @@ smex 的数据，最近用的命令列在前面。
   (use-package smex
     :if (eq bw/completion-framework 'ivy)
     :ensure t
+    :defer t
     :init
     (setq smex-save-file (locate-user-emacs-file ".smex-items")))
 #+END_SRC
@@ -152,7 +154,7 @@ yas-visit-snippet-file 打开相应的 Snippet 文件修改。
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
     :ensure t
-    :commands (yas-global-mode yas-minor-mode)
+    :defer t
     :config
     (yas-reload-all))
 #+END_SRC
@@ -209,9 +211,9 @@ Backend 组中。
   (use-package company
     :ensure t
     :delight
-    :config
     ;; 全局激活 Company Mode
-    (add-hook 'after-init-hook 'global-company-mode)
+    :hook (after-init . global-company-mode)
+    :config
     ;; 激发补全前等待时间，缺省是 0.5，修改成 0.1 会快一点
     (setq company-idle-delay 0.1))
 #+END_SRC

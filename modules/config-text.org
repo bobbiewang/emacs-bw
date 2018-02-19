@@ -21,6 +21,7 @@
 #+BEGIN_SRC emacs-lisp
   (use-package hideshow
     :ensure nil
+    :defer t
     :init
     ;; 在一些编程语言的模式中启用 hs-minor-mode
     (dolist (x '(c c++ emacs-lisp lisp java perl sh python ruby))
@@ -130,7 +131,8 @@
 
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 * XML
@@ -145,5 +147,6 @@
 
 #+BEGIN_SRC emacs-lisp
   (use-package yaml-mode
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC

@@ -94,9 +94,9 @@
   (use-package auto-highlight-symbol
     :ensure t
     :delight
+    :hook (prog-mode . auto-highlight-symbol-mode)
     :init
-    (setq ahs-idle-interval 1)
-    (add-hook 'prog-mode-hook #'auto-highlight-symbol-mode))
+    (setq ahs-idle-interval 1))
 #+END_SRC
 
 * indent
@@ -155,8 +155,7 @@
 #+BEGIN_SRC emacs-lisp
   (use-package expand-region
     :ensure t
-    :init
-    (global-set-key (kbd "C-=") 'er/expand-region))
+    :bind ("C-=" . er/expand-region))
 #+END_SRC
 
 * zzz-to-char
@@ -167,8 +166,7 @@
 #+BEGIN_SRC emacs-lisp
   (use-package zzz-to-char
     :ensure t
-    :init
-    (global-set-key (kbd "M-z") #'zzz-to-char))
+    :bind ("M-z" . zzz-to-char))
 #+END_SRC
 
 * clean-aindent-mode
@@ -179,8 +177,7 @@
 #+BEGIN_SRC emacs-lisp
   (use-package clean-aindent-mode
     :ensure t
-    :init
-    (add-hook 'prog-mode-hook 'clean-aindent-mode))
+    :hook (prog-mode))
 #+END_SRC
 
 * ws-butler
@@ -191,8 +188,7 @@
 #+BEGIN_SRC emacs-lisp
   (use-package ws-butler
     :ensure t
-    :init
-    (add-hook 'prog-mode-hook 'ws-butler-mode))
+    :hook (prog-mode . ws-butler-mode))
 #+END_SRC
 
 * visual-regexp
@@ -201,7 +197,8 @@
 
 #+BEGIN_SRC emacs-lisp
   (use-package visual-regexp
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 * discover-my-major
@@ -212,7 +209,8 @@
 
 #+BEGIN_SRC emacs-lisp
   (use-package discover-my-major
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 * NeoTree
@@ -241,6 +239,7 @@
 #+BEGIN_SRC emacs-lisp
   (use-package neotree
     :ensure t
+    :defer t
     :init
     ;; 定制 NeoTree 在 Evil Normal State 下的键绑定
     (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-quick-look)
@@ -281,6 +280,7 @@ undo-tree 替换 Emacs 内置的 Undo 系统，并且设置了几个键绑定，
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
     :ensure t
+    :defer t
     :delight
     :config
     ;; 在可视化 Undo Tree 显示时间戳
@@ -288,6 +288,7 @@ undo-tree 替换 Emacs 内置的 Undo 系统，并且设置了几个键绑定，
     ;; 在可视化 Undo Tree 显示 Diff
     (setq undo-tree-visualizer-diff t))
 #+END_SRC
+
 * Misc
 ** pcache
 
@@ -296,6 +297,7 @@ undo-tree 替换 Emacs 内置的 Undo 系统，并且设置了几个键绑定，
 #+BEGIN_SRC emacs-lisp
   (use-package pcache
     :ensure nil
+    :defer t
     :init
     (setq pcache-directory
           (let ((dir (concat user-emacs-directory ".var/pcache/")))

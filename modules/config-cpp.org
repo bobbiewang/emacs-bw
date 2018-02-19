@@ -53,6 +53,14 @@ semantic-dependency-system-include-path。对于其他系统或第三方库的�
 #+END_SRC
 
 * CMake
+** cmake-mode
+
+#+BEGIN_SRC emacs-lisp
+  (use-package cmake-mode
+    :ensure t
+    :defer t)
+#+END_SRC
+
 ** cmake-font-lock
 
   [[https://github.com/Lindydancer/cmake-font-lock][cmake-font-lock]] 为 CMakeLists.txt 提供了语法高亮。
@@ -60,8 +68,7 @@ semantic-dependency-system-include-path。对于其他系统或第三方库的�
 #+BEGIN_SRC emacs-lisp
   (use-package cmake-font-lock
     :ensure t
-    :init
-    (add-hook 'cmake-mode-hook 'cmake-font-lock-activate))
+    :hook (cmake-mode . cmake-font-lock-activate))
 #+END_SRC
 
 ** cmake-project
@@ -77,6 +84,7 @@ semantic-dependency-system-include-path。对于其他系统或第三方库的�
 #+BEGIN_SRC emacs-lisp
   (use-package cmake-project
     :ensure t
+    :defer t
     :init
     (defun bw/maybe-cmake-project-hook ()
       (if (file-exists-p "CMakeLists.txt") (cmake-project-mode)))
@@ -185,6 +193,7 @@ cmake-ide-set-compiler-flags，为其他扩展设置必要的信息。
 #+BEGIN_SRC emacs-lisp
   (use-package cmake-ide
     :ensure t
+    :defer t
     :init
     (defvar bw/cmake-ide-diagnosis nil "输出一些 cmake-ide 内部信息用于诊断")
     ;; 在 ~/.cmake-ide 目录下运行 CMake，而不是系统临时目录
@@ -376,9 +385,9 @@ CR（ASCII 13）。下面是实例代码。
 #+BEGIN_SRC emacs-lisp
   (use-package irony
     :ensure t
+    :hook ((c++-mode . irony-mode)
+           (irony-mode . irony-cdb-autosetup-compile-options))
     :init
-    (add-hook 'c++-mode-hook 'irony-mode)
-    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
     (setq irony-server-install-prefix
           (locate-user-emacs-file ".irony"))
     (setq irony-user-dir

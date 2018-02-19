@@ -60,14 +60,16 @@ clang.exe。可是 Cygwin 缺省是安装 /bin/clang-N.0.exe，然后创建
 
 #+BEGIN_SRC emacs-lisp
   (use-package ahk-mode
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 * C#
 
 #+BEGIN_SRC emacs-lisp
   (use-package csharp-mode
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 * Scheme
@@ -81,6 +83,7 @@ Racket 中安装必要的包，才能使用 racket-mode。在 Windows 系统中�
 #+BEGIN_SRC emacs-lisp
   (use-package racket-mode
     :ensure t
+    :defer t
     :init
     (add-hook 'racket-mode-hook 'yas-minor-mode)
     :config

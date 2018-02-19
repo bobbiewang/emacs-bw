@@ -68,6 +68,7 @@ Spacemacs [[https://github.com/syl20bnr/spacemacs/issues/1584][Issue #1584]] 找
 #+BEGIN_SRC emacs-lisp
   (use-package inf-ruby
     :ensure t
+    :defer t
     :config
     (evil-set-initial-state 'inf-ruby-mode 'insert)
     (if (executable-find "pry")
@@ -80,7 +81,8 @@ Spacemacs [[https://github.com/syl20bnr/spacemacs/issues/1584][Issue #1584]] 找
 
 #+BEGIN_SRC emacs-lisp
   (use-package yari
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 * robe
@@ -93,7 +95,9 @@ Spacemacs [[https://github.com/syl20bnr/spacemacs/issues/1584][Issue #1584]] 找
 #+BEGIN_SRC emacs-lisp
   (use-package robe
     :ensure t
-    :hook (enh-ruby-mode . robe-mode)
+    :after (ruby-mode enh-ruby-mode company)
+    :hook ((enh-ruby-mode . robe-mode)
+           (ruby-mode . robe-mode))
     :config
     (eval-after-load 'company
       '(push 'company-robe company-backends)))

@@ -207,5 +207,6 @@ package-user-dir 目录下所有的内容被称为 Package Contents。
 
 #+BEGIN_SRC emacs-lisp
   (use-package delight
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC

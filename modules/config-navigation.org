@@ -20,6 +20,7 @@
 #+BEGIN_SRC emacs-lisp
   (use-package avy
     :ensure t
+    :defer t
     :init
     (bw/set-space-key-and-name
      "<SPC>" 'avy-goto-word-1 "avy word"))
@@ -32,6 +33,7 @@
 #+BEGIN_SRC emacs-lisp
   (use-package winum
     :ensure t
+    :defer t
     :init
     (bw/set-space-key-and-name
      "0" 'winum-select-window-0 "window 0"
@@ -74,7 +76,8 @@ Java、PHP4 和 Assembly。通过 Pygmentes 和 Ctags，可以支持 25 种语�
 
 #+BEGIN_SRC emacs-lisp
   (use-package ggtags
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 *** helm-gtags
@@ -101,6 +104,7 @@ helm-gtags-find-tag，可以将其绑定到 helm-gtags.dwim 实现更灵活的�
   (use-package helm-gtags
     :if (eq bw/completion-framework 'helm)
     :ensure t
+    :defer t
     :init
     (setq helm-gtags-ignore-case t
           helm-gtags-auto-update t
@@ -145,6 +149,7 @@ counsel-gtags-go-forward 两个命令浏览。
     (use-package counsel-gtags
       :if (eq bw/completion-framework 'ivy)
       :ensure t
+      :defer t
       :delight  " gtags"
       :init
       (add-hook 'c-mode-hook 'counsel-gtags-mode)
@@ -164,5 +169,6 @@ counsel-gtags-go-forward 两个命令浏览。
 
 #+BEGIN_SRC emacs-lisp
   (use-package dumb-jump
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
