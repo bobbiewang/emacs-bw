@@ -13,17 +13,49 @@
 
 * anaconda-mode
 
-  anaconda-mode 支持代码浏览、文档查找和代码补全等功能。安装、设置也很
-简单，通过 ELPA 安装 anaconda-mode，然后在 python-mode 中激活
-anaconda-mode 和 anaconda-eldoc-mode 就可以了。实际上其功能是通过一些
-Python 包完成的，在运行 anaconda-mode 的命令时会自动通过 pip 安装这些
-包（如 anaconda-mode、jedi 等）。值得注意的是，pip 在 Windows 平台会自
-动读取 IE 设置的代理，要确保代理是可用的。
+  anaconda-mode 支持代码浏览、文档查找和代码补全等功能。安装和设置很简单：通过
+ELPA 安装 anaconda-mode，然后在 python-mode 中激活 anaconda-mode 和
+anaconda-eldoc-mode 就可以了。
+
+  下面是启用了 anaconda-mode 后可用的命令、缺省键绑定。
+
+  | 命令                           | 描述     | 缺省键绑定 |
+  |--------------------------------+----------+------------|
+  | anaconda-mode-complete         | 补全     | C-M-i      |
+  | anaconda-mode-find-definitions | 查找定义 | M-.        |
+  | anaconda-mode-find-assignments | 查找赋值 | M-,        |
+  | anaconda-mode-find-references  | 查找引用 | M-r        |
+  | anaconda-mode-go-back          | 返回     | M-*        |
+  | anaconda-mode-show-doc         | 显示文档 | M-?        |
+
+  anaconda-mode 的功能是通过一些 Python 包完成的，在运行 anaconda-mode 的命令时
+会自动通过 pip 安装这些包（如 anaconda-mode、jedi、parso 等）。这些包安装在变量
+anaconda-mode-installation-directory 设置的目录下。
+
+  值得注意的是，pip 在 Windows 平台会自动读取 IE 设置的代理，在 Linux 平台读取
+https_proxy 环境变量设置的代理，要确保代理是可用的。
 
 #+BEGIN_SRC emacs-lisp
   (use-package anaconda-mode
     :ensure t
-    :defer t)
+    :hook ((python-mode . anaconda-mode)
+           (python-mode . anaconda-eldoc-mode))
+    :init
+    ;; 设置 Python 包的安装目录
+    (setq anaconda-mode-installation-directory
+          (locate-user-emacs-file ".anaconda-mode")))
+#+END_SRC
+
+* company-anaconda
+
+  [[https://github.com/proofit404/company-anaconda][company-anaconda]] 为 Company 提供了基于 anaconda-mode 的补全后端。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company-anaconda
+    :ensure t
+    :after (company)
+    :config
+    (add-to-list 'company-backends '(company-anaconda :with company-capf)))
 #+END_SRC
 
 * 参考资料
