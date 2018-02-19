@@ -1,5 +1,16 @@
 #+TITLE:     Python 开发环境
 
+* Python Mode
+
+#+BEGIN_SRC emacs-lisp
+  (use-package python
+    :ensure nil
+    :defer t
+    :config
+    (if (executable-find "ipython")
+        (setq python-shell-interpreter "ipython")))
+#+END_SRC
+
 * anaconda-mode
 
   anaconda-mode 支持代码浏览、文档查找和代码补全等功能。安装、设置也很
