@@ -54,12 +54,15 @@
   在 Emacs 中进行搜索的时候，[[https://github.com/syohex/emacs-anzu][anzu]] 在 mode-line 中显示匹配项的数目，以
 及当前项的序号。
 
+  可以通过 global-anzu-mode 全局启用 anzu，或者通过 anzu-mode 在某些情况启用
+anzu minor mode。
+
 #+BEGIN_SRC emacs-lisp
   (use-package anzu
     :ensure t
     :delight
-    :init
-    (global-anzu-mode +1))
+    :config
+    (global-anzu-mode 1))
 #+END_SRC
 
 * ag
