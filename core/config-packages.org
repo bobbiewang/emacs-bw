@@ -73,7 +73,8 @@ package-user-dir 目录下所有的内容被称为 Package Contents。
   + :init :: 加载扩展之前执行的代码。:init 部分应该尽可能简单，把配置
              放在 :config 部分
   + :config :: 加载扩展之后的执行的代码
-  + :preface ::
+  + :preface :: 在所有代码之前运行。比如，定义在 :if 中用的函数，定义在
+                byte-compile 中需要的函数
   + :magic :: 设置 magic-mode-alist
   + :magic-fallback :: 设置 magic-fallback-mode-alist
   + :mode :: 设置 auto-mode-alist
@@ -81,16 +82,16 @@ package-user-dir 目录下所有的内容被称为 Package Contents。
   + :commands :: 命令成为 autoload
   + :bind :: 配置键绑定，对应的命令自动成为 autoload。可以结合 :map 设
              置 keymap
-  + :bind* ::
-  + :bind-keymap ::
-  + :bind-keymap* ::
-  + :defer :: 强制延后加载
+  + :bind* :: 类似 :bind，但会覆盖所有原 Minor Mode 的键绑定
+  + :bind-keymap :: 将键绑定到扩展包里定义的 keymap
+  + :bind-keymap* :: 类似 :bind-keymap，但会覆盖所有原 Minor Mode 的键绑定
+  + :defer :: 强制延迟加载
   + :after :: 在指定 feature 加载后加载
   + :demand :: 强制立即加载
   + :if EXP :: 条件加载，比如某些配置仅适于 window-system
   + :disabled :: 禁用扩展包
-  + :defines :: 用于抑制 byte-compile 时的警告
-  + :functions :: 用于抑制 byte-compile 时的警告
+  + :defines :: 用于抑制 byte-compile 时对于指定变量的警告
+  + :functions :: 用于抑制 byte-compile 时对于指定函数的警告
   + :load-path :: 把指定目录加到 load-path
   + :diminish :: 配合 diminish，在 Modeline 隐藏或改写 Minor Mode 名字
   + :delight :: 配合 delight，在 Modeline 隐藏或改写 Minor Mode 名字
@@ -161,7 +162,7 @@ package-user-dir 目录下所有的内容被称为 Package Contents。
     :commands R)
 
   ;; 用了 :commands, :bind, :bind*, :bind-keymap, :bind-keymap*, :mode
-  ;; 或 :interpreter，该包会延迟加载。否则，可以用 :defer 强制延迟加载。
+  ;; 或 :interpreter，该包会延迟加载。否则，可以用 :defer 设置延迟加载。
   ;; 下面两个例子的效果是一样的
   (use-package ace-jump-mode
     :defer t
