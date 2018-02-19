@@ -1,5 +1,9 @@
 #+TITLE:     编程
 
+* Prog Mode
+
+  prog-mode 派生出各种编程语言的 mode。
+
 * Compile
 
 #+BEGIN_SRC emacs-lisp
