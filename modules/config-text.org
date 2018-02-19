@@ -1,4 +1,8 @@
-#+TITLE:     Notes
+#+TITLE:     Text
+
+* Text Mode
+
+  text-mode 派生出 outline-mode、org-mode、nxml-mode 等。
 
 * Hide Show
 
