@@ -33,9 +33,9 @@
 
 #+BEGIN_SRC emacs-lisp
   (use-package monokai-theme
-               :ensure t
-               :config
-               (load-theme 'monokai t))
+    :ensure t
+    :config
+    (load-theme 'monokai t))
 #+END_SRC
 
 ** Frame
