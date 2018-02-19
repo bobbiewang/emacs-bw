@@ -1,5 +1,17 @@
 #+TITLE:     Ruby 开发环境
 
+* Ruby Mode
+
+  Ruby Mode 是 Emacs 内置的 Major Mode。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ruby-mode
+    :ensure nil
+    :defer t
+    :init
+    (add-hook 'ruby-mode-hook 'yas-minor-mode))
+#+END_SRC
+
 * Enhanced Ruby Mode
 
   [[http://github.com/zenspider/Enhanced-Ruby-Mode][Enhanced Ruby Mode]] 使用 Ruby 自带的 Ripper 解析代码，能够更准确地分
