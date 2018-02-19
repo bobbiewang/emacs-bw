@@ -282,14 +282,14 @@ emacsclient 的 --server-file 参数，设置 server 文件的路径。
     (let ((things '((?l . list) (?f . filename) (?w . word) (?s . sexp)))
           (message-log-max)
           beg t-a-p thing event)
-      (flet ((get-thing ()
-                        (save-excursion
-                          (beginning-of-thing thing)
-                          (setq beg (point))
-                          (if (= n 1)
-                              (end-of-thing thing)
-                            (forward-thing thing n))
-                          (buffer-substring beg (point)))))
+      (cl-flet ((get-thing ()
+                           (save-excursion
+                             (beginning-of-thing thing)
+                             (setq beg (point))
+                             (if (= n 1)
+                                 (end-of-thing thing)
+                               (forward-thing thing n))
+                             (buffer-substring beg (point)))))
         ;; try detecting url email and fall back to 'line'
         (dolist (thing '(url email line))
           (when (bounds-of-thing-at-point thing)
