@@ -12,6 +12,8 @@
     :mode "\\(?:\\.rb\\|rake\\|gemspec\\|/\\(?:Gem\\|Rake\\)file\\)\\'"
     :interpreter "ruby"
     :bind (("C-c C-c" . bw/ruby-eval-buffer))
+    :init
+    (add-hook 'enh-ruby-mode-hook 'yas-minor-mode)
     :config
     (defun bw/ruby-eval-buffer () (interactive)
         "以 Ruby 执行当前 Buffer 的代码。"
