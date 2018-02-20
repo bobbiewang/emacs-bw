@@ -267,6 +267,18 @@ undo-tree 替换 Emacs 内置的 Undo 系统，并且设置了几个键绑定，
     (setq undo-tree-visualizer-diff t))
 #+END_SRC
 
+* Shell
+
+#+BEGIN_SRC emacs-lisp
+  (use-package shell
+    :ensure nil
+    :defer t
+    :init
+    (when bw/windows-p
+      ;; 通过 --login 加载 .bash_profile 以设置 PS1
+      (setq explicit-bash-args '("--login" "-i"))))
+#+END_SRC
+
 * Misc
 ** pcache
 
