@@ -37,35 +37,13 @@
 
 * Line Number
 
-  [[http://elpa.gnu.org/packages/nlinum.html][nlinum]] 可以替换 Emacs 内置的 linum-mode。因为 nlinum 使用 jit-lock，
-性能更好。
-
 #+BEGIN_SRC emacs-lisp
-  (use-package nlinum
-    :ensure t
-    :defer t)
-#+END_SRC
-
-  [[https://github.com/CodeFalling/nlinum-relative][nlinum-relative]] 为 nlinum-mode 提供显示相对行号的功能。
-
-  下面是几个 nlinum-relative 的定制变量。
-  - nlinum-relative-redisplay-delay :: 刷新的 Idle 时间
-  - nlinum-relative-current-symbol :: 当前行的显示符号，缺省为 ""，效
-       果是显示绝对行号
-  - nlinum-relative-offset :: 第二行行号开始的 Offset，缺省为 0
-
-  但是，启用的 nlinum-relative 会造成终端下文本错乱的情况，所以只在图
-形界面启动。
-
-#+BEGIN_SRC emacs-lisp
-  (use-package nlinum-relative
-    :if window-system
-    :ensure t
-    :hook ((prog-mode . nlinum-relative-mode)
-           (text-mode . nlinum-relative-mode))
-    :config
-    ;; 为 Evil 设置
-    (nlinum-relative-setup-evil))
+  (use-package display-line-numbers
+    :ensure nil
+    :hook ((prog-mode . display-line-numbers-mode)
+           (text-mode . display-line-numbers-mode))
+    :init
+    (setq display-line-numbers-type 'relative))
 #+END_SRC
 
 * Bookmark
