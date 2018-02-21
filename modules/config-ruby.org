@@ -82,6 +82,8 @@ Spacemacs [[https://github.com/syl20bnr/spacemacs/issues/1584][Issue #1584]] 找
   (use-package inf-ruby
     :ensure t
     :defer t
+    :bind (:map inf-ruby-minor-mode-map
+                ("C-c C-z" . inf-ruby))
     :config
     (evil-set-initial-state 'inf-ruby-mode 'insert)
     (if (executable-find "pry")
