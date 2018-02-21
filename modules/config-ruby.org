@@ -23,13 +23,14 @@
     :ensure t
     :mode "\\(?:\\.rb\\|rake\\|gemspec\\|/\\(?:Gem\\|Rake\\)file\\)\\'"
     :interpreter "ruby"
-    :bind (("C-c C-c" . bw/ruby-eval-buffer))
+    :bind (:map enh-ruby-mode-map
+                ("C-c C-c" . bw/ruby-send-buffer))
     :init
     (add-hook 'enh-ruby-mode-hook 'yas-minor-mode)
     :config
-    (defun bw/ruby-eval-buffer () (interactive)
-        "以 Ruby 执行当前 Buffer 的代码。"
-        (shell-command-on-region (point-min) (point-max) "ruby" "*ruby-output*")))
+    (defun bw/ruby-send-buffer () (interactive)
+        "把当前 Buffer 的代码发送到 Ruby REPL 执行"
+        (ruby-send-region (point-min) (point-max))))
 #+END_SRC
 
 * ruby-electric
