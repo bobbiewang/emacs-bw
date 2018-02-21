@@ -6,9 +6,18 @@
   (use-package python
     :ensure nil
     :defer t
+    :bind (:map python-mode-map
+                ("C-c C-z" . bw/run-or-switch-to-python-shell))
     :config
     (if (executable-find "ipython")
-        (setq python-shell-interpreter "ipython")))
+        (setq python-shell-interpreter "ipython"))
+    (defun bw/run-or-switch-to-python-shell ()
+      "切换到 Python Shell，必要时启动一个 Python Shell"
+      (interactive)
+      (let ((process (python-shell-get-process)))
+        (pop-to-buffer (process-buffer (if process
+                                           process
+                                         (run-python)))))))
 #+END_SRC
 
 * anaconda-mode
