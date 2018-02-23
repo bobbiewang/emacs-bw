@@ -96,6 +96,8 @@ Racket 中安装必要的包，才能使用 racket-mode。在 Windows 系统中�
 
 * Verilog
 
+  [[https://www.veripool.org/wiki/verilog-mode][Verilog-Mode]]
+
 #+BEGIN_SRC emacs-lisp
   (use-package verilog-mode
     :ensure nil
