@@ -13,7 +13,7 @@
 
   目前支持 hs-minor-mode 的编程语言有：
   - Lisp、Emacs Lisp、Scheme
-  - Java、C、C++ 
+  - Java、C、C++
   - Perl
   - C#
   - PHP
@@ -71,8 +71,10 @@
     :config
     ;; SRC 块内支持语法高亮
     (setq org-src-fontify-natively t)
-    ;; 键绑定
-    (setq org-special-ctrl-a/e t)         ; 微调 C-a/e 的行为
+    ;; 微调 C-a/e 的行为
+    (setq org-special-ctrl-a/e t)
+    ;; promote/demote 时只调整标题，不调整内容
+    (setq org-adapt-indentation nil)
     (evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle)
     (bw/set-space-key-and-name "c" 'org-capture nil)
     ;; Org 目录
