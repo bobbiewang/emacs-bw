@@ -43,7 +43,10 @@
     :hook ((prog-mode . display-line-numbers-mode)
            (text-mode . display-line-numbers-mode))
     :init
-    (setq display-line-numbers-type 'relative))
+    ;; 使用相对行号
+    (setq display-line-numbers-type 'relative)
+    ;; 一开始就使用合适的宽度，而不是动态调整
+    (setq display-line-numbers-width-start t))
 #+END_SRC
 
 * Bookmark
