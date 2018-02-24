@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# name: counter
+# key: counter
+# --
+module counter(clk, rst, q);
+   parameter COUNT_WIDTH = $0;
+
+   input  clk, rst;
+   output [COUNT_WIDTH-1:0] q;
+   reg    [COUNT_WIDTH-1:0] q;
+
+   always @(posedge clk or posedge rst)
+     begin
+        if (rst)
+          c = 0;
+        else
+          c = c + 1'b1;
+     end
+endmodule
