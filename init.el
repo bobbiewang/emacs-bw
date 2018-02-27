@@ -4,13 +4,11 @@
 
 ;; 初始化 ELPA 环境
 
-(if (>= emacs-major-version 27)
-    (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-  (require 'package)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-  (setq package-user-dir (locate-user-emacs-file ".elpa"))
-  (setq package-enable-at-startup nil)    ; 不在 init 文件加载后重复初始化
-  (package-initialize))
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(setq package-user-dir (locate-user-emacs-file ".elpa"))
+(setq package-enable-at-startup nil)    ; 不在 init 文件加载后重复初始化
+(package-initialize)
 
 ;; 将 site-lisp 下的包加到 load-path
 ;; 忽略 .git、.svn、RCS、CVS 等目录，以及包含 .nosearch 文件的目录
