@@ -38,8 +38,9 @@
   "加载 modules 配置文件."
   (interactive)
   (when (file-exists-p bw/modules-dir)
-  (message "Loading configuration files of modules...")
-  (mapc 'org-babel-load-file (directory-files bw/modules-dir 't "config-.*org$"))))
+    (message "Loading configuration files of modules...")
+    (mapc 'org-babel-load-file
+          (directory-files bw/modules-dir 't "config-.*org$"))))
 
 (bw/load-core-files)
 (bw/load-modules-files)
