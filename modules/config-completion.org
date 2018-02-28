@@ -94,9 +94,9 @@ completing-read-function 的地方会自动调用 Ivy 接口。
     ;; 在 Ivy 补全界面中同时显示当前项序号和项目总数
     (setq ivy-count-format "%d/%d> ")
     ;; 传统键绑定
-    (define-key global-map [remap describe-function]
+    (define-key (current-global-map) [remap describe-function]
       'counsel-describe-function)
-    (define-key global-map [remap describe-variable]
+    (define-key (current-global-map) [remap describe-variable]
       'counsel-describe-variable)
     ;; Space 键绑定
     (bw/set-space-key-and-name
