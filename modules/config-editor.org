@@ -287,10 +287,12 @@ undo-tree 替换 Emacs 内置的 Undo 系统，并且设置了几个键绑定，
 #+BEGIN_SRC emacs-lisp
   (use-package ediff
     :ensure nil
-    :init
-    (setq ediff-split-window-function (if (> (frame-width) 170)
-                                          'split-window-horizontally
-                                        'split-window-vertically)))
+    :hook (ediff-before-setup-windows
+           .
+           (lambda()
+             (setq ediff-split-window-function (if (> (frame-width) 170)
+                                                   'split-window-horizontally
+                                                 'split-window-vertically)))))
 #+END_SRC
 
 * Misc
