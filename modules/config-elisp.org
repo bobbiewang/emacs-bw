@@ -18,9 +18,8 @@
 #+BEGIN_SRC emacs-lisp
   (use-package highlight-parentheses
     :ensure t
-    :defer t
     :delight
-    :hook (porg-mode)
+    :hook (prog-mode . highlight-parentheses-mode)
     :config
     ;; 调整括号的颜色，缺省的颜色太接近
     (setq hl-paren-colors '("Springgreen3"
