@@ -146,20 +146,17 @@ counsel-gtags-go-forward 两个命令浏览。
 号。
 
 #+BEGIN_SRC emacs-lisp
-    (use-package counsel-gtags
-      :if (eq bw/completion-framework 'ivy)
-      :ensure t
-      :defer t
-      :delight  " gtags"
-      :init
-      (add-hook 'c-mode-hook 'counsel-gtags-mode)
-      (add-hook 'c++-mode-hook 'counsel-gtags-mode)
-      :config
-      (define-key counsel-gtags-mode-map (kbd "M-.") 'counsel-gtags-find-definition)
-      (define-key counsel-gtags-mode-map (kbd "M-,") 'counsel-gtags-go-backward)
-      (define-key counsel-gtags-mode-map (kbd "M-?") 'counsel-gtags-find-reference)
-      (define-key counsel-gtags-mode-map (kbd "C-,") 'counsel-gtags-find-file)
-      (define-key counsel-gtags-mode-map (kbd "C-.") 'counsel-gtags-find-symbol))
+  (use-package counsel-gtags
+    :if (eq bw/completion-framework 'ivy)
+    :ensure t
+    :delight " gtags"
+    :hook (c-mode-common . counsel-gtags-mode)
+    :config
+    (define-key counsel-gtags-mode-map (kbd "M-.") 'counsel-gtags-find-definition)
+    (define-key counsel-gtags-mode-map (kbd "M-,") 'counsel-gtags-go-backward)
+    (define-key counsel-gtags-mode-map (kbd "M-?") 'counsel-gtags-find-reference)
+    (define-key counsel-gtags-mode-map (kbd "C-,") 'counsel-gtags-find-file)
+    (define-key counsel-gtags-mode-map (kbd "C-.") 'counsel-gtags-find-symbol))
 #+END_SRC
 
 * Dumb Jump
