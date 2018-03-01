@@ -4,6 +4,12 @@
 
   text-mode 派生出 outline-mode、org-mode、nxml-mode 等。
 
+#+BEGIN_SRC emacs-lisp
+  (use-package text-mode
+    :ensure nil
+    :hook (text-mode . turn-on-auto-fill))
+#+END_SRC
+
 * Hide Show
 
   hs-minor-mode 可以根据语法区分文本块，从而隐藏或者显示文本。语法在变
@@ -66,7 +72,6 @@
     :init
     (add-hook 'org-mode-hook
               (lambda ()
-                (auto-fill-mode 1)
                 (yas-minor-mode 1)))
     :config
     ;; SRC 块内支持语法高亮
