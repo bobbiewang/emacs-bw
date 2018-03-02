@@ -297,7 +297,48 @@ undo-tree 替换 Emacs 内置的 Undo 系统，并且设置了几个键绑定，
            (lambda()
              (setq ediff-split-window-function (if (> (frame-width) 170)
                                                    'split-window-horizontally
-                                                 'split-window-vertically)))))
+                                                 'split-window-vertically))))
+    :init
+    (setq ediff-window-setup-function #'ediff-setup-windows-plain)
+    (defun bw/ediff-dwim ()
+      "智能调用合适的 ediff 命令
+  如果有当前 buffer 有 region 处于激活状态
+  - 自动调用 `ediff-regions-wordwise'
+  如果当前 frame 有两个 window，而且使用相同的 major mode
+  - 如果 buffer 有对应的文件，而且 buffer 没有被修改，自动调用 `ediff-files'
+  - 否则，自动调用 `ediff-buffers'
+  如果当前 buffer 受版本控制，自动调用 `vc-ediff'
+  如果以上都不符合，调用 `ediff-buffers'，手动选择 buffer 进行比较"
+      (interactive)
+      (let* ((num-win (length (window-list)))
+             (buffer-a (current-buffer))
+             (file-a (buffer-file-name))
+             (mode-a major-mode)
+             buffer-b file-b mode-b)
+        (save-excursion
+          (other-window 1)
+          (setq buffer-b (current-buffer))
+          (setq file-b (buffer-file-name))
+          (setq mode-b major-mode))
+        (cond
+         ((region-active-p)
+          (call-interactively #'ediff-regions-wordwise))
+         ((and (= 2 num-win)
+               (eq mode-a mode-b))
+          (if (or (null file-a)
+                  (null file-b)
+                  (buffer-modified-p buffer-a)
+                  (buffer-modified-p buffer-b))
+              (progn
+                (message "Running ediff-buffers on '%s' and '%s'..." buffer-a buffer-b)
+                (ediff-buffers buffer-a buffer-b))
+            (progn
+              (message "Running ediff-files on '%s' and '%s'..." file-a file-b)
+              (ediff-files file-a file-b))))
+         ((and file-a
+               (vc-registered file-a))
+          (call-interactively #'vc-ediff))
+         ((t (call-interactively #'ediff-buffers)))))))
 #+END_SRC
 
 * Misc
