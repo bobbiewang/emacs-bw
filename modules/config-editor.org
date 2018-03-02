@@ -284,6 +284,11 @@ undo-tree 替换 Emacs 内置的 Undo 系统，并且设置了几个键绑定，
 
 * Ediff
 
+  Ediff 是 Emacs 自带的文件比较、文件合并、制作补丁工具，其后台调用 diff、diff3
+等程序。
+
+  如果比较时不关心空格，可以设置 ediff-diff-options 为 "-w"。
+
 #+BEGIN_SRC emacs-lisp
   (use-package ediff
     :ensure nil
