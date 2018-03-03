@@ -6,8 +6,7 @@
 
 #+BEGIN_SRC emacs-lisp
   (use-package text-mode
-    :ensure nil
-    :hook (text-mode . turn-on-auto-fill))
+    :ensure nil)
 #+END_SRC
 
 * Hide Show
@@ -72,6 +71,7 @@
     :init
     (add-hook 'org-mode-hook
               (lambda ()
+                (auto-fill-mode 1)
                 (yas-minor-mode 1)))
     :config
     ;; SRC 块内支持语法高亮
