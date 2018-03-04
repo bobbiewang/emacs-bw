@@ -76,17 +76,6 @@ clang.exe。可是 Cygwin 缺省是安装 /bin/clang-N.0.exe，然后创建
     :defer t)
 #+END_SRC
 
-* JavaScript
-** js2-mode
-
-  [[https://github.com/mooz/js2-mode/][js2-mode]]
-
-#+BEGIN_SRC emacs-lisp
-  (use-package js2-mode
-    :ensure t
-    :mode "\\.js\\'")
-#+END_SRC
-
 * Scheme
 
   [[https://github.com/greghendershott/racket-mode][racket-mode]] 为 [[http://www.racket-lang.org/][Racket]] 提供了语法高亮、REPL 等功能的支持。
@@ -123,4 +112,58 @@ Racket 中安装必要的包，才能使用 racket-mode。在 Windows 系统中�
                 ;; 取消原来绑定命令 electric-verilog-semi-with-comment
                 ;; 恢复到到全局的绑定
                 ("C-;" . set-mark-command)))
+#+END_SRC
+
+* Web
+** js2-mode
+
+  [[https://github.com/mooz/js2-mode/][js2-mode]]
+
+#+BEGIN_SRC emacs-lisp
+  (use-package js2-mode
+    :ensure t
+    :mode "\\.js\\'"
+    :config
+    ;; 设置 JavaScript 缩进
+    (setq js2-basic-offset 2))
+#+END_SRC
+
+** skewer-mode
+
+  [[https://github.com/skeeto/skewer-mode][skewer-mode]]
+
+#+BEGIN_SRC emacs-lisp
+  (use-package skewer-mode
+    :ensure t
+    :hook ((js2-mode . skewer-mode)
+           (css-mode . skewer-css-mode)
+           (html-mode . skewer-html-mode)))
+#+END_SRC
+
+** web-mode
+
+  [[http://web-mode.org/][web-mode]]
+
+#+BEGIN_SRC emacs-lisp
+  (use-package web-mode
+    :ensure t
+    :mode ("\\.erb\\'" . web-mode)
+    :config
+    ;; 设置 HTML 缩进
+    (setq web-mode-markup-indent-offset 2)
+    ;; 设置 CSS 缩进
+    (setq web-mode-css-indent-offset 2)
+    ;; 设置 JavaScript、PHP、Ruby 等脚本的缩进
+    (setq web-mode-code-indent-offset 2))
+#+END_SRC
+
+** emmet-mode
+
+  [[https://github.com/smihica/emmet-mode][emmet-mode]]
+
+#+BEGIN_SRC emacs-lisp
+  (use-package emmet-mode
+    :ensure t
+    :hook ((sgml-mode)
+           (css-mode)))
 #+END_SRC
