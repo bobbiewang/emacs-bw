@@ -205,7 +205,7 @@ cmake-ide-set-compiler-flags，为其他扩展设置必要的信息。
     ;; 存在，存在的话在 C/C++ 文件中启用 cmake-ide
     (defun bw/maybe-cmake-ide-hook ()
       (when (locate-dominating-file (buffer-file-name) "CMakeLists.txt")
-        (cmake-ide--mode-hook)))
+        (cmake-ide-setup)))
     (add-hook 'c-mode-common-hook 'bw/maybe-cmake-ide-hook)
     :config
     (setq cmake-ide-flags-c++ (append '("-std=c++11")))
