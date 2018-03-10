@@ -140,6 +140,28 @@ Racket 中安装必要的包，才能使用 racket-mode。在 Windows 系统中�
            (html-mode . skewer-html-mode)))
 #+END_SRC
 
+** tern
+
+  [[http://ternjs.net/][Tern]] 是 JavaScript 代码分析工具，并提供了 Emacs 前端，支持代码浏览和补全。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package tern
+    :ensure t
+    :hook ((js-mode . tern-mode)
+           (js2-mode . tern-mode)))
+#+END_SRC
+
+** company-tern
+
+  [[https://github.com/proofit404/company-tern][company-tern]] 为 company 提供了 Tern 后端。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company-tern
+    :ensure t
+    :init
+    (add-to-list 'company-backends 'company-tern))
+#+END_SRC
+
 ** web-mode
 
   [[http://web-mode.org/][web-mode]]
