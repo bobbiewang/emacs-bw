@@ -12,6 +12,22 @@
     :bind (([f6] . compile)))
 #+END_SRC
 
+* multi-compile
+
+#+BEGIN_SRC emacs-lisp
+  (use-package multi-compile
+    :ensure t
+    :config
+    (setq multi-compile-alist
+          '((c++-mode . (("cpp-solo-compile" . "g++ -Wall %file-name -o %file-sans")
+                         ("cpp-solo-run"     . "./%file-sans")
+                         ("cpp-solo-clean"   . "rm -f %file-sans %file-sans.exe")
+                         ("cpp-make" . "make --no-print-directory -C %make-dir")))
+            (rust-mode . (("rust-debug" . "cargo run")
+                          ("rust-release" . "cargo run --release")
+                          ("rust-test" . "cargo test"))))))
+#+END_SRC
+
 * Flycheck
 
   [[http://www.flycheck.org/][Flycheck]] 是个现代的实时语法检查工具，可以替代 Flymake。
