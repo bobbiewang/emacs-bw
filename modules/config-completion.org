@@ -86,6 +86,8 @@ completing-read-function 的地方会自动调用 Ivy 接口。
            ("M-`"     . counsel-imenu)
            ("M-y"     . counsel-yank-pop))
     :init
+    ;; 全局激活 ivy-mode，使用 completing-read 的地方都使用 Ivy 接口
+    (ivy-mode 1)
     ;; 把最近打开的文件和书签加到 ivy-switch-buffer 中
     (setq ivy-use-virtual-buffers t)
     (setq enable-recursive-minibuffers t)
