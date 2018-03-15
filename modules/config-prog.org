@@ -18,14 +18,18 @@
   (use-package multi-compile
     :ensure t
     :config
+    ;; 使用 Ivy 为补全后端时，用 completing-read
+    (if (eq bw/completion-framework 'ivy)
+        (setq multi-compile-completion-system 'default))
+    ;; 配置编译命令列表
     (setq multi-compile-alist
-          '((c++-mode . (("cpp-solo-compile" . "g++ -Wall %file-name -o %file-sans")
-                         ("cpp-solo-run"     . "./%file-sans")
-                         ("cpp-solo-clean"   . "rm -f %file-sans %file-sans.exe")
-                         ("cpp-make" . "make --no-print-directory -C %make-dir")))
-            (rust-mode . (("rust-debug" . "cargo run")
+          '((c++-mode . (("solo-compile" . "g++ -Wall %file-name -o %file-sans")
+                         ("solo-run"     . "./%file-sans")
+                         ("solo-clean"   . "rm -f %file-sans %file-sans.exe")
+                         ("make"         . "make --no-print-directory -C %make-dir")))
+            (rust-mode . (("rust-debug"   . "cargo run")
                           ("rust-release" . "cargo run --release")
-                          ("rust-test" . "cargo test"))))))
+                          ("rust-test"    . "cargo test"))))))
 #+END_SRC
 
 * Flycheck
