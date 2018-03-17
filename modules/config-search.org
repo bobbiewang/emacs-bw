@@ -92,6 +92,16 @@ anzu minor mode。
      "sg" 'helm-do-ag nil))
 #+END_SRC
 
+* ripgrep
+
+  [[https://github.com/nlamirault/ripgrep.el][ripgrep]] 支持在 Emacs 中用 ripgrep 程序搜索。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ripgrep
+    :ensure t
+    :defer t)
+#+END_SRC
+
 * wgrep
 
   和 counsel-ag 配合：
