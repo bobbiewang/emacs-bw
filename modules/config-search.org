@@ -67,8 +67,8 @@ anzu minor mode。
 
 * ag
 
-  [[https://github.com/Wilfred/ag.el/][ag]] 支持在 Emacs 内用 ag 程序搜索。其他一些命令，比如 projectile-ag，
-也需要 ag 的支持。
+  [[https://github.com/Wilfred/ag.el/][ag]] 支持在 Emacs 中用 Silver Searcher 程序搜索。其他一些命令，比如
+projectile-ag，也需要 ag 的支持。
 
 #+BEGIN_SRC emacs-lisp
   (use-package ag
