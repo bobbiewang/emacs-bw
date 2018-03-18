@@ -205,7 +205,7 @@ cmake-ide-set-compiler-flags，为其他扩展设置必要的信息。
     ;; 存在，存在的话在 C/C++ 文件中启用 cmake-ide
     (defun bw/maybe-cmake-ide-hook ()
       (when (locate-dominating-file (buffer-file-name) "CMakeLists.txt")
-        (cmake-ide--mode-hook)))
+        (cmake-ide-setup)))
     (add-hook 'c-mode-common-hook 'bw/maybe-cmake-ide-hook)
     :config
     (setq cmake-ide-flags-c++ (append '("-std=c++11")))
@@ -443,12 +443,18 @@ CR（ASCII 13）。下面是实例代码。
 * Debugging
 
 #+BEGIN_SRC emacs-lisp
-  (setq
-   ;; 缺省激活 gdb-many-windows
-   gdb-many-windows t
-
-   ;; 启动的时候显示包含 main 的源文件
-   gdb-show-main t)
+  (use-package gdb-mi
+    :ensure nil
+    :bind (:map gud-mode-map
+                ([f9]    . gud-break)
+                ([f10]   . gud-next)
+                ([f11]   . gud-step)
+                ([S-f11] . gud-finish))
+    :config
+     ;; 缺省激活 gdb-many-windows
+    (setq gdb-many-windows t)
+    ;; 启动的时候显示包含 main 的源文件
+    (setq gdb-show-main t))
 #+END_SRC
 
 * 参考资料

@@ -12,6 +12,34 @@
     :bind (([f6] . compile)))
 #+END_SRC
 
+* multi-compile
+
+  [[https://github.com/ReanGD/emacs-multi-compile][multi-compile]] 可以根据 Major Mode、file 后缀、buffer 名、任意 elisp expression，
+设定 compile 命令行。如果需要的话，还可以指定运行 compile 命令的目录。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package multi-compile
+    :ensure t
+    :bind (([f6] . multi-compile-run))
+    :init
+    ;; 设置 multi-compile 的 cache 文件
+    (setq multi-compile-history-file
+          (locate-user-emacs-file ".multi-compile.cache"))
+    :config
+    ;; 使用 Ivy 为补全后端时，用 completing-read
+    (if (eq bw/completion-framework 'ivy)
+        (setq multi-compile-completion-system 'default))
+    ;; 配置编译命令列表
+    (setq multi-compile-alist
+          '((c++-mode . (("solo-compile" . "g++ -Wall %file-name -o %file-sans")
+                         ("solo-run"     . "g++ -Wall %file-name -o %file-sans && ./%file-sans")
+                         ("solo-clean"   . "rm -f %file-sans %file-sans.exe")
+                         ("make"         . "make --no-print-directory -C %make-dir")))
+            (rust-mode . (("rust-debug"   . "cargo run")
+                          ("rust-release" . "cargo run --release")
+                          ("rust-test"    . "cargo test"))))))
+#+END_SRC
+
 * Flycheck
 
   [[http://www.flycheck.org/][Flycheck]] 是个现代的实时语法检查工具，可以替代 Flymake。
@@ -141,6 +169,29 @@ Racket 中安装必要的包，才能使用 racket-mode。在 Windows 系统中�
            (html-mode . skewer-html-mode)))
 #+END_SRC
 
+** Tern
+
+  [[http://ternjs.net/][Tern]] 是 JavaScript 代码分析工具，并提供了 Emacs 前端，支持代码浏览和补全。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package tern
+    :ensure t
+    :hook ((js-mode . tern-mode)
+           (js2-mode . tern-mode)))
+#+END_SRC
+
+** company-tern
+
+  [[https://github.com/proofit404/company-tern][company-tern]] 为 company 提供了 Tern 后端。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company-tern
+    :ensure t
+    :after company
+    :init
+    (add-to-list 'company-backends 'company-tern))
+#+END_SRC
+
 ** web-mode
 
   [[http://web-mode.org/][web-mode]]
@@ -160,11 +211,19 @@ Racket 中安装必要的包，才能使用 racket-mode。在 Windows 系统中�
 
 ** emmet-mode
 
-  [[https://github.com/smihica/emmet-mode][emmet-mode]]
+  [[https://github.com/smihica/emmet-mode][emmet-mode]] 是 [[https://emmet.io][Emmet]] 在 Emacs 中的实现，可以快速输入 HTML、CSS 代码。
+
+  输入缩写后，用 C-j 展开文本。展开文本后，用 C-M-left 和 C-M-right 在编辑点间跳
+转。
 
 #+BEGIN_SRC emacs-lisp
   (use-package emmet-mode
     :ensure t
     :hook ((sgml-mode)
-           (css-mode)))
+           (css-mode))
+    :config
+    ;; 展开后光标定位到第一个双引号对的位置
+    (setq emmet-move-cursor-between-quotes t)
+    ;; 在关闭 tag 的 / 前保留一个空格
+    (setq emmet-self-closing-tag-style " /"))
 #+END_SRC
