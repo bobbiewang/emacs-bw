@@ -67,8 +67,8 @@ anzu minor mode。
 
 * ag
 
-  [[https://github.com/Wilfred/ag.el/][ag]] 支持在 Emacs 内用 ag 程序搜索。其他一些命令，比如 projectile-ag，
-也需要 ag 的支持。
+  [[https://github.com/Wilfred/ag.el/][ag]] 支持在 Emacs 中用 Silver Searcher 程序搜索。其他一些命令，比如
+projectile-ag，也需要 ag 的支持。
 
 #+BEGIN_SRC emacs-lisp
   (use-package ag
@@ -90,6 +90,16 @@ anzu minor mode。
     :init
     (bw/set-space-key-and-name
      "sg" 'helm-do-ag nil))
+#+END_SRC
+
+* ripgrep
+
+  [[https://github.com/nlamirault/ripgrep.el][ripgrep]] 支持在 Emacs 中用 ripgrep 程序搜索。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ripgrep
+    :ensure t
+    :defer t)
 #+END_SRC
 
 * wgrep

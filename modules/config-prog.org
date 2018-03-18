@@ -14,9 +14,17 @@
 
 * multi-compile
 
+  [[https://github.com/ReanGD/emacs-multi-compile][multi-compile]] 可以根据 Major Mode、file 后缀、buffer 名、任意 elisp expression，
+设定 compile 命令行。如果需要的话，还可以指定运行 compile 命令的目录。
+
 #+BEGIN_SRC emacs-lisp
   (use-package multi-compile
     :ensure t
+    :bind (([f6] . multi-compile-run))
+    :init
+    ;; 设置 multi-compile 的 cache 文件
+    (setq multi-compile-history-file
+          (locate-user-emacs-file ".multi-compile.cache"))
     :config
     ;; 使用 Ivy 为补全后端时，用 completing-read
     (if (eq bw/completion-framework 'ivy)
@@ -24,7 +32,7 @@
     ;; 配置编译命令列表
     (setq multi-compile-alist
           '((c++-mode . (("solo-compile" . "g++ -Wall %file-name -o %file-sans")
-                         ("solo-run"     . "./%file-sans")
+                         ("solo-run"     . "g++ -Wall %file-name -o %file-sans && ./%file-sans")
                          ("solo-clean"   . "rm -f %file-sans %file-sans.exe")
                          ("make"         . "make --no-print-directory -C %make-dir")))
             (rust-mode . (("rust-debug"   . "cargo run")
@@ -128,6 +136,7 @@ Racket 中安装必要的包，才能使用 racket-mode。在 Windows 系统中�
 #+BEGIN_SRC emacs-lisp
   (use-package verilog-mode
     :ensure nil
+    :mode "\\.vm\\'"
     :bind (:map verilog-mode-map
                 ;; 取消原来绑定命令 electric-verilog-semi-with-comment
                 ;; 恢复到到全局的绑定
@@ -178,6 +187,7 @@ Racket 中安装必要的包，才能使用 racket-mode。在 Windows 系统中�
 #+BEGIN_SRC emacs-lisp
   (use-package company-tern
     :ensure t
+    :after company
     :init
     (add-to-list 'company-backends 'company-tern))
 #+END_SRC
