@@ -152,6 +152,9 @@
 
   [[https://github.com/noctuid/general.el][General]] 支持定义多个 Leader Key。
 
+  可以通过 General 的 general-define-key 函数设置键绑定，设置的键绑定可以通过
+M-x general-describe-keybindings 列出。
+
 #+BEGIN_SRC emacs-lisp
   (use-package general
     :ensure t
