@@ -102,7 +102,7 @@ completing-read-function 的地方会自动调用 Ivy 接口。
       'counsel-describe-variable)
     ;; Space 键绑定
     (bw/set-space-key-and-name
-     "bs" 'counsel-grep-or-swiper    "find in buffer"
+     "/"  'counsel-grep-or-swiper    "swiper"
      "bm" 'counsel-imenu             "imenu"
      "ff" 'counsel-find-file         "open file"
      "fF" 'ivy-switch-buffer         "switch buffer"
