@@ -297,7 +297,8 @@ t、v、w。
   | g ~      | evil-invert-case                  |
 
   参考资料
-  - [[https://raw.githubusercontent.com/emacs-evil/evil/master/doc/evil.pdf][PDF manual]]
+  - [[https://raw.githubusercontent.com/emacs-evil/evil/master/doc/evil.pdf][Evil Manual (PDF)]]
+  - [[https://github.com/noctuid/evil-guide][noctuid/evil-guide]]
   - [[http://dnquark.com/blog/2012/02/emacs-evil-ecumenicalism/][Emacs + Evil = ecumenicalism]] Evil 缺省适合 Vim 用户，Emacs 用户需
     要进行一些设置
   - [[https://stackoverflow.com/questions/25542097/emacs-evil-mode-how-to-change-insert-state-to-emacs-state-automatically][Emacs evil-mode how to change insert-state to emacs-state automatically]]
