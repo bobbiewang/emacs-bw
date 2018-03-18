@@ -227,74 +227,124 @@ State 的功能。下面的代码可以达到这个目的。
   (define-key evil-insert-state-map [escape] 'evil-normal-state)
 #+END_SRC
 
-  Evil Normal State 缺省绑定了以下单独按键的功能。可以自定义功能的单键
-有：B、E、F、G、H、K、L、M、N、Q、T、U、V、W、b、e、f、h、j、k、l、n、
-t、v、w。
+  Evil Normal State 缺省绑定了以下单独按键的功能，没有自定义功能的单键只有：Q、U。
 
-  | <escape> | evil-force-normal-state           |
-  | "        | evil-use-register                 |
-  | &        | evil-ex-repeat-substitute         |
-  | .        | evil-repeat                       |
-  | <        | evil-shift-left                   |
-  | =        | evil-indent                       |
-  | >        | evil-shift-right                  |
-  | @        | evil-execute-macro                |
-  | ~        | evil-invert-char                  |
-  |----------+-----------------------------------|
-  | A        | evil-append-line                  |
-  | C        | evil-change-line                  |
-  | D        | evil-delete-line                  |
-  | I        | evil-insert-line                  |
-  | J        | evil-join                         |
-  | O        | evil-open-above                   |
-  | P        | evil-paste-before                 |
-  | R        | evil-replace-state                |
-  | S        | evil-change-whole-line            |
-  | X        | evil-delete-backward-char         |
-  | Y        | evil-yank-line                    |
-  | a        | evil-append                       |
-  | c        | evil-change                       |
-  | d        | evil-delete                       |
-  | i        | evil-insert                       |
-  | m        | evil-set-marker                   |
-  | o        | evil-open-below                   |
-  | p        | evil-paste-after                  |
-  | q        | evil-record-macro                 |
-  | r        | evil-replace                      |
-  | s        | evil-substitute                   |
-  | u        | undo                              |
-  | x        | evil-delete-char                  |
-  | y        | evil-yank                         |
-  |----------+-----------------------------------|
-  | Z        | Prefix Command                    |
-  | Z Q      | evil-quit                         |
-  | Z Z      | evil-save-modified-and-close      |
-  |----------+-----------------------------------|
-  | z        | Prefix Command                    |
-  | z =      | ispell-word                       |
-  | z O      | evil-open-fold-rec                |
-  | z a      | evil-toggle-fold                  |
-  | z c      | evil-close-fold                   |
-  | z m      | evil-close-folds                  |
-  | z o      | evil-open-fold                    |
-  | z r      | evil-open-folds                   |
-  |----------+-----------------------------------|
-  | g        | Prefix Command                    |
-  | g &      | evil-ex-repeat-global-substitute  |
-  | g ,      | goto-last-change-reverse          |
-  | g 8      | what-cursor-position              |
-  | g ;      | goto-last-change                  |
-  | g ?      | evil-rot13                        |
-  | g F      | evil-find-file-at-point-with-line |
-  | g J      | evil-join-whitespace              |
-  | g U      | evil-upcase                       |
-  | g a      | what-cursor-position              |
-  | g f      | find-file-at-point                |
-  | g i      | evil-insert-resume                |
-  | g q      | evil-fill-and-move                |
-  | g u      | evil-downcase                     |
-  | g w      | evil-fill                         |
-  | g ~      | evil-invert-case                  |
+  | <escape> | evil-force-normal-state            |
+  | SPC      | evil-forward-char                  |
+  | !        | evil-shell-command                 |
+  | "        | evil-use-register                  |
+  | #        | evil-search-word-backward          |
+  | $        | evil-end-of-line                   |
+  | %        | evil-jump-item                     |
+  | &        | evil-ex-repeat-substitute          |
+  | '        | evil-goto-mark-line                |
+  | (        | evil-backward-sentence-begin       |
+  | )        | evil-forward-sentence-begin        |
+  | *        | evil-search-word-forward           |
+  | +        | evil-next-line-first-non-blank     |
+  | ,        | evil-repeat-find-char-reverse      |
+  | -        | evil-previous-line-first-non-blank |
+  | .        | evil-repeat                        |
+  | /        | evil-search-forward                |
+  | :        | evil-ex                            |
+  | ;        | evil-repeat-find-char              |
+  | <        | evil-shift-left                    |
+  | =        | evil-indent                        |
+  | >        | evil-shift-right                   |
+  | ?        | evil-search-backward               |
+  | @        | evil-execute-macro                 |
+  | [        | <Prefix Command>                   |
+  | \        | evil-execute-in-emacs-state        |
+  | ]        | <Prefix Command>                   |
+  | ^        | evil-first-non-blank               |
+  | _        | evil-next-line-1-first-non-blank   |
+  | `        | evil-goto-mark                     |
+  | {        | evil-backward-paragraph            |
+  |          | evil-goto-column                   |
+  | }        | evil-forward-paragraph             |
+  | ~        | evil-invert-char                   |
+  |----------+------------------------------------|
+  | A        | evil-append-line                   |
+  | B        | evil-backward-WORD-begin           |
+  | C        | evil-change-line                   |
+  | D        | evil-delete-line                   |
+  | E        | evil-forward-WORD-end              |
+  | F        | evil-find-char-backward            |
+  | G        | evil-goto-line                     |
+  | H        | evil-winow-top                     |
+  | I        | evil-insert-line                   |
+  | J        | evil-join                          |
+  | K        | evil-lookup                        |
+  | L        | evil-window-bottom                 |
+  | M        | evil-window-middle                 |
+  | N        | evil-search-previous               |
+  | O        | evil-open-above                    |
+  | P        | evil-paste-before                  |
+  | R        | evil-replace-state                 |
+  | S        | evil-change-whole-line             |
+  | T        | evil-find-char-to-backward         |
+  | V        | evil-visual-line                   |
+  | W        | evil-forward-WORD-begin            |
+  | X        | evil-delete-backward-char          |
+  | Y        | evil-yank-line                     |
+  | Z        | <Prefix Command>                   |
+  |----------+------------------------------------|
+  | a        | evil-append                        |
+  | b        | evil-backward-word-begin           |
+  | c        | evil-change                        |
+  | d        | evil-delete                        |
+  | e        | evil-forward-word-begin            |
+  | f        | evil-find-char                     |
+  | g        | <Prefix Command>                   |
+  | h        | evil-backward-char                 |
+  | i        | evil-insert                        |
+  | j        | evil-next-line                     |
+  | k        | evil-previous-line                 |
+  | l        | evil-forward-char                  |
+  | m        | evil-set-marker                    |
+  | n        | evil-search-next                   |
+  | o        | evil-open-below                    |
+  | p        | evil-paste-after                   |
+  | q        | evil-record-macro                  |
+  | r        | evil-replace                       |
+  | s        | evil-substitute                    |
+  | t        | evil-find-char-to                  |
+  | u        | undo                               |
+  | v        | evil-visual-char                   |
+  | w        | evil-forward-word-begin            |
+  | x        | evil-delete-char                   |
+  | y        | evil-yank                          |
+  | z        | <Prefix Command>                   |
+  |----------+------------------------------------|
+  | Z        | Prefix Command                     |
+  | Z Q      | evil-quit                          |
+  | Z Z      | evil-save-modified-and-close       |
+  |----------+------------------------------------|
+  | z        | Prefix Command                     |
+  | z =      | ispell-word                        |
+  | z O      | evil-open-fold-rec                 |
+  | z a      | evil-toggle-fold                   |
+  | z c      | evil-close-fold                    |
+  | z m      | evil-close-folds                   |
+  | z o      | evil-open-fold                     |
+  | z r      | evil-open-folds                    |
+  |----------+------------------------------------|
+  | g        | Prefix Command                     |
+  | g &      | evil-ex-repeat-global-substitute   |
+  | g ,      | goto-last-change-reverse           |
+  | g 8      | what-cursor-position               |
+  | g ;      | goto-last-change                   |
+  | g ?      | evil-rot13                         |
+  | g F      | evil-find-file-at-point-with-line  |
+  | g J      | evil-join-whitespace               |
+  | g U      | evil-upcase                        |
+  | g a      | what-cursor-position               |
+  | g f      | find-file-at-point                 |
+  | g i      | evil-insert-resume                 |
+  | g q      | evil-fill-and-move                 |
+  | g u      | evil-downcase                      |
+  | g w      | evil-fill                          |
+  | g ~      | evil-invert-case                   |
 
   参考资料
   - [[https://raw.githubusercontent.com/emacs-evil/evil/master/doc/evil.pdf][Evil Manual (PDF)]]
