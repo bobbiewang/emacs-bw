@@ -306,18 +306,18 @@ t、v、w。
     ;; 让 Evil 的 State 醒目
     (setq evil-normal-state-cursor '(box "green")
           evil-insert-state-cursor '(bar "red"))
-    (setq evil-normal-state-tag (propertize "[N]"
-                                            'face '((:background "green" :foreground "black")))
+    (setq evil-normal-state-tag (propertize "[N]" 'face
+                                            '((:background "green" :foreground "black")))
           evil-insert-state-tag (propertize "[I]" 'face
                                             '((:background "red") :foreground "white"))
-          evil-visual-state-tag (propertize "[V]"
-                                            'face '((:background "grey80" :foreground "black")))
-          evil-operator-state-tag (propertize "[O]"
-                                              'face '((:background "purple")))
-          evil-motion-state-tag (propertize "[M]"
-                                            'face '((:background "blue") :foreground "white"))
-          evil-emacs-state-tag (propertize "[E]"
-                                           'face '((:background "orange" :foreground "black"))))
+          evil-visual-state-tag (propertize "[V]" 'face
+                                            '((:background "grey80" :foreground "black")))
+          evil-operator-state-tag (propertize "[O]" 'face
+                                              '((:background "purple")))
+          evil-motion-state-tag (propertize "[M]" 'face
+                                            '((:background "blue") :foreground "white"))
+          evil-emacs-state-tag (propertize "[E]" 'face
+                                           '((:background "orange" :foreground "black"))))
     ;; 激活 hl-line-mode，一边下面进行自定义
     ;; 注意要和 transient-mark-mode 的颜色（region face）区别开来
     (global-hl-line-mode 1)
