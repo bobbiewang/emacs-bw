@@ -149,35 +149,24 @@
 #+END_SRC
 
 ** Evil
-*** Evil Leader
+*** General
 
-  [[https://github.com/cofi/evil-leader][Evil Leader]]
-
-#+BEGIN_SRC emacs-lisp
-  (use-package evil-leader
-    :ensure t
-    :config
-    (evil-leader/set-leader "<SPC>")
-    (defun bw/set-space-key-and-name (key def name &rest bindings)
-      "设置 SPC 引导的键绑定和显示的名字。"
-      (while key
-        (evil-leader/set-key key def)
-        (if name
-            (which-key-add-key-based-replacements
-              (format "<SPC> %s" key) name))
-        (setq key  (pop bindings)
-              def  (pop bindings)
-              name (pop bindings)))))
-#+END_SRC
-
-*** general
-
-  [[https://github.com/noctuid/general.el][general]] 可以定义多个 Leader Key。
+  [[https://github.com/noctuid/general.el][General]] 支持定义多个 Leader Key。
 
 #+BEGIN_SRC emacs-lisp
   (use-package general
     :ensure t
-    :defer t)
+    :init
+    (defun bw/set-space-key-and-name (key def name &rest bindings)
+        "设置 SPC 引导的键绑定和显示的名字。"
+        (while key
+          (general-define-key :prefix "SPC" :keymaps 'normal key def)
+          (if name
+              (which-key-add-key-based-replacements
+                (format "<SPC> %s" key) name))
+          (setq key  (pop bindings)
+                def  (pop bindings)
+                name (pop bindings)))))
 #+END_SRC
 
 *** Evil Mode
@@ -357,8 +346,6 @@ State 的功能。下面的代码可以达到这个目的。
   (use-package evil
     :ensure t
     :config
-    ;; 先激活 Evil Leader，再激活 Evil Mode
-    (global-evil-leader-mode)
     (evil-mode 1)
     ;; 缺省从 Insert State 切换到 Normal State，光标会前移一格，改为不移动
     (setq evil-move-cursor-back nil)
