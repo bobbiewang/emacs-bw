@@ -153,8 +153,6 @@
 
   [[https://github.com/cofi/evil-leader][Evil Leader]]
 
-  [[https://github.com/noctuid/general.el][general.el]] 似乎可以定义多个 Leader Key，可以关注一下。
-
 #+BEGIN_SRC emacs-lisp
   (use-package evil-leader
     :ensure t
@@ -170,6 +168,16 @@
         (setq key  (pop bindings)
               def  (pop bindings)
               name (pop bindings)))))
+#+END_SRC
+
+*** general
+
+  [[https://github.com/noctuid/general.el][general]] 可以定义多个 Leader Key。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package general
+    :ensure t
+    :defer t)
 #+END_SRC
 
 *** Evil Mode
