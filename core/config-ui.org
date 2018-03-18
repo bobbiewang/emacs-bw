@@ -148,8 +148,7 @@
     (ido-vertical-mode 1))
 #+END_SRC
 
-** Evil
-*** General
+** General
 
   [[https://github.com/noctuid/general.el][General]] 支持定义多个 Leader Key。
 
@@ -169,7 +168,7 @@
                 name (pop bindings)))))
 #+END_SRC
 
-*** Evil Mode
+** Evil
 
   [[https://github.com/emacs-evil/evil/][Evil]] 在 Emacs 中提供了对 vi 的模拟。
 
@@ -249,7 +248,7 @@ State 的功能。下面的代码可以达到这个目的。
   | _        | evil-next-line-1-first-non-blank   |
   | `        | evil-goto-mark                     |
   | {        | evil-backward-paragraph            |
-  |          | evil-goto-column                   |
+  | \vert    | evil-goto-column                   |
   | }        | evil-forward-paragraph             |
   | ~        | evil-invert-char                   |
   |----------+------------------------------------|
@@ -305,6 +304,18 @@ State 的功能。下面的代码可以达到这个目的。
   | y        | evil-yank                          |
   | z        | <Prefix Command>                   |
   |----------+------------------------------------|
+  | [ (      | evil-previous-open-paren           |
+  | [ [      | evil-backward-section-begin        |
+  | [ ]      | evil-backward-section-end          |
+  | [ s      | evil-prev-flyspell-error           |
+  |----------+------------------------------------|
+  | [ {      | evil-previous-open-brace           |
+  | ] )      | evil-next-close-paren              |
+  | ] [      | evil-forward-section-end           |
+  | ] ]      | evil-forward-section-begin         |
+  | ] s      | evil-next-flyspell-error           |
+  | ] }      | evil-next-close-brace              |
+  |----------+------------------------------------|
   | Z        | Prefix Command                     |
   | Z Q      | evil-quit                          |
   | Z Z      | evil-save-modified-and-close       |
@@ -334,6 +345,76 @@ State 的功能。下面的代码可以达到这个目的。
   | g u      | evil-downcase                      |
   | g w      | evil-fill                          |
   | g ~      | evil-invert-case                   |
+
+  Evil Normal State 缺省绑定了以下键绑定的功能。
+
+  | C-n       | evil-paste-pop-next                |
+  | C-p       | evil-paste-pop                     |
+  | C-r       | redo                               |
+  | C-t       | pop-tag-mark                       |
+  | C-.       | evil-repeat-pop                    |
+  | M-.       | evil-repeat-pop-next               |
+  | C-b       | evil-scroll-page-up                |
+  | C-d       | evil-scroll-down                   |
+  | C-e       | evil-scroll-line-down              |
+  | C-f       | evil-scroll-page-down              |
+  | C-o       | evil-jump-backward                 |
+  | C-v       | evil-visual-block                  |
+  | C-w       | evil-window-map                    |
+  | C-y       | evil-scroll-line-up                |
+  | C-z       | evil-emacs-state                   |
+  | C-]       | evil-jump-to-tag                   |
+  | C-^       | evil-buffer                        |
+  | C-6       | evil-switch-to-windows-last-buffer |
+  |-----------+------------------------------------|
+  | C-w C-b   | evil-window-bottom-right           |
+  | C-w C-c   | evil-window-delete                 |
+  | C-w C-f   | ffap-other-window                  |
+  | C-w C-n   | evil-window-new                    |
+  | C-w C-o   | delete-other-windows               |
+  | C-w C-p   | evil-window-mru                    |
+  | C-w C-r   | evil-window-rotate-downwards       |
+  | C-w C-s   | evil-window-split                  |
+  | C-w C-t   | evil-window-top-left               |
+  | C-w C-v   | evil-window-vsplit                 |
+  | C-w C-w   | evil-window-next                   |
+  | C-w C-_   | evil-window-set-height             |
+  | C-w +     | evil-window-increase-height        |
+  | C-w -     | evil-window-decrease-height        |
+  | C-w <     | evil-window-decrease-width         |
+  | C-w =     | balance-windows                    |
+  | C-w >     | evil-window-increase-width         |
+  | C-w H     | evil-window-move-far-left          |
+  | C-w J     | evil-window-move-very-bottom       |
+  | C-w K     | evil-window-move-very-top          |
+  | C-w L     | evil-window-move-far-right         |
+  | C-w R     | evil-window-rotate-upwards         |
+  | C-w S     | evil-window-split                  |
+  | C-w W     | evil-window-prev                   |
+  | C-w _     | evil-window-set-height             |
+  | C-w b     | evil-window-bottom-right           |
+  | C-w c     | evil-window-delete                 |
+  | C-w h     | evil-window-left                   |
+  | C-w j     | evil-window-down                   |
+  | C-w k     | evil-window-up                     |
+  | C-w l     | evil-window-right                  |
+  | C-w n     | evil-window-new                    |
+  | C-w o     | delete-other-windows               |
+  | C-w p     | evil-window-mru                    |
+  | C-w q     | evil-quit                          |
+  | C-w r     | evil-window-rotate-downwards       |
+  | C-w s     | evil-window-split                  |
+  | C-w t     | evil-window-top-left               |
+  | C-w v     | evil-window-vsplit                 |
+  | C-w w     | evil-window-next                   |
+  | C-w \vert | evil-window-set-width              |
+  | C-w C-S-h | evil-window-move-far-left          |
+  | C-w C-S-j | evil-window-move-very-bottom       |
+  | C-w C-S-k | evil-window-move-very-top          |
+  | C-w C-S-l | evil-window-move-far-right         |
+  | C-w C-S-r | evil-window-rotate-upwards         |
+  | C-w C-S-s | evil-window-split                  |
+  | C-w C-S-w | evil-window-prev                   |
 
   参考资料
   - [[https://raw.githubusercontent.com/emacs-evil/evil/master/doc/evil.pdf][Evil Manual (PDF)]]
