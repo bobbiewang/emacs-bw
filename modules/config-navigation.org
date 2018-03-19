@@ -57,6 +57,16 @@
 #+END_SRC
 
 * Tag
+** xref
+
+#+BEGIN_SRC emacs-lisp
+  (use-package xref
+    :ensure nil
+    :init
+    (general-define-key :keymaps 'normal
+                        "g." 'xref-find-definitions))
+#+END_SRC
+
 ** GNU GLOBAL
 
   [[https://www.gnu.org/software/global/][GNU GLOBAL]] 是一个开源的 Tag 系统，内置支持 6 种语言：C、C++、Yacc、
