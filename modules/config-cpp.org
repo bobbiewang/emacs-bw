@@ -443,9 +443,10 @@ CR（ASCII 13）。下面是实例代码。
 * Debugging
 
 #+BEGIN_SRC emacs-lisp
-  (use-package gdb-mi
+  (use-package gud
     :ensure nil
     :bind (:map gud-mode-map
+                ([f5]    . gud-cont)
                 ([f9]    . gud-break)
                 ([f10]   . gud-next)
                 ([f11]   . gud-step)
