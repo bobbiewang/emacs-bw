@@ -31,8 +31,8 @@
         (setq multi-compile-completion-system 'default))
     ;; 配置编译命令列表
     (setq multi-compile-alist
-          '((c++-mode . (("solo-compile" . "g++ -Wall %file-name -o %file-sans")
-                         ("solo-run"     . "g++ -Wall %file-name -o %file-sans && ./%file-sans")
+          '((c++-mode . (("solo-compile" . "g++ -g -Wall %file-name -o %file-sans")
+                         ("solo-run"     . "g++ -g -Wall %file-name -o %file-sans && ./%file-sans")
                          ("solo-clean"   . "rm -f %file-sans %file-sans.exe")
                          ("make"         . "make --no-print-directory -C %make-dir")))
             (rust-mode . (("rust-debug"   . "cargo run")
