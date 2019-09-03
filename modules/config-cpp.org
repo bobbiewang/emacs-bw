@@ -1,5 +1,12 @@
 #+TITLE:     C++ Development Environment
 
+* 变量定义
+
+#+BEGIN_SRC emacs-lisp
+  (defvar bw/cmake-p
+    (if (executable-find "cmake") t nil))
+#+END_SRC
+
 * CC Mode
 
 #+BEGIN_SRC emacs-lisp
