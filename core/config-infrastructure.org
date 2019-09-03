@@ -1,8 +1,35 @@
-* 编码
+* 自定义变量
+** 运行环境
+
+  Emacs 内置了一些 display-*-p 函数可以用于判断运行环境，其中的
+display-graphic-p 可以检测当前是否运行于图形界面，可以代替将变量
+window-system 当作 boolean 的用法。
+
+  下面自定义一些表示运行环境的变量，可以在后面的配置文件中使用。
 
 #+BEGIN_SRC emacs-lisp
-  ;; 显式声明 Emacs 优先使用 utf-8，这个在 Windows 上尤其重要
-  (prefer-coding-system 'utf-8)
+  (defvar bw/windows-p
+      (eq system-type 'windows-nt)
+    "运行在 MS Windows 环境。")
+
+  (defvar bw/linux-p
+      (or (eq system-type 'gnu/linux)
+          (eq system-type 'linux))
+    "运行在 Linux 环境。")
+
+  (defvar bw/x-window-p
+      (and window-system bw/linux-p)
+    "运行在 Linux 的 X Window 环境。")
+
+  (defvar bw/office-p nil
+    "运行在公司的网络环境。")
+
+  (defvar bw/home-p t
+    "运行在家庭的网络环境。")
+
+  (when bw/windows-p
+    (defvar bw/windows-toolchain 'cygwin "在 Windows 平台使用的工具链。
+  支持的工具链有：'mingw、'cygwin。"))
 #+END_SRC
 
 * 自定义函数
@@ -174,38 +201,14 @@
     (setq inhibit-message nil))
 #+END_SRC
 
-* 自定义变量
-** 运行环境
-
-  Emacs 内置了一些 display-*-p 函数可以用于判断运行环境，其中的
-display-graphic-p 可以检测当前是否运行于图形界面，可以代替将变量
-window-system 当作 boolean 的用法。
-
-  下面自定义一些表示运行环境的变量，可以在后面的配置文件中使用。
+* 编码
 
 #+BEGIN_SRC emacs-lisp
-  (defvar bw/windows-p
-      (eq system-type 'windows-nt)
-    "运行在 MS Windows 环境。")
-
-  (defvar bw/linux-p
-      (or (eq system-type 'gnu/linux)
-          (eq system-type 'linux))
-    "运行在 Linux 环境。")
-
-  (defvar bw/x-window-p
-      (and window-system bw/linux-p)
-    "运行在 Linux 的 X Window 环境。")
-
-  (defvar bw/office-p nil
-    "运行在公司的网络环境。")
-
-  (defvar bw/home-p t
-    "运行在家庭的网络环境。")
-
+  ;; 显式声明 Emacs 优先使用 utf-8 编码
+  (prefer-coding-system 'utf-8)
+  ;; Windows 系统文件名使用 gbk 编码
   (when bw/windows-p
-    (defvar bw/windows-toolchain 'cygwin "在 Windows 平台使用的工具链。
-  支持的工具链有：'mingw、'cygwin。"))
+    (setq file-name-coding-system 'gbk))
 #+END_SRC
 
 * 个人设置
