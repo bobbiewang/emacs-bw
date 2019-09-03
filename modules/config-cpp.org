@@ -471,6 +471,14 @@ CR（ASCII 13）。下面是实例代码。
     (setq gdb-show-main t))
 #+END_SRC
 
+* clang-format
+
+#+BEGIN_SRC emacs-lisp
+  (use-package clang-format
+    :ensure t
+    :defer t)
+#+END_SRC
+
 * 参考资料
 
   - [[https://tuhdo.github.io/c-ide.html][Setup C/C++ Development Environment for Emacs - tuhdo]] 经典的文章，
