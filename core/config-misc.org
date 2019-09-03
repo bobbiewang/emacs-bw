@@ -423,6 +423,12 @@ emacsclient 的 --server-file 参数，设置 server 文件的路径。
    "wv"  'split-window-vertically   "split -")
 #+END_SRC
 
+* 激活一些功能
+
+#+BEGIN_SRC emacs-lisp
+  (put 'narrow-to-region 'disabled nil)
+#+END_SRC
+
 * 其他
 
 #+BEGIN_SRC emacs-lisp
