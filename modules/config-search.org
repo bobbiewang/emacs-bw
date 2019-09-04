@@ -95,10 +95,10 @@ projectile-ag，也需要 ag 的支持。
 
 * ripgrep
 
-  [[https://github.com/nlamirault/ripgrep.el][ripgrep]] 支持在 Emacs 中用 ripgrep 程序搜索。
+  [[https://github.com/dajva/rg.el][rg]] 支持在 Emacs 中用 ripgrep 程序搜索。
 
 #+BEGIN_SRC emacs-lisp
-  (use-package ripgrep
+  (use-package rg
     :ensure t
     :defer t)
 #+END_SRC

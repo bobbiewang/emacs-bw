@@ -1,5 +1,12 @@
 #+TITLE:     C++ Development Environment
 
+* 变量定义
+
+#+BEGIN_SRC emacs-lisp
+  (defvar bw/cmake-p
+    (if (executable-find "cmake") t nil))
+#+END_SRC
+
 * CC Mode
 
 #+BEGIN_SRC emacs-lisp
@@ -442,10 +449,17 @@ CR（ASCII 13）。下面是实例代码。
 
 * Debugging
 
+  下面是一些调整 GDB 窗口的命令。
+  - gdb-many-windows :: 切换多窗口和简单模式
+  - gdb-restore-windows :: 恢复多窗口模式的布局
+  - gdb-display-BUFFERTYPE-buffer :: 显示指定的 GDB buffer
+  - gdb-frame-BUFFERTYPE-buffer :: 新开 frame 显示指定的 GDB buffer
+
 #+BEGIN_SRC emacs-lisp
-  (use-package gdb-mi
+  (use-package gud
     :ensure nil
     :bind (:map gud-mode-map
+                ([f5]    . gud-cont)
                 ([f9]    . gud-break)
                 ([f10]   . gud-next)
                 ([f11]   . gud-step)
@@ -455,6 +469,14 @@ CR（ASCII 13）。下面是实例代码。
     (setq gdb-many-windows t)
     ;; 启动的时候显示包含 main 的源文件
     (setq gdb-show-main t))
+#+END_SRC
+
+* clang-format
+
+#+BEGIN_SRC emacs-lisp
+  (use-package clang-format
+    :ensure t
+    :defer t)
 #+END_SRC
 
 * 参考资料
