@@ -75,7 +75,8 @@ projectile-ag，也需要 ag 的支持。
     :ensure t
     :defer t
     :config
-    (setq ag-highlight-search t))
+    (setq ag-highlight-search t)
+    (setq ag-arguments '("--vimgrep" "--smart-case" "--stats")))
 #+END_SRC
 
 * helm-ag
