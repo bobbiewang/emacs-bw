@@ -5,6 +5,9 @@
 #+BEGIN_SRC emacs-lisp
   (defvar bw/cmake-p
     (if (executable-find "cmake") t nil))
+
+  (defvar bw/windows-toolchain 'cygwin
+    "在 Windows 平台使用的工具链。支持 'mingw、'cygwin。")
 #+END_SRC
 
 * CC Mode
