@@ -402,6 +402,8 @@ CR（ASCII 13）。下面是实例代码。
           (locate-user-emacs-file ".irony"))
     (setq irony-user-dir
           (locate-user-emacs-file ".irony/"))
+    (unless (file-exists-p irony-user-dir)
+      (make-directory irony-user-dir))
     :config
     (defvar bw/irony-diagnosis nil "输出一些 Irony 内部信息用于诊断")
     ;; Windows 平台的补丁
