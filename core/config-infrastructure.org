@@ -26,10 +26,6 @@ window-system 当作 boolean 的用法。
 
   (defvar bw/home-p t
     "运行在家庭的网络环境。")
-
-  (when bw/windows-p
-    (defvar bw/windows-toolchain 'cygwin "在 Windows 平台使用的工具链。
-  支持的工具链有：'mingw、'cygwin。"))
 #+END_SRC
 
 * 自定义函数

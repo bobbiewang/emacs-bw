@@ -38,8 +38,9 @@ anaconda-eldoc-mode 就可以了。
   | anaconda-mode-show-doc         | 显示文档 | M-?        |
 
   anaconda-mode 的功能是通过一些 Python 包完成的，在运行 anaconda-mode 的命令时
-会自动通过 pip 安装这些包（如 anaconda-mode、jedi、parso 等）。这些包安装在变量
-anaconda-mode-installation-directory 设置的目录下。
+会自动通过 pip 安装这些包（如 anaconda-mode、jedi、parso 等）到变量
+anaconda-mode-installation-directory 设置的目录下。如果安装这些包没有正确安装，
+则 anaconda-mode 不能正常工作，这时可以在 *anaconda-mode* Buffer 中查看错误信息。
 
   值得注意的是，pip 在 Windows 平台会自动读取 IE 设置的代理，在 Linux 平台读取
 https_proxy 环境变量设置的代理，要确保代理是可用的。
