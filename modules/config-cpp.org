@@ -16,6 +16,8 @@
   (use-package cc-mode
     :ensure nil
     :mode ("\\.h\\'" . c++-mode)
+    :bind (:map c++-mode-map
+                ([f7] . compile))
     :init
     (defun bw/cc-mode-hook()
       (c-set-style "stroustrup")
