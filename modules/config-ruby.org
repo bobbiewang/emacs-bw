@@ -1,11 +1,19 @@
 #+TITLE:     Ruby 开发环境
 
+* 配置变量
+
+#+BEGIN_SRC emacs-lisp
+  (defvar bw/ruby-mode 'enh-ruby-mode
+    "Ruby 的 Major Mode，可选 'ruby-mode、'enh-ruby-mode。")
+#+END_SRC
+
 * Ruby Mode
 
   Ruby Mode 是 Emacs 内置的 Major Mode。
 
 #+BEGIN_SRC emacs-lisp
   (use-package ruby-mode
+    :if (eq bw/ruby-mode 'ruby-mode)
     :ensure nil
     :defer t
     :init
@@ -20,6 +28,7 @@
 
 #+BEGIN_SRC emacs-lisp
   (use-package enh-ruby-mode
+    :if (eq bw/ruby-mode 'enh-ruby-mode)
     :ensure t
     :mode "\\(?:\\.rb\\|rake\\|gemspec\\|/\\(?:Gem\\|Rake\\)file\\)\\'"
     :interpreter "ruby"
