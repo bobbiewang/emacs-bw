@@ -2,6 +2,6 @@
 # name: src
 # key: src
 # --
-#+BEGIN_SRC ${1:$$(yas-choose-value '("emacs-lisp-example" "sh"))}
+#+BEGIN_SRC ${1:$$(yas-choose-value '("emacs-lisp" "emacs-lisp-example" "sh"))}
 $0
 #+END_SRC
