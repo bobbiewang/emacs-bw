@@ -4,10 +4,10 @@
 
   [[https://github.com/bbatsov/projectile][Projectile]] 是 Emacs 的一个项目管理扩展。
 
-  Projectile 根据特定的目录名或者文件名识别一个目录是否是一个项目，可以
-自动支持 git、mercurial、darcs 和 bazaar 等版本库，以及 lein、maven、
-sbt、rebar 和 bundler 项目。如果项目目录不使用以上工具，可以在项目根目
-录下创建一个 .projectile 文件。
+  Projectile 根据特定的目录名或者文件名识别一个目录是否是一个项目，可以自动支持
+git、mercurial、darcs 和 bazaar 等版本库，以及 lein、maven、sbt、scons、rebar 和
+bundler 项目。如果项目目录不使用以上工具，可以在项目根目录下创建一个 .projectile
+文件。
 
   下面是 Projectile 提供的命令。
 
@@ -155,4 +155,21 @@ sbt、rebar 和 bundler 项目。如果项目目录不使用以上工具，可�
     :if (eq bw/completion-framework 'ivy)
     :ensure t
     :after (projectile))
+#+END_SRC
+
+* skeletor
+
+  [[https://github.com/chrisbarrett/skeletor.el][Skeleton]] 可以基于预定义的模板生成目录和文件，常用于创建项目的初始文件。
+  
+#+BEGIN_SRC emacs-lisp
+  (use-package skeletor
+    :ensure t
+    :defer t
+    :init
+    (setq skeletor-user-directory
+          (locate-user-emacs-file ".project-skeletons"))
+    (skeletor-define-template "bw-cpp-quick-make"
+      :title "C++ Quick Executable - Makefile"
+      :no-git? t
+      :no-license? t))
 #+END_SRC
