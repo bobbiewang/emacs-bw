@@ -78,9 +78,9 @@ bundler 项目。如果项目目录不使用以上工具，可以在项目根目
     :delight '(:eval (concat " [" (projectile-project-name) "]"))
     :init
     (setq projectile-cache-file
-          (locate-user-emacs-file ".projectile.cache"))
+          (locate-user-emacs-file "var/projectile.cache"))
     (setq projectile-known-projects-file
-          (locate-user-emacs-file ".projectile-bookmarks.eld"))
+          (locate-user-emacs-file "var/projectile-bookmarks.eld"))
     ;; 使用外部的 git、find 等命令索引文件，以加快速度
     (setq projectile-indexing-method 'alien)
     ;; 缓存文件索引的结果，这样 M-x projectile-find-file 可以使用缓存数
@@ -167,7 +167,7 @@ bundler 项目。如果项目目录不使用以上工具，可以在项目根目
     :defer t
     :init
     (setq skeletor-user-directory
-          (locate-user-emacs-file ".project-skeletons"))
+          (locate-user-emacs-file "var/skeketor"))
     (skeletor-define-template "bw-cpp-quick-make"
       :title "C++ Quick Executable - Makefile"
       :no-git? t

@@ -10,7 +10,7 @@
 
 #+BEGIN_SRC emacs-lisp
   (setq auto-save-list-file-prefix
-        (locate-user-emacs-file ".auto-save-list/.saves-"))
+        (locate-user-emacs-file "var/auto-save-list/saves-"))
 #+END_SRC
 
 * Auto Backup
@@ -23,7 +23,7 @@
 
   ;; 设置备份文件的路径
   (setq backup-directory-alist
-        '(("" . "~/.emacs.d/.auto-backup/")))
+        '(("" . "~/.emacs.d/var/auto-backup/")))
 
   ;; 设置备份方法：直接拷贝
   (setq backup-by-copying t)
@@ -86,7 +86,7 @@
 置可以改善速度。如果还是太慢，可以把这个功能关掉。
 
 #+BEGIN_SRC emacs-lisp
-  (setq save-place-file (locate-user-emacs-file ".places"))
+  (setq save-place-file (locate-user-emacs-file "var/places"))
 
   ;; 不保存只读文件的位置
   (setq save-place-forget-unreadable-files nil)
@@ -109,7 +109,7 @@
     :defer t
     :init
     ;; 自定义数据文件
-    (setq recentf-save-file (locate-user-emacs-file ".recentf"))
+    (setq recentf-save-file (locate-user-emacs-file "var/.recentf"))
     :config
     ;; 记录最近 1000 个访问项，而不是缺省的 20 个
     (setq recentf-max-saved-items 1000)
@@ -126,8 +126,8 @@
   ;; 启用 desktop save mode
   (desktop-save-mode 1)
   ;; 设置 desktop 相关文件的路径
-  (setq desktop-base-file-name (locate-user-emacs-file ".desktop"))
-  (setq desktop-base-lock-name (locate-user-emacs-file ".desktop.lock"))
+  (setq desktop-base-file-name (locate-user-emacs-file "var/desktop"))
+  (setq desktop-base-lock-name (locate-user-emacs-file "var/desktop.lock"))
   ;; 始终保存 desktop 文件，不管文件原来是否存在，也不询问用户
   (setq desktop-save t)
   ;; 不管 desktop 文件是否被 lock，都加载 desktop 文件
@@ -152,7 +152,7 @@ buffer。
   Session 保存一些全局变量。
 
 #+BEGIN_SRC emacs-lisp-example
-  (setq session-save-file (locate-user-emacs-file ".session"))
+  (setq session-save-file (locate-user-emacs-file "var/session"))
   (setq session-save-file-coding-system 'utf-8-unix)
   ;; org-mark-ring 是一个循环结构。如果不除掉，使用 org-mode 后就关不了
   ;; emacs 了
@@ -479,9 +479,10 @@ emacsclient 的 --server-file 参数，设置 server 文件的路径。
   (add-hook 'prog-mode-hook (lambda ()
                               (setq show-trailing-whitespace 1)))
 
-  (setq savehist-file (locate-user-emacs-file ".history"))
+  (setq savehist-file (locate-user-emacs-file "var/history"))
 
-  (setq bookmark-default-file "~/.emacs.d/.bookmarks") ; 自定义 bookmark 文件的位置
+  ;; 自定义 bookmark 文件的位置
+  (setq bookmark-default-file (locate-user-emacs-file "var/bookmarks"))
 
   ;; 在文本选择的状态，输入时直接替换被选择文本
   (delete-selection-mode 1)

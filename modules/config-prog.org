@@ -24,7 +24,7 @@
     :init
     ;; 设置 multi-compile 的 cache 文件
     (setq multi-compile-history-file
-          (locate-user-emacs-file ".multi-compile.cache"))
+          (locate-user-emacs-file "var/multi-compile.cache"))
     :config
     ;; 使用 Ivy 为补全后端时，用 completing-read
     (if (eq bw/completion-framework 'ivy)

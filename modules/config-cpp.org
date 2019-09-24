@@ -51,7 +51,7 @@ semantic-dependency-system-include-path。对于其他系统或第三方库的�
     :ensure nil
     :init
     (setq semanticdb-default-save-directory
-          (locate-user-emacs-file ".semanticdb"))
+          (locate-user-emacs-file "var/semanticdb"))
     :config
     ;; 将 Semantic 解析后的数据缓存到文件中
     (global-semanticdb-minor-mode 1)
@@ -209,7 +209,7 @@ cmake-ide-set-compiler-flags，为其他扩展设置必要的信息。
     :init
     (defvar bw/cmake-ide-diagnosis nil "输出一些 cmake-ide 内部信息用于诊断")
     ;; 在 ~/.cmake-ide 目录下运行 CMake，而不是系统临时目录
-    (setq cmake-ide-build-pool-dir (locate-user-emacs-file ".cmake-ide/"))
+    (setq cmake-ide-build-pool-dir (locate-user-emacs-file "var/cmake-ide/"))
     ;; CMake 构建目录使用固定的名字，从而可以重用
     (setq cmake-ide-build-pool-use-persistent-naming t)
     ;; cmake-ide 的官方文档推荐直接运行 cmake-ide-setup 完成一些 Hook 的
@@ -401,9 +401,9 @@ CR（ASCII 13）。下面是实例代码。
            (irony-mode . irony-cdb-autosetup-compile-options))
     :init
     (setq irony-server-install-prefix
-          (locate-user-emacs-file ".irony"))
+          (locate-user-emacs-file "var/irony"))
     (setq irony-user-dir
-          (locate-user-emacs-file ".irony/"))
+          (locate-user-emacs-file "var/irony/"))
     (unless (file-exists-p irony-user-dir)
       (make-directory irony-user-dir))
     :config
