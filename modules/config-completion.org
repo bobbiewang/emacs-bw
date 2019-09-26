@@ -111,7 +111,8 @@ completing-read-function 的地方会自动调用 Ivy 接口。
      "hf" 'counsel-describe-function "function"
      "hF" 'counsel-describe-face     "face"
      "hv" 'counsel-describe-variable "variable"
-     "sa" 'counsel-ag                "ag"))
+     "sa" 'counsel-ag                "ag"
+     "sr" 'counsel-rg                "rg"))
 #+END_SRC
 
 ** ivy-hydra
