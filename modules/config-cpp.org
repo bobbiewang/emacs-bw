@@ -1,10 +1,13 @@
 #+TITLE:     C++ Development Environment
 
-* 变量定义
+* 配置变量
 
 #+BEGIN_SRC emacs-lisp
   (defvar bw/cmake-p
     (if (executable-find "cmake") t nil))
+
+  (defvar bw/cpp-backend nil
+    "C++ 的后端，可选 'irony。")
 
   (defvar bw/windows-toolchain 'cygwin
     "在 Windows 平台使用的工具链。支持 'mingw、'cygwin。")
@@ -396,6 +399,7 @@ CR（ASCII 13）。下面是实例代码。
 
 #+BEGIN_SRC emacs-lisp
   (use-package irony
+    :if (eq bw/cpp-backend 'irony)
     :ensure t
     :hook ((c++-mode . irony-mode)
            (irony-mode . irony-cdb-autosetup-compile-options))
@@ -448,6 +452,7 @@ CR（ASCII 13）。下面是实例代码。
 
 #+BEGIN_SRC emacs-lisp
   (use-package company-irony
+    :if (eq bw/cpp-backend 'irony)
     :ensure t
     :after (company irony)
     :init
