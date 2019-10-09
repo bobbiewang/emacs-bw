@@ -207,6 +207,7 @@ cmake-ide-set-compiler-flags，为其他扩展设置必要的信息。
 
 #+BEGIN_SRC emacs-lisp
   (use-package cmake-ide
+    :if (eq bw/cmake-p t)
     :ensure t
     :defer t
     :init
