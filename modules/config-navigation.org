@@ -160,7 +160,9 @@ counsel-gtags-go-forward 两个命令浏览。
     :if (eq bw/completion-framework 'ivy)
     :ensure t
     :delight " gtags"
-    :hook (c-mode-common . counsel-gtags-mode)
+    :hook (c-mode-common . (lambda ()
+                             (when (eq bw/cpp-navigation-backend 'gtags)
+                               (counsel-gtags-mode))))
     :config
     (define-key counsel-gtags-mode-map (kbd "M-.") 'counsel-gtags-find-definition)
     (define-key counsel-gtags-mode-map (kbd "M-,") 'counsel-gtags-go-backward)

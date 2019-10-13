@@ -6,6 +6,9 @@
   (defvar bw/cmake-p
     (if (executable-find "cmake") t nil))
 
+  (defvar bw/cpp-navigation-backend 'gtags
+    "C++ 的代码浏览后端，可选 'gtags、'ccls。")
+
   (defvar bw/cpp-completion-backend nil
     "C++ 的补全后端，可选 'irony、'ccls。")
 
