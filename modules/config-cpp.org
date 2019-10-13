@@ -6,8 +6,8 @@
   (defvar bw/cmake-p
     (if (executable-find "cmake") t nil))
 
-  (defvar bw/cpp-backend nil
-    "C++ 的后端，可选 'irony。")
+  (defvar bw/cpp-completion-backend nil
+    "C++ 的补全后端，可选 'irony、'ccls。")
 
   (defvar bw/windows-toolchain 'cygwin
     "在 Windows 平台使用的工具链。支持 'mingw、'cygwin。")
@@ -400,7 +400,7 @@ CR（ASCII 13）。下面是实例代码。
 
 #+BEGIN_SRC emacs-lisp
   (use-package irony
-    :if (eq bw/cpp-backend 'irony)
+    :if (eq bw/cpp-completion-backend 'irony)
     :ensure t
     :hook ((c++-mode . irony-mode)
            (irony-mode . irony-cdb-autosetup-compile-options))
@@ -453,11 +453,27 @@ CR（ASCII 13）。下面是实例代码。
 
 #+BEGIN_SRC emacs-lisp
   (use-package company-irony
-    :if (eq bw/cpp-backend 'irony)
+    :if (eq bw/cpp-completion-backend 'irony)
     :ensure t
     :after (company irony)
     :init
     (add-to-list 'company-backends 'company-irony))
+#+END_SRC
+
+** company-lsp
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company-lsp
+    :commands company-lsp)
+#+END_SRC
+
+** ccls
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ccls
+    :disabled
+    :hook ((c-mode c++-mode objc-mode cuda-mode) . (lambda ()
+                                                     (require 'ccls) (lsp))))
 #+END_SRC
 
 * Debugging
