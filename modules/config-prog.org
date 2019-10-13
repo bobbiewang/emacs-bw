@@ -40,6 +40,26 @@
                           ("rust-test"    . "cargo test"))))))
 #+END_SRC
 
+* Language Server
+** lsp
+
+#+BEGIN_SRC emacs-lisp
+  (use-package lsp-mode
+    :disabled
+    :commands lsp
+    :init
+    (setq lsp-session-file (expand-file-name
+                            (locate-user-emacs-file "var/lsp-session-v1"))))
+#+END_SRC
+
+** lsp-ui
+
+#+BEGIN_SRC emacs-lisp
+  (use-package lsp-ui
+    :disabled
+    :commands lsp-ui-mode)
+#+END_SRC
+
 * Flycheck
 
   [[http://www.flycheck.org/][Flycheck]] 是个现代的实时语法检查工具，可以替代 Flymake。
