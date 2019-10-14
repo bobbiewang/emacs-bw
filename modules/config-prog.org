@@ -45,7 +45,6 @@
 
 #+BEGIN_SRC emacs-lisp
   (use-package lsp-mode
-    :disabled
     :commands lsp
     :init
     (setq lsp-session-file (expand-file-name
@@ -56,7 +55,6 @@
 
 #+BEGIN_SRC emacs-lisp
   (use-package lsp-ui
-    :disabled
     :commands lsp-ui-mode)
 #+END_SRC
 
