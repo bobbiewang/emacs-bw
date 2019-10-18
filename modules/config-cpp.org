@@ -256,7 +256,8 @@ cmake-ide-set-compiler-flags，为其他扩展设置必要的信息。
 
 #+BEGIN_SRC emacs-lisp
   (use-package cmake-ide
-    :if (eq bw/cmake-p t)
+    :if (and (eq bw/cpp-completion-backend 'irony)
+             (eq bw/cmake-p t))
     :ensure t
     :defer t
     :init
@@ -325,7 +326,7 @@ cmake-ide-set-compiler-flags，为其他扩展设置必要的信息。
                   #'bw/process-ninja-compile-commands)))
 #+END_SRC
 
-* 补全
+* Completion
 ** irony
 
   [[https://github.com/Sarcasm/irony-mode][irony]] 以 Server/Client 模式，为 C/C++ 开发的代码补全、语法检查、
@@ -520,7 +521,7 @@ CR（ASCII 13）。下面是实例代码。
 
 #+BEGIN_SRC emacs-lisp
   (use-package ccls
-    :disabled
+    :if (eq bw/cpp-completion-backend 'ccls)
     :hook ((c-mode c++-mode objc-mode cuda-mode) . (lambda ()
                                                      (require 'ccls) (lsp))))
 #+END_SRC
