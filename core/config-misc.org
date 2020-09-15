@@ -499,4 +499,8 @@ emacsclient 的 --server-file 参数，设置 server 文件的路径。
 
   ;; 退出 Emacs 时不需要确认是否关闭 process
   (setq confirm-kill-processes nil)
+
+  ;; 编辑时禁止生成 Lock 文件（以 .# 开头的文件），细节可以参考 Emacs 帮助中的
+  ;; File Locks
+  (setq create-lockfiles nil)
 #+END_SRC
