@@ -198,18 +198,6 @@ Racket 中安装必要的包，才能使用 racket-mode。在 Windows 系统中�
            (js2-mode . tern-mode)))
 #+END_SRC
 
-** company-tern
-
-  [[https://github.com/proofit404/company-tern][company-tern]] 为 company 提供了 Tern 后端。
-
-#+BEGIN_SRC emacs-lisp
-  (use-package company-tern
-    :ensure t
-    :after company
-    :init
-    (add-to-list 'company-backends 'company-tern))
-#+END_SRC
-
 ** web-mode
 
   [[http://web-mode.org/][web-mode]]
