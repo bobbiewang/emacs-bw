@@ -68,6 +68,9 @@
 
   ;; 允许自动保存
   (setq epa-file-inhibit-auto-save nil)
+
+  ;; 适配 GnuPG 2
+  (setq epa-pinentry-mode 'loopback)
 #+END_SRC
 
 * uniquify
@@ -228,9 +231,10 @@ emacsclient 的 --server-file 参数，设置 server 文件的路径。
 
 #+BEGIN_SRC emacs-lisp
   ;; C-SPC 在中文操作系统用于切换输入法，C-@ 太难按
-  ;; 这里使用两个缺省空闲的键绑定
+  ;; 这里使用其他缺省空闲的键绑定
   (global-set-key (kbd "C-`") 'set-mark-command)
   (global-set-key (kbd "C-;") 'set-mark-command)
+  (global-set-key (kbd "C-S-<space>") 'set-mark-command)
 
   ;; 相应的修改 pop-global-mark，使用 C-x C-2
   (global-set-key (kbd "C-x C-2") 'pop-global-mark)
@@ -495,4 +499,8 @@ emacsclient 的 --server-file 参数，设置 server 文件的路径。
 
   ;; 退出 Emacs 时不需要确认是否关闭 process
   (setq confirm-kill-processes nil)
+
+  ;; 编辑时禁止生成 Lock 文件（以 .# 开头的文件），细节可以参考 Emacs 帮助中的
+  ;; File Locks
+  (setq create-lockfiles nil)
 #+END_SRC

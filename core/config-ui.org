@@ -477,6 +477,14 @@ State 的功能。下面的代码可以达到这个目的。
     (define-key evil-insert-state-map (kbd "<escape>") 'evil-normal-state)
     ;; 调整各 State 的键绑定
     (define-key evil-normal-state-map "\C-e" 'evil-end-of-line)
+    ;; 只有在前一个命令是 evil-repeat、evil-repeat-pop 或 evil-repeat-pop-next 之
+    ;; 一时，才绑定到 evil-repeat-poop-next，否则保留原来的命令
+    (define-key evil-normal-state-map (kbd "M-.")
+      `(menu-item "" evil-repeat-pop-next :filter
+                  ,(lambda (cmd) (if (or (eq last-command 'evil-repeat)
+                                         (eq last-command 'evil-repeat-pop)
+                                         (eq last-command 'evil-repeat-pop-next))
+                                     cmd))))
     (define-key evil-visual-state-map "\C-e" 'evil-end-of-line)
     (define-key evil-motion-state-map "\C-e" 'evil-end-of-line))
 #+END_SRC
