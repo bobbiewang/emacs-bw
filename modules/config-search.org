@@ -61,9 +61,10 @@ anzu minor mode。
   (use-package anzu
     :ensure t
     :delight
+    :init
+    (setq anzu-search-threshold 100)
+    (setq anzu-replace-threshold 100)
     :config
-    (anzu-search-threshold 100)
-    (anzu-replace-threshold 100)
     (global-anzu-mode 1))
 #+END_SRC
 
