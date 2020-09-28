@@ -29,26 +29,31 @@ vc-handled-backends 用于配置需要使用的版本管理工具。
 * Magit
 
 #+BEGIN_SRC emacs-lisp
-    (use-package magit
-      :ensure t
-      :defer t
-      :init
-      ;; transient 是 magit 的依赖，这里设置其文件的路径
-      (setq transient-levels-file
-            (locate-user-emacs-file
-             (convert-standard-filename "var/transient/levels.el")))
-      (setq transient-values-file
-            (locate-user-emacs-file
-             (convert-standard-filename "var/transient/values.el")))
-      (setq transient-history-file
-            (locate-user-emacs-file
-             (convert-standard-filename "var/transient/history.el")))
-      (bw/set-space-key-and-name
-       "ag" 'magit-status nil)
-      :config
-      (require 'evil-magit)
-      (when bw/windows-p
-        ;; Commit 时不用 font-lock，以减少 magit-commit 运行时间
-        (remove-hook 'after-change-major-mode-hook
-                     'git-commit-setup-font-lock-in-buffer)))
+  ;; transient 是 magit 的依赖，这里设置其文件的路径
+  (use-package transient
+    :ensure t
+    :defer t
+    :init
+    (setq transient-levels-file
+          (locate-user-emacs-file
+           (convert-standard-filename "var/transient/levels.el")))
+    (setq transient-values-file
+          (locate-user-emacs-file
+           (convert-standard-filename "var/transient/values.el")))
+    (setq transient-history-file
+          (locate-user-emacs-file
+           (convert-standard-filename "var/transient/history.el"))))
+
+  (use-package magit
+    :ensure t
+    :defer t
+    :init
+    (bw/set-space-key-and-name
+     "ag" 'magit-status nil)
+    :config
+    (require 'evil-magit)
+    (when bw/windows-p
+      ;; Commit 时不用 font-lock，以减少 magit-commit 运行时间
+      (remove-hook 'after-change-major-mode-hook
+                   'git-commit-setup-font-lock-in-buffer)))
 #+END_SRC
