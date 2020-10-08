@@ -154,7 +154,22 @@ semantic-dependency-system-include-path。对于其他系统或第三方库的�
       (if (file-exists-p "CMakeLists.txt") (cmake-project-mode)))
     (add-hook 'c-mode-common-hook 'bw/maybe-cmake-project-hook)
     :config
-    (setq cmake-project-default-build-dir-name "build/"))
+    (setq cmake-project-default-build-dir-name "build/")
+
+    ;; 覆盖 cmake-project 的函数，修改正则表达式以适用最新的 CMake
+    (defun cmake-project--available-generators ()
+      (let ((help-text (shell-command-to-string "cmake --help"))
+            (regexp (concat
+                     "The following generators are available on this platform.*:\n"
+                     "\\([^\\']*\\)\\'"))
+            (out))
+        (string-match regexp help-text)
+        (let ((gens-chunk (match-string 1 help-text)))
+          (while (string-match
+                  "\\s-+\\([^=\n]+?\\)\\s-*=[^\n]+?\n\\([^\\']*\\)\\'" gens-chunk)
+            (setq out (add-to-list 'out (match-string 1 gens-chunk) 1))
+            (setq gens-chunk (match-string 2 gens-chunk)))
+          out))))
 #+END_SRC
 
 ** cmake-ide
