@@ -9,7 +9,14 @@
 #+BEGIN_SRC emacs-lisp
   (use-package compile
     :ensure nil
-    :bind (([f6] . compile)))
+    :bind (([f6] . compile))
+    :config
+    ;; 让 *compilation* Buffer 支持终端的 ANSI 颜色
+    (require 'ansi-color)
+    (defun bw/colorize-compilation-buffer ()
+      (let ((inhibit-read-only t))
+        (ansi-color-apply-on-region (point-min) (point-max))))
+    (add-hook 'compilation-filter-hook 'bw/colorize-compilation-buffer))
 #+END_SRC
 
 * multi-compile
