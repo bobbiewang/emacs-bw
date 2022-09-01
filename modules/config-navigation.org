@@ -163,12 +163,13 @@ counsel-gtags-go-forward 两个命令浏览。
     :hook (c-mode-common . (lambda ()
                              (when (eq bw/cpp-navigation-backend 'gtags)
                                (counsel-gtags-mode))))
-    :config
-    (define-key counsel-gtags-mode-map (kbd "M-.") 'counsel-gtags-find-definition)
-    (define-key counsel-gtags-mode-map (kbd "M-,") 'counsel-gtags-go-backward)
-    (define-key counsel-gtags-mode-map (kbd "M-?") 'counsel-gtags-find-reference)
-    (define-key counsel-gtags-mode-map (kbd "C-,") 'counsel-gtags-find-file)
-    (define-key counsel-gtags-mode-map (kbd "C-.") 'counsel-gtags-find-symbol))
+    ; :config
+    ; (define-key counsel-gtags-mode-map (kbd "M-.") 'counsel-gtags-find-definition)
+    ; (define-key counsel-gtags-mode-map (kbd "M-,") 'counsel-gtags-go-backward)
+    ; (define-key counsel-gtags-mode-map (kbd "M-?") 'counsel-gtags-find-reference)
+    ; (define-key counsel-gtags-mode-map (kbd "C-,") 'counsel-gtags-find-file)
+    ; (define-key counsel-gtags-mode-map (kbd "C-.") 'counsel-gtags-find-symbol)
+    )
 #+END_SRC
 
 * Dumb Jump
