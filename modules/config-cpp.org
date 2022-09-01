@@ -10,8 +10,8 @@
   (defvar bw/cpp-navigation-backend 'gtags
     "C++ 的代码浏览后端，可选 'gtags、'ccls。")
 
-  (defvar bw/cpp-completion-backend nil
-    "C++ 的补全后端，可选 'irony、'ccls。")
+  (defvar bw/cpp-completion-backend 'eglot
+    "C++ 的补全后端，可选 'irony、'ccls, 'lsp-mode, 'eglot。")
 
   (defvar bw/windows-toolchain 'cygwin
     "在 Windows 平台使用的工具链。支持 'mingw、'cygwin。")
@@ -541,6 +541,57 @@ CR（ASCII 13）。下面是实例代码。
     :if (eq bw/cpp-completion-backend 'ccls)
     :hook ((c-mode c++-mode objc-mode cuda-mode) . (lambda ()
                                                      (require 'ccls) (lsp))))
+#+END_SRC
+
+** lsp-mode
+
+#+BEGIN_SRC emacs-lisp
+  (use-package lsp-mode
+    :if (eq bw/cpp-completion-backend 'lsp-mode)
+    :ensure t
+    :hook (prog-mode . lsp-deferred)
+    :custom
+    (lsp-keymap-prefix "C-c l")
+    (lsp-prefer-capf t)
+    (lsp-auto-guess-root t)
+    (lsp-keep-workspace-alive nil)
+    :bind (:map lsp-mode-map
+                ("C-c f" . lsp-format-region)
+                ("C-c d" . lsp-describe-thing-at-point)
+                ("C-c a" . lsp-execute-code-action)
+                ("C-c r" . lsp-rename)))
+#+END_SRC
+
+** eglot
+
+  [[https://github.com/joaotavora/eglot][eglot]] 是 Emacs LSP Client。和 lsp-mode 相比，eglot 的设计有如下特点。
+  - 轻量级，速度快，占用内存少
+  - 依赖少，只需要 Emacs 内置的包
+  - 开箱即用，把 eglot-ensure 函数加到相应的 mode-hook 即可
+
+  对于简单的单源代码文件，eglot 可以直接工作。对于复杂的项目，需要提供
+compile_commands.json 文件。
+
+  | 命令                      | 说明                                      |
+  |---------------------------+-------------------------------------------|
+  | eglot                     | 启动 LSP Server                           |
+  | eglot-shutdown            | 终止 LSP Server                           |
+  |---------------------------+-------------------------------------------|
+  | eglot-find-declaration    | 跳转到声明                                |
+  | eglot-find-implementation | 跳转到实现                                |
+  | eglot-find-typeDefinition | 跳转到类型定义                            |
+  |---------------------------+-------------------------------------------|
+  | eglot-rename              | 重命名当前 Symbol，会同时修改其他相关位置 |
+  | eglot-code-actions        | 当前代码的 Code Action                    |
+
+  另外，eglot 启动后会替换 xref-find-definitions 和 xref-find-references 的功能。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package eglot
+    :if (eq bw/cpp-completion-backend 'eglot)
+    :ensure t
+    :defer t
+    :commands (eglot eglot-ensure))
 #+END_SRC
 
 * Debugging
