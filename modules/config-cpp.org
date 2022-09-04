@@ -591,7 +591,9 @@ compile_commands.json 文件。
     :if (eq bw/cpp-completion-backend 'eglot)
     :ensure t
     :defer t
-    :commands (eglot eglot-ensure))
+    :commands (eglot eglot-ensure)
+    :init
+    (add-hook 'cc-mode-hook 'eglot-ensure))
 #+END_SRC
 
 * Debugging
