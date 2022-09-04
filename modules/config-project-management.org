@@ -9,6 +9,10 @@ git、mercurial、darcs 和 bazaar 等版本库，以及 lein、maven、sbt、sc
 bundler 项目。如果项目目录不使用以上工具，可以在项目根目录下创建一个 .projectile
 文件。
 
+  对于 Git 版本库，Projectile 缺省会忽略 .gitignore 里的文件和目录。对于非 Git
+版本库，可以在 .projectile 文件里用 + 列出要包括的目录，用 - 列出要忽略的文件或
+目录。
+
   下面是 Projectile 提供的命令。
 
   | 键绑定    | 命令                                              | 描述                                         |
