@@ -67,6 +67,52 @@
                         "g." 'xref-find-definitions))
 #+END_SRC
 
+** ctags
+*** Citre
+
+  [[https://github.com/universal-ctags/citre][Citre]] 是 ctags 前端，提供自动补全、xref、imenu 支持和代码的浏览功能。
+
+  Citre 使用的是 ctags 格式的文件，而不是和 etags 兼容的格式。因此，Citre 可以通
+过 readtags 程序检索 tags文件。得益于 readtags 的二分搜索，Citre 即使在 Linux 内
+核这样的大项目中也拥有不错的速度。
+
+  如果要 Citre 提供自动补全、xref 和 imenu 功能，需要启动 citre-mode。如果只要代
+码的浏览功能，生成 ctags 文件后直接使用 citre-jump、citre-peek 等命令即可。
+
+  citre-peek-keymap 定义了若干可以在 citre-peak 窗口里使用的键绑定。
+
+  | 键绑定             | 说明                                      |
+  |--------------------+-------------------------------------------|
+  | M-n/p              | 按行滚动 Peak 窗口代码                    |
+  | M-N/P              | 切换到下/上个定义                         |
+  | M-l j              | 在 Peek 窗口显示 Ace 界面，可以跳转到定义 |
+  | left/right/up/down | 浏览 Peek 历史树                          |
+  | M-d/D              | 删除 Peak 历史书分支/全部                 |
+  | C-g                | 关闭 Peek 窗口                            |
+
+#+BEGIN_SRC emacs-lisp
+  (use-package citre
+    :ensure t
+    :defer t
+    :init
+    (require 'citre-config)
+    (global-set-key (kbd "C-x c j") 'citre-jump)
+    (global-set-key (kbd "C-x c J") 'citre-jump-back)
+    (global-set-key (kbd "C-x c p") 'citre-ace-peek)
+    (global-set-key (kbd "C-x c u") 'citre-update-this-tags-file)
+    :config
+    ;; 当 xref 后端失败时，使用 Citre
+    (define-advice xref--create-fetcher (:around (-fn &rest -args) fallback)
+      (let ((fetcher (apply -fn -args))
+            (citre-fetcher
+             (let ((xref-backend-functions '(citre-xref-backend t)))
+               (apply -fn -args))))
+        (lambda ()
+          (or (with-demoted-errors "%s, fallback to citre"
+                (funcall fetcher))
+              (funcall citre-fetcher))))))
+#+END_SRC
+
 ** GNU GLOBAL
 
   [[https://www.gnu.org/software/global/][GNU GLOBAL]] 是一个开源的 Tag 系统，内置支持 6 种语言：C、C++、Yacc、
