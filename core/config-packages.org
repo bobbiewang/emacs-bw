@@ -180,6 +180,9 @@ package-user-dir 目录下所有的内容被称为 Package Contents。
   (bw/install-package-on-demand 'use-package)
   (setq use-package-always-ensure t)
   (setq use-package-verbose t)
+  ;; 统计加载 Package 的信息。Emacs 启动完毕后可以用 M-x use-package-report 查看报
+  ;; 表，在报表中可以用 S 按照指定列进行排序
+  (setq use-package-compute-statistics t)
 #+END_SRC
 
 ** delight
