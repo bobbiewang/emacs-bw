@@ -223,17 +223,19 @@
     :defer t
     :init
     ;; 定制 NeoTree 在 Evil Normal State 下的键绑定
-    (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-quick-look)
-    (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
-    (evil-define-key 'normal neotree-mode-map (kbd "c")   'neotree-change-root)
-    (evil-define-key 'normal neotree-mode-map (kbd "r")   'neotree-rename-node)
-    (evil-define-key 'normal neotree-mode-map (kbd "p")   'neotree-copy-node)
-    (evil-define-key 'normal neotree-mode-map (kbd "d")   'neotree-delete-node)
-    (evil-define-key 'normal neotree-mode-map (kbd "n")   'neotree-create-node)
-    (evil-define-key 'normal neotree-mode-map (kbd "A")   'neotree-stretch-toggle)
-    (evil-define-key 'normal neotree-mode-map (kbd "H")   'neotree-hidden-file-toggle)
-    (evil-define-key 'normal neotree-mode-map (kbd "g")   'neotree-refresh)
-    (evil-define-key 'normal neotree-mode-map (kbd "q")   'neotree-hide)
+    (if (eq bw/ui-style 'evil)
+        (progn
+          (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-quick-look)
+          (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
+          (evil-define-key 'normal neotree-mode-map (kbd "c")   'neotree-change-root)
+          (evil-define-key 'normal neotree-mode-map (kbd "r")   'neotree-rename-node)
+          (evil-define-key 'normal neotree-mode-map (kbd "p")   'neotree-copy-node)
+          (evil-define-key 'normal neotree-mode-map (kbd "d")   'neotree-delete-node)
+          (evil-define-key 'normal neotree-mode-map (kbd "n")   'neotree-create-node)
+          (evil-define-key 'normal neotree-mode-map (kbd "A")   'neotree-stretch-toggle)
+          (evil-define-key 'normal neotree-mode-map (kbd "H")   'neotree-hidden-file-toggle)
+          (evil-define-key 'normal neotree-mode-map (kbd "g")   'neotree-refresh)
+          (evil-define-key 'normal neotree-mode-map (kbd "q")   'neotree-hide)))
     (bw/set-space-key-and-name
      "at" 'neotree-toggle "NeoTree"))
 #+END_SRC

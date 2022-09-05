@@ -1,3 +1,12 @@
+#+TITLE:     User Interface
+
+* 配置变量
+
+#+BEGIN_SRC emacs-lisp
+  (defvar bw/ui-style 'evil
+    "User Interface 的风格，可选 'emacs、'evil。")
+#+END_SRC
+
 * 显示
 ** 字体
 
@@ -121,16 +130,16 @@
 
 #+BEGIN_SRC emacs-lisp
   (use-package filecache
-               :commands bw/file-cache-list
-               :config
-               (file-cache-add-file-list (list "~/.emacs.d/init.el"))
-               (file-cache-add-directory "~/.emacs.d/core/" "config-.*.org")
-               (file-cache-add-directory "~/.emacs.d/modules/" "config-.*.org")
+    :commands bw/file-cache-list
+    :config
+    (file-cache-add-file-list (list "~/.emacs.d/init.el"))
+    (file-cache-add-directory "~/.emacs.d/core/" "config-.*.org")
+    (file-cache-add-directory "~/.emacs.d/modules/" "config-.*.org")
 
-               (defun bw/file-cache-list ()
-                 (mapcar (lambda (x)
-                           (concat (nth 1 x) (nth 0 x)))
-                         file-cache-alist)))
+    (defun bw/file-cache-list ()
+      (mapcar (lambda (x)
+                (concat (nth 1 x) (nth 0 x)))
+              file-cache-alist)))
 #+END_SRC
 
 ** ido
@@ -459,6 +468,7 @@ State 的功能。下面的代码可以达到这个目的。
 
 #+BEGIN_SRC emacs-lisp
   (use-package evil
+    :if (eq bw/ui-style 'evil)
     :ensure t
     :config
     (evil-mode 1)

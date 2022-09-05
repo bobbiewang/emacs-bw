@@ -80,7 +80,8 @@
     (setq org-special-ctrl-a/e t)
     ;; promote/demote 时只调整标题，不调整内容
     (setq org-adapt-indentation nil)
-    (evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle)
+    (if (eq bw/ui-style 'evil)
+        (evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle))
     (bw/set-space-key-and-name "c" 'org-capture nil)
     ;; Org 目录
     (if (getenv "ORG_DIRECTORY")
