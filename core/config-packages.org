@@ -69,7 +69,7 @@ package-user-dir 目录下所有的内容被称为 Package Contents。
 的数据已经过时了，该包在服务器上对应的文件已经被删除。这时需要手工运行
 一下 package-refresh-contents 更新数据。
 
-  use-package 宏支持许多关键字。
+  use-package 宏支持许多关键字，具体可以查看 use-package 的 Doc String。
   + :init :: 加载扩展之前执行的代码。init 部分应该尽可能简单，把配置
              放在 config 部分
   + :config :: 加载扩展之后的执行的代码
