@@ -153,6 +153,18 @@
     (ido-vertical-mode 1))
 #+END_SRC
 
+** key-chord and key-seq
+
+#+BEGIN_SRC emacs-lisp
+  (use-package key-chord
+    :if (eq bw/ui-style 'emacs)
+    :ensure t)
+
+  (use-package key-seq
+    :if (eq bw/ui-style 'emacs)
+    :ensure t)
+#+END_SRC
+
 ** General
 
   [[https://github.com/noctuid/general.el][General]] 支持定义多个 Leader Key。
@@ -164,13 +176,27 @@ M-x general-describe-keybindings 列出。
   (use-package general
     :ensure t
     :init
+    (if (eq bw/ui-style 'emacs)
+        (progn
+          (require 'key-chord)
+          (require 'key-seq)
+          (key-chord-mode 1)
+          (setq comma-comma-keymap (make-sparse-keymap))
+          (key-seq-define-global ",," comma-comma-keymap)))
     (defun bw/set-space-key-and-name (key def name &rest bindings)
         "设置 SPC 引导的键绑定和显示的名字。"
         (while key
-          (general-define-key :prefix "SPC" :keymaps 'normal key def)
-          (if name
-              (which-key-add-key-based-replacements
-                (format "<SPC> %s" key) name))
+          (if (eq bw/ui-style 'emacs)
+              (progn
+                ;; (general-def comma-comma-keymap key def))
+                (general-define-key :keymaps 'comma-comma-keymap key def)
+                (if name
+                    (which-key-add-key-based-replacements
+                      (format "%s" key) name)))
+            (general-define-key :prefix "SPC" :keymaps 'normal key def)
+            (if name
+                (which-key-add-key-based-replacements
+                  (format "<SPC> %s" key) name)))
           (setq key  (pop bindings)
                 def  (pop bindings)
                 name (pop bindings)))))
