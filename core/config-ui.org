@@ -224,7 +224,7 @@ M-x general-describe-keybindings 列出。
   - Operator-Pending (O) :: 一些操作符（如 c、d 等）后面需要跟动作命令
        （如 w、$），这是等待动作的状态
   - Motion (M) :: 用于 Read-only Buffer，比如 Help
-  - Emacs (E)
+  - Emacs (E) :: 保留 Emacs 键绑定，除了 C-z 用于进入 Normal State
 
   Emacs 中的 Mode 会有一个缺省的 State，这可以通过 evil-*-state-modes
 变量设置。下面的例子中把所有缺省为 Emacs State 的 Modes 改为 Motion
@@ -470,6 +470,8 @@ State 的功能。下面的代码可以达到这个目的。
   (use-package evil
     :if (eq bw/ui-style 'evil)
     :ensure t
+    :demand
+    :hook ((xref--xref-buffer-mode-hook) . evil-emacs-state)
     :config
     (evil-mode 1)
     ;; 缺省从 Insert State 切换到 Normal State，光标会前移一格，改为不移动
@@ -500,7 +502,7 @@ State 的功能。下面的代码可以达到这个目的。
     (add-hook 'evil-visual-state-entry-hook (lambda ()
                                               (set-face-background 'hl-line "#49483E")))
     (add-hook 'evil-replace-state-entry-hook (lambda ()
-                                              (set-face-background 'hl-line "#49483E")))
+                                               (set-face-background 'hl-line "#49483E")))
     (add-hook 'evil-operator-state-entry-hook (lambda ()
                                                 (set-face-background 'hl-line "#49483E")))
     (add-hook 'evil-motion-state-entry-hook (lambda ()
@@ -516,11 +518,17 @@ State 的功能。下面的代码可以达到这个目的。
     ;; 只有在前一个命令是 evil-repeat、evil-repeat-pop 或 evil-repeat-pop-next 之
     ;; 一时，才绑定到 evil-repeat-poop-next，否则保留原来的命令
     (define-key evil-normal-state-map (kbd "M-.")
-      `(menu-item "" evil-repeat-pop-next :filter
-                  ,(lambda (cmd) (if (or (eq last-command 'evil-repeat)
-                                         (eq last-command 'evil-repeat-pop)
-                                         (eq last-command 'evil-repeat-pop-next))
-                                     cmd))))
+                `(menu-item "" evil-repeat-pop-next :filter
+                            ,(lambda (cmd) (if (or (eq last-command 'evil-repeat)
+                                                   (eq last-command 'evil-repeat-pop)
+                                                   (eq last-command 'evil-repeat-pop-next))
+                                               cmd))))
     (define-key evil-visual-state-map "\C-e" 'evil-end-of-line)
-    (define-key evil-motion-state-map "\C-e" 'evil-end-of-line))
+    (define-key evil-motion-state-map "\C-e" 'evil-end-of-line)
+    ;; 修改 Mode 的初始 State，而不是缺省的 Normal。evil-set-initial-state 只支持
+    ;; Major Mode，Minor Mode 要用 add_hook
+    (evil-set-initial-state 'help-mode 'emacs)
+    (evil-set-initial-state 'magit-log-edit-mode 'emacs)
+    (evil-set-initial-state 'xref--xref-buffer-mode 'emacs)
+    (add-hook 'org-capture-mode-hook 'evil-emacs-state))
 #+END_SRC
