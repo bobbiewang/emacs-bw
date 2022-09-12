@@ -16,16 +16,6 @@ vc-handled-backends 用于配置需要使用的版本管理工具。
       (setq vc-handled-backends (delq 'Git vc-handled-backends))))
 #+END_SRC
 
-* evil-magit
-
-  [[https://github.com/justbur/evil-magit][evil-magit]]
-
-#+BEGIN_SRC emacs-lisp
-  (use-package evil-magit
-    :ensure t
-    :defer t)
-#+END_SRC
-
 * Magit
 
 #+BEGIN_SRC emacs-lisp
