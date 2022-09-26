@@ -200,6 +200,17 @@ buffer。
             try-expand-all-abbrevs)))          ; abbrevs，需要预先定义
 #+END_SRC
 
+* flymake
+
+#+BEGIN_SRC emacs-lisp
+  (use-package flymake
+    :ensure nil
+    :config
+    (set-face-attribute 'flymake-error nil
+                        :foreground "black"
+                        :background "brightmagenta"))
+#+END_SRC
+
 * Emacs Server
 
   Emacs 的 Server 模式可以通过 (server-mode 1) 或者 M-x server-start
