@@ -5,9 +5,17 @@
 ;; 初始化 ELPA 环境
 
 (require 'package)
+
 ;; 使用国内镜像替代 http://melpa.org/packages/
-(setq package-archives '(("gnu"   . "http://mirrors.163.com/elpa/gnu/")
-			             ("melpa" . "http://mirrors.163.com/elpa/melpa/")))
+;; Emacs China
+;; - gnu: http://1.15.88.122/gnu/
+;; - melpa: http://1.15.88.122/melpa/
+;; 163:
+;; - gnu: http://mirrors.163.com/elpa/gnu/
+;; - melpa: http://mirrors.163.com/elpa/melpa/
+(setq package-archives '(("gnu"   . "http://1.15.88.122/gnu/")
+			             ("melpa" . "http://1.15.88.122/melpa/")))
+
 (setq package-user-dir (locate-user-emacs-file "var/elpa"))
 (setq package-enable-at-startup nil)    ; 不在 init 文件加载后重复初始化
 (package-initialize)
