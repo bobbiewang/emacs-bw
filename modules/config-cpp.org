@@ -527,13 +527,6 @@ CR（ASCII 13）。下面是实例代码。
     (add-to-list 'company-backends 'company-irony))
 #+END_SRC
 
-** company-lsp
-
-#+BEGIN_SRC emacs-lisp
-  (use-package company-lsp
-    :commands company-lsp)
-#+END_SRC
-
 ** ccls
 
 #+BEGIN_SRC emacs-lisp
