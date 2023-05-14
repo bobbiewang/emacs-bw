@@ -241,15 +241,6 @@ emacsclient 的 --server-file 参数，设置 server 文件的路径。
 ** 传统键绑定
 
 #+BEGIN_SRC emacs-lisp
-  ;; C-SPC 在中文操作系统用于切换输入法，C-@ 太难按
-  ;; 这里使用其他缺省空闲的键绑定
-  (global-set-key (kbd "C-`") 'set-mark-command)
-  (global-set-key (kbd "C-;") 'set-mark-command)
-  (global-set-key (kbd "C-S-<space>") 'set-mark-command)
-
-  ;; 相应的修改 pop-global-mark，使用 C-x C-2
-  (global-set-key (kbd "C-x C-2") 'pop-global-mark)
-
   ;; M-o 替换 C-x o，用于切换 window
   (global-set-key (kbd "M-o") 'other-window)
 
