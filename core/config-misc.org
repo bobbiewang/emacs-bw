@@ -505,4 +505,15 @@ emacsclient 的 --server-file 参数，设置 server 文件的路径。
   ;; 编辑时禁止生成 Lock 文件（以 .# 开头的文件），细节可以参考 Emacs 帮助中的
   ;; File Locks
   (setq create-lockfiles nil)
+
+  ;; 自定义 transient 文件的位置
+  (setq transient-levels-file
+        (locate-user-emacs-file
+         (convert-standard-filename "var/transient/levels.el")))
+  (setq transient-values-file
+        (locate-user-emacs-file
+         (convert-standard-filename "var/transient/values.el")))
+  (setq transient-history-file
+        (locate-user-emacs-file
+         (convert-standard-filename "var/transient/history.el")))
 #+END_SRC
