@@ -1,0 +1,102 @@
+#+TITLE:     Others
+
+* WSL
+
+  和 WSL 交互的命令。
+
+#+BEGIN_SRC emacs-lisp
+  (defun bw/wsl-open-with (&optional app-name path)
+    "发送 PATH 给 WSL 中的 to APP-NAME。"
+    (interactive)
+    (let* ((path (expand-file-name
+                  (replace-regexp-in-string
+                   "'" "\\'"
+                   (or path (if (derived-mode-p 'dired-mode)
+                                (dired-get-file-for-visit)
+                              (buffer-file-name)))
+                   nil t)))
+           (command (format "%s `wslpath -w %s`" (shell-quote-argument app-name) path)))
+      (shell-command-to-string command)))
+
+  (defmacro bw/wsl--open-with (id &optional app dir)
+    "基于 bw/wsl-open-with 生成各种 bw/wsl- 命令的宏。"
+    `(defun ,(intern (format "bw/wsl-%s" id)) ()
+       (interactive)
+       (bw/wsl-open-with ,app ,dir)))
+
+  ;; 在 Explorer 中打开当前目录
+  (bw/wsl--open-with open-current-directory "explorer.exe" default-directory)
+
+  (defun bw/wsl-copy-region-to-clipboard (start end)
+    "将当前 Region 复制到 Windows 剪贴板。"
+    (interactive "r")
+    (call-process-region start end "clip.exe" nil 0))
+
+  (defun bw/wsl-cut-region-to-clipboard (start end)
+    "将当前 Region 剪切到 Windows 剪贴板。"
+    (interactive "r")
+    (call-process-region start end "clip.exe" nil 0)
+    (kill-region start end))
+
+  (defun bw/wsl-clipboard-to-string ()
+    "将 Windows 剪贴板内容转换为字符串。"
+    (let ((coding-system-for-read 'dos))
+      (substring; remove added trailing \n
+       (shell-command-to-string
+        "powershell.exe -Command Get-Clipboard") 0 -1)))
+
+  (defun bw/wsl-paste-from-clipboard (arg)
+    "将 Windows 剪贴板内容插入到当前位置。有 prefix ARG 时，内容也会加
+  到 kill-ring。"
+    (interactive "P")
+    (let ((clip (bw/wsl-clipboard-to-string)))
+      (insert clip)
+      (if arg (kill-new clip))))
+#+END_SRC
+
+* IME
+** pyim
+
+  [[https://github.com/tumashu/pyim-basedict][pyim-basedict]] 是 pyim 输入法的默认词库，词库数据来源为 libpinyin 项目。这个词
+库的词条量大概在 10 万左右，是一个 比较小的词库，只能确保 pyim 可以正常工作。如
+果用户想让 pyim 更加顺手，需要添加其它附加词库。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package pyim-basedict)
+
+  (use-package pyim
+    :init
+    ;; 将 Emacs 默认输入法设置为 pyim
+    (setq default-input-method "pyim")
+    ;; 自定义 cache 文件的路径
+    (setq pyim-dcache-directory (locate-user-emacs-file "var/pyim/dcache/"))
+    :config
+    ;; 加载 basedict 拼音词库
+    (pyim-basedict-enable)
+    ;; 用 ,. 翻页
+    (define-key pyim-mode-map "," 'pyim-page-previous-page)
+    (define-key pyim-mode-map "." 'pyim-page-next-page)
+    ;; 用 ; 选择第二个候选词
+    (define-key pyim-mode-map ";"
+                (lambda ()
+                  (interactive)
+                  (pyim-select-word-by-number 2))))
+#+END_SRC
+
+** emacs-rime
+
+  emacs-rime 是 librime 的前台，在 Debian 系统需要通过 APT 安装 librime-dev 包。
+
+  emacs-rime 会自动构建所需的动态模块，编译时需要 Emacs 自带的头文件
+emacs-module.h。如果安装的是 emacs-snapshot，这个文件的名字是
+emacs-snapshot-module.h，导致编译失败。可以在 /usr/include 临时加个符号链接解决
+这个问题。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package rime
+    :disabled t
+    :init
+    (setq rime-user-data-dir (locate-user-emacs-file "var/rime/"))
+    :custom
+    (default-input-method "rime"))
+#+END_SRC
