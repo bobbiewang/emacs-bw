@@ -13,6 +13,9 @@
 ;; 163:
 ;; - gnu: http://mirrors.163.com/elpa/gnu/
 ;; - melpa: http://mirrors.163.com/elpa/melpa/
+;; tuna:
+;; - gnu: http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/
+;; - melpa: http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/
 (setq package-archives '(("gnu"   . "http://1.15.88.122/gnu/")
 			             ("melpa" . "http://1.15.88.122/melpa/")))
 
