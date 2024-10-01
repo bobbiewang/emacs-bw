@@ -146,6 +146,7 @@ Racket 中安装必要的包，才能使用 racket-mode。在 Windows 系统中�
 
 #+BEGIN_SRC emacs-lisp
   (use-package racket-mode
+    :disabled t
     :ensure t
     :defer t
     :init
