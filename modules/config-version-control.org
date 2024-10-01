@@ -26,7 +26,6 @@ vc-handled-backends 用于配置需要使用的版本管理工具。
     (bw/set-space-key-and-name
      "ag" 'magit-status nil)
     :config
-    (require 'evil-magit)
     (when bw/windows-p
       ;; Commit 时不用 font-lock，以减少 magit-commit 运行时间
       (remove-hook 'after-change-major-mode-hook
