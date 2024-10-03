@@ -58,15 +58,59 @@
     (back-button-mode 1))
 #+END_SRC
 
-* Tag
-** xref
+* Tags
+
+  常见的 Tags 格式有 etags、ctags、gtags 和 Cscope。
+  - etags 是 Emacs 的 Tag 文件，只支持查找定义。
+  - ctags 一开始是 Vi 的 Tags 文件，也只支持查找定义，但信息比 etags 更丰富一点
+    （比如一个 Tag 是类还是函数）。现在 Emacs 的一些扩展也支持 ctags 文件。
+  - gtags 对于一些内置支持的语言，支持查找定义和引用。
+  - Cscope 提供更多强大的功能，如函数的调用关系，但只支持 C、C++、Java 语言。
+
+  常用的 Tag 生成工具有 Universal Ctags、GLOBAL gtags。
+  - Universal Ctags 可以生成 etags、ctags 格式的 Tags 文件
+  - GLOBAL gtags 可以生成 gtags 格式的 Tags 文件
+
+  | Tags 格式 | Tags 文件名        | 生成方法  |
+  |-----------+--------------------+-----------|
+  | etags     | tags               | ctags -eR |
+  | ctags     | TAGS               | ctags -R  |
+  | gtags     | GPATH GRTAGS GTAGS | gtags     |
+
+** etags
+
+  Emacs 内置对 etags 的支持。
+
+  通过 M-x visit-tags-table 指定 Tags 文件，然后就可以通过 M-. 查找 Tag 定义了。
+
+*** counsel-etags
+
+  第一次运行 counsel-etags 命令会提示自动生成 Tags 文件，也可以用
+counsel-etags-scan-codes 手动生成 Tags 文件。
+
+  counsel-etags 是独立于 Emacs 内置的 etags 支持的，不会使用 tags-table-list 等
+变量。
+
+  | 命令                            | 说明                   |
+  |---------------------------------+------------------------|
+  | counsel-etags-find-tag-at-point | 查找当前 Tag 的定义    |
+  | counsel-etags-find-tag          | 输入正则表达式查找 Tag |
+  | counsel-etags-list-tag          | 列出所有 Tag           |
 
 #+BEGIN_SRC emacs-lisp
-  (use-package xref
-    :ensure nil
-    :init
-    (general-define-key :keymaps 'normal
-                        "g." 'xref-find-definitions))
+  (use-package counsel-etags
+    :ensure t
+    ;; :init
+    ;; 自动更新 Tags 文件
+    ;; (add-hook 'prog-mode-hook
+    ;;       (lambda ()
+    ;;         (add-hook 'after-save-hook
+    ;;           'counsel-etags-virtual-update-tags 'append 'local)))
+    :config
+    (setq counsel-etags-update-interval 60)
+    ;; 忽略一些文件和目录
+    (push "TAGS" counsel-etags-ignore-filenames)
+    (push "build" counsel-etags-ignore-directories))
 #+END_SRC
 
 ** ctags
@@ -74,12 +118,22 @@
 
   [[https://github.com/universal-ctags/citre][Citre]] 是 ctags 前端，提供自动补全、xref、imenu 支持和代码的浏览功能。
 
-  Citre 使用的是 ctags 格式的文件，而不是和 etags 兼容的格式。因此，Citre 可以通
-过 readtags 程序检索 tags文件。得益于 readtags 的二分搜索，Citre 即使在 Linux 内
-核这样的大项目中也拥有不错的速度。
+  Citre 使用的是 ctags 格式的文件，而不是 etags 格式。Citre 通过 readtags 程序检
+索 tags文件。得益于 ctags 内的排序存储和readtags 的二分搜索，Citre 在大项目中也
+拥有不错的速度。
 
-  如果要 Citre 提供自动补全、xref 和 imenu 功能，需要启动 citre-mode。如果只要代
-码的浏览功能，生成 ctags 文件后直接使用 citre-jump、citre-peek 等命令即可。
+  用户可以手动生成 ctags 文件，也可以在 Emacs 中 M-x citre-update-this-tags-file
+交互式生成 ctags 文件。
+
+  如果要 Citre 提供自动补全、xref 和 imenu 功能，需要启动 citre-mode。下面是在
+hook 里启用的例子。
+
+#+BEGIN_SRC emacs-lisp-example
+  (add-hook 'find-file-hook #'citre-auto-enable-citre-mode)
+#+END_SRC
+
+  如果只要代码的浏览功能，生成 ctags 文件后直接使用 citre-jump、citre-peek 等命
+令即可。
 
   citre-peek-keymap 定义了若干可以在 citre-peak 窗口里使用的键绑定。
 
@@ -98,9 +152,10 @@
     :defer t
     :init
     (require 'citre-config)
+    (global-set-key (kbd "C-x c a") 'citre-ace-peek)
     (global-set-key (kbd "C-x c j") 'citre-jump)
     (global-set-key (kbd "C-x c J") 'citre-jump-back)
-    (global-set-key (kbd "C-x c p") 'citre-ace-peek)
+    (global-set-key (kbd "C-x c p") 'citre-peek)
     (global-set-key (kbd "C-x c u") 'citre-update-this-tags-file)
     :config
     ;; 当 xref 后端失败时，使用 Citre
@@ -115,7 +170,7 @@
               (funcall citre-fetcher))))))
 #+END_SRC
 
-** GNU GLOBAL
+** gtags
 
   [[https://www.gnu.org/software/global/][GNU GLOBAL]] 是一个开源的 Tag 系统，内置支持 6 种语言：C、C++、Yacc、
 Java、PHP4 和 Assembly。通过 Pygmentes 和 Ctags，可以支持 25 种语言，
@@ -220,7 +275,8 @@ counsel-gtags-go-forward 两个命令浏览。
     )
 #+END_SRC
 
-* Dumb Jump
+* 基于 Grep 类工具
+** Dumb Jump
 
   [[https://github.com/jacktasia/dumb-jump][Dumb Jump]] 使用 ag、rg、grep 等工具搜索函数、变量的定义。虽然简单粗暴，
 但还是相当凑合的。
@@ -229,4 +285,17 @@ counsel-gtags-go-forward 两个命令浏览。
   (use-package dumb-jump
     :ensure t
     :defer t)
+#+END_SRC
+
+* xref
+
+  xref 缺省使用 etags 后端，在加载其他扩展后，可能被修改成其他后端。可以通过变量
+xref-backend-functions 查看。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package xref
+    :ensure nil
+    :init
+    (general-define-key :keymaps 'normal
+                        "g." 'xref-find-definitions))
 #+END_SRC
