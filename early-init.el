@@ -2,5 +2,5 @@
 
 (setq nsm-settings-file (locate-user-emacs-file "var/network-security.data"))
 
-(when (boundp 'native-comp-eln-load-path)
+(when (fboundp 'startup-redirect-eln-cache)
   (startup-redirect-eln-cache (expand-file-name "var/eln-cache/" user-emacs-directory)))
