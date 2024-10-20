@@ -167,7 +167,12 @@ hook 里启用的例子。
         (lambda ()
           (or (with-demoted-errors "%s, fallback to citre"
                 (funcall fetcher))
-              (funcall citre-fetcher))))))
+              (funcall citre-fetcher)))))
+    ;; 递归向上层目录寻找 tags 文件过程中不处理符号链接
+    (define-advice citre-tags-file-path
+        (:around (orig-fun &rest args) no-follow-link)
+      (cl-letf (((symbol-function 'file-truename) #'concat))
+        (apply orig-fun args))))
 #+END_SRC
 
 ** gtags
