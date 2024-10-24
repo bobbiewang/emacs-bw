@@ -538,4 +538,11 @@ State 的功能。下面的代码可以达到这个目的。
     (evil-set-initial-state 'magit-log-edit-mode 'emacs)
     (evil-set-initial-state 'xref--xref-buffer-mode 'emacs)
     (add-hook 'org-capture-mode-hook 'evil-emacs-state))
+
+  (use-package evil-collection
+    :if (eq bw/ui-style 'evil)
+    :after evil
+    :ensure t
+    :config
+    (evil-collection-init))
 #+END_SRC
