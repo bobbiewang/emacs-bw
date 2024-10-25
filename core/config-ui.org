@@ -3,7 +3,7 @@
 * 配置变量
 
 #+BEGIN_SRC emacs-lisp
-  (defvar bw/ui-style 'evil
+  (defvar bw/ui-style 'emacs
     "User Interface 的风格，可选 'emacs、'evil。")
 #+END_SRC
 
