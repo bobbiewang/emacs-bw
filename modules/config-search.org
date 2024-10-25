@@ -82,21 +82,7 @@ projectile-ag，也需要 ag 的支持。
     (setq ag-arguments '("--vimgrep" "--smart-case" "--stats")))
 #+END_SRC
 
-* helm-ag
-
-  [[https://github.com/syohex/emacs-helm-ag][helm-ag]] 为 Silver Searcher 提供了 Helm 接口。
-
-#+BEGIN_SRC emacs-lisp
-  (use-package helm-ag
-    :if (eq bw/completion-framework 'helm)
-    :ensure t
-    :after (helm)
-    :init
-    (bw/set-space-key-and-name
-     "sg" 'helm-do-ag nil))
-#+END_SRC
-
-* ripgrep
+n* ripgrep
 
   [[https://github.com/dajva/rg.el][rg]] 支持在 Emacs 中用 ripgrep 程序搜索。
 
