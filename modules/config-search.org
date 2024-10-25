@@ -94,14 +94,6 @@ n* ripgrep
     (rg-enable-default-bindings))
 #+END_SRC
 
-  [[https://github.com/nlamirault/ripgrep.el][ripgrep]] 没有 rg 好用，但 projectile-ripgrep 依赖于这个包。
-
-#+BEGIN_SRC emacs-lisp
-  (use-package ripgrep
-    :ensure t
-    :defer t)
-#+END_SRC
-
 * wgrep
 
   和 counsel-ag 配合：
