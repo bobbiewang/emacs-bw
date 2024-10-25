@@ -196,19 +196,26 @@
           (require 'key-chord)
           (require 'key-seq)
           (key-chord-mode 1)
-          (setq comma-comma-keymap (make-sparse-keymap))
-          (key-seq-define-global ",," comma-comma-keymap)))
+          ;; 顺序键的 keymap
+          (setq two-key-keymap (make-sparse-keymap))
+          (key-seq-define-global ",," two-key-keymap)
+          ;; 组合键的 keymap
+          (setq comb-key-keymap (make-sparse-keymap))
+          (keymap-set global-map "M-i" comb-key-keymap)))
     (defun bw/define-keys-and-names (key def name &rest bindings)
         "设置 Leader Key 引导的键绑定和显示的名字。"
         (while key
           (if (eq bw/ui-style 'emacs)
               ; 设置 Emacs UI 键绑定
               (progn
-                (if def
-                    (general-define-key :keymaps 'comma-comma-keymap key def))
-                (if name
+                (when def
+                    (general-define-key :keymaps 'two-key-keymap key def)
+                    (general-define-key :keymaps 'comb-key-keymap key def))
+                (when name
                     (which-key-add-keymap-based-replacements
-                      comma-comma-keymap (format "%s" key) name)))
+                      two-key-keymap (format "%s" key) name)
+                    (which-key-add-keymap-based-replacements
+                        comb-key-keymap (format "%s" key) name)))
             ; 设置 Evil UI 键绑定
             (if def
                 (general-define-key :prefix "SPC" :keymaps 'normal key def))
