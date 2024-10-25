@@ -411,7 +411,15 @@ emacsclient 的 --server-file 参数，设置 server 文件的路径。
     "<SPC> s"  "search"
     "<SPC> w"  "windows")
 
-  (bw/set-space-key-and-name
+  (bw/define-keys-and-names
+   "a"    nil                       "applications"
+   "b"    nil                       "buffers"
+   "f"    nil                       "files"
+   "fC"   nil                       "convert"
+   "h"    nil                       "help"
+   "r"    nil                       "registers"
+   "s"    nil                       "search"
+   "w"    nil                       "windows"
    "TAB" 'bw/last-buffer            "last buffer"
    "bd"  'bw/kill-this-buffer       "kill this buffer"
    "fCd" 'bw/unix2dos               "unix2dos"

@@ -82,7 +82,7 @@
     (setq org-adapt-indentation nil)
     (if (eq bw/ui-style 'evil)
         (evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle))
-    (bw/set-space-key-and-name "c" 'org-capture nil)
+    (bw/define-keys-and-names "c" 'org-capture nil)
     ;; Org 目录
     (if (getenv "ORG_DIRECTORY")
         (setq org-directory (getenv "ORG_DIRECTORY"))

@@ -34,7 +34,7 @@ C-h m 查看 Helm 自带的帮助。
     (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
     (define-key helm-map (kbd "C-z")  'helm-select-action)
     ;; Space 键绑定
-    (bw/set-space-key-and-name
+    (bw/define-keys-and-names
      "bi"  'helm-imenu      "imenu"
      "ff"  'helm-find-files nil
      "fF"  'helm-mini       nil
@@ -101,7 +101,7 @@ completing-read-function 的地方会自动调用 Ivy 接口。
     (define-key (current-global-map) [remap describe-variable]
       'counsel-describe-variable)
     ;; Space 键绑定
-    (bw/set-space-key-and-name
+    (bw/define-keys-and-names
      "/"  'counsel-grep-or-swiper    "swiper"
      "bm" 'counsel-imenu             "imenu"
      "ff" 'counsel-find-file         "open file"

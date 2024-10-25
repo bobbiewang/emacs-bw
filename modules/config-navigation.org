@@ -24,7 +24,7 @@
     :ensure t
     :defer t
     :init
-    (bw/set-space-key-and-name
+    (bw/define-keys-and-names
      "<SPC>" 'avy-goto-word-1 "avy word"))
 #+END_SRC
 
@@ -37,7 +37,7 @@
     :ensure t
     :defer t
     :init
-    (bw/set-space-key-and-name
+    (bw/define-keys-and-names
      "0" 'winum-select-window-0 "window 0"
      "1" 'winum-select-window-1 "window 1"
      "2" 'winum-select-window-2 "window 2"

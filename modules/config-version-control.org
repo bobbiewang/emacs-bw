@@ -23,7 +23,7 @@ vc-handled-backends 用于配置需要使用的版本管理工具。
     :ensure t
     :defer t
     :init
-    (bw/set-space-key-and-name
+    (bw/define-keys-and-names
      "ag" 'magit-status nil)
     :config
     (when bw/windows-p

@@ -181,10 +181,11 @@
 
 ** General
 
-  [[https://github.com/noctuid/general.el][General]] 支持定义多个 Leader Key。
-
-  可以通过 General 的 general-define-key 函数设置键绑定，设置的键绑定可以通过
-M-x general-describe-keybindings 列出。
+  [[https://github.com/noctuid/general.el][General]] 支持定义多个 Leader Key。general-define-key 函数用于设置键绑定，设置的
+键绑定可以通过M-x general-describe-keybindings 列出。
+  - Evil UI：使用 Space 作为 Leader Key。
+  - Emacs UI：使用 Ctrl-, 和 ,, 作为 Leader Key。后者可以在不支持 Ctrl-, 的环境
+    下（如某些 Term）使用。
 
 #+BEGIN_SRC emacs-lisp
   (use-package general
@@ -197,20 +198,24 @@ M-x general-describe-keybindings 列出。
           (key-chord-mode 1)
           (setq comma-comma-keymap (make-sparse-keymap))
           (key-seq-define-global ",," comma-comma-keymap)))
-    (defun bw/set-space-key-and-name (key def name &rest bindings)
-        "设置 SPC 引导的键绑定和显示的名字。"
+    (defun bw/define-keys-and-names (key def name &rest bindings)
+        "设置 Leader Key 引导的键绑定和显示的名字。"
         (while key
           (if (eq bw/ui-style 'emacs)
+              ; 设置 Emacs UI 键绑定
               (progn
-                ;; (general-def comma-comma-keymap key def))
-                (general-define-key :keymaps 'comma-comma-keymap key def)
+                (if def
+                    (general-define-key :keymaps 'comma-comma-keymap key def))
                 (if name
-                    (which-key-add-key-based-replacements
-                      (format "%s" key) name)))
-            (general-define-key :prefix "SPC" :keymaps 'normal key def)
+                    (which-key-add-keymap-based-replacements
+                      comma-comma-keymap (format "%s" key) name)))
+            ; 设置 Evil UI 键绑定
+            (if def
+                (general-define-key :prefix "SPC" :keymaps 'normal key def))
             (if name
                 (which-key-add-key-based-replacements
                   (format "<SPC> %s" key) name)))
+          ; 循环获取下一组 key, def, name
           (setq key  (pop bindings)
                 def  (pop bindings)
                 name (pop bindings)))))
