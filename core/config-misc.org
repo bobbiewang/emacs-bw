@@ -348,6 +348,7 @@ emacsclient 的 --server-file 参数，设置 server 文件的路径。
               (setq end (1+ end)))
           (kill-region beg end))
       (call-interactively 'kill-region)))
+
   ;; set the following var to t if you like a newline in the end of killed text.
   (setq bw/kill-region-dwim-include-last-newline t)
 
@@ -360,7 +361,7 @@ emacsclient 的 --server-file 参数，设置 server 文件的路径。
   (global-set-key (kbd "<M-S-return>") 'toggle-frame-fullscreen)
 #+END_SRC
 
-** Space 键绑定
+** UI 键绑定
 
 #+BEGIN_SRC emacs-lisp
   (defun bw/last-buffer (&optional window)
@@ -401,29 +402,23 @@ emacsclient 的 --server-file 参数，设置 server 文件的路径。
     (interactive)
     (set-buffer-file-coding-system 'undecided-dos nil))
 
-  (which-key-add-key-based-replacements
-    "<SPC> a"  "applications"
-    "<SPC> b"  "buffers"
-    "<SPC> f"  "files"
-    "<SPC> fC" "convert"
-    "<SPC> h"  "help"
-    "<SPC> r"  "registers"
-    "<SPC> s"  "search"
-    "<SPC> w"  "windows")
-
   (bw/define-keys-and-names
-   "a"    nil                       "applications"
-   "b"    nil                       "buffers"
-   "f"    nil                       "files"
+   "a"    nil                       "application"
+   "b"    nil                       "buffer"
+   "f"    nil                       "file"
    "fC"   nil                       "convert"
+   "d"    nil                       "directory"
    "h"    nil                       "help"
-   "r"    nil                       "registers"
+   "r"    nil                       "register"
    "s"    nil                       "search"
-   "w"    nil                       "windows"
+   "w"    nil                       "window"
    "TAB" 'bw/last-buffer            "last buffer"
    "bd"  'bw/kill-this-buffer       "kill this buffer"
+   "fo"  'find-file-other-window    "open file other window"
    "fCd" 'bw/unix2dos               "unix2dos"
    "fCu" 'bw/dos2unix               "dos2unix"
+   "dc"  'pwd                       "current directory"
+   "dd"  'dired-jump                "dired"
    "hb"  'describe-bindings         "bindings"
    "hc"  'describe-char             "char"
    "hF"  'describe-face             "face"
