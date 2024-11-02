@@ -48,13 +48,18 @@
 #+BEGIN_SRC emacs-lisp
   (use-package monokai-theme
     :ensure t
-    :config
+    :init
     ;; Emacs 根据 frame-background-mode 确定 Frame 背景的亮暗，可选值未 dark、
     ;; light、nil（自动判断）。自动判断的结果可以通过 (frame-parameter nil
     ;; 'background-mode) 得到。如果缺省的自动判断出错，会造成颜色显示问题，可以显
     ;; 式设置
     (setq frame-background-mode 'dark)
-    (load-theme 'monokai t))
+    :config
+    (load-theme 'monokai t)
+    :custom
+    (monokai-background     "#000000")
+    (monokai-highlight-line "#141410")
+    (monokai-highlight      "#29281E"))
 #+END_SRC
 
 ** Frame
