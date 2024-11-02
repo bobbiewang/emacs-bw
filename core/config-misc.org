@@ -122,6 +122,7 @@
     :init
     ;; 自定义数据文件
     (setq recentf-save-file (locate-user-emacs-file "var/.recentf"))
+    (recentf-mode 1)
     :config
     ;; 记录最近 1000 个访问项，而不是缺省的 20 个
     (setq recentf-max-saved-items 1000)
