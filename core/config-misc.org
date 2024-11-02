@@ -51,7 +51,7 @@
 
 #+BEGIN_SRC emacs-lisp
   (global-hl-line-mode 1)
-  (set-face-background 'hl-line "#49483E")
+  (set-face-background 'hl-line "#262626")
   ;; transient-mark-mode 颜色和 hl-line 颜色要容易区别
   (set-face-background 'region "purple4")
 #+END_SRC
