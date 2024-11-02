@@ -229,3 +229,18 @@ Backend 组中。
     ;; 激发补全前等待时间，缺省是 0.5，修改成 0.1 会快一点
     (setq company-idle-delay 0.1))
 #+END_SRC
+
+* Marginalia
+
+  [[https://github.com/minad/marginalia][Marginalia]] 为 minibuffer 的 Completion 候选项提供 Annotation。其支持的
+Annotation 有 File、Buffer、Function、Variable、Library 等。可以通过变量
+marginalia-annotator-registry 查看详细列表。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package marginalia
+    :bind (:map minibuffer-local-map
+                ;; 切换显示内容
+                ("M-A" . marginalia-cycle))
+    :init
+    (marginalia-mode))
+#+END_SRC
