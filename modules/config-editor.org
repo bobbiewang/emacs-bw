@@ -62,9 +62,9 @@
            ("<M-f2>" . bm-show-all))
     :init
     (bw/define-keys-and-names
-     "bb" 'bm-toggle   "bookmark toggle"
-     "bn" 'bm-next     "bookmark next"
-     "bl" 'bm-show-all "bookmark list"))
+     "rb" 'bm-toggle   "bookmark toggle"
+     "rn" 'bm-next     "bookmark next"
+     "rl" 'bm-show-all "bookmark list"))
 #+END_SRC
 
 * auto-highlight-symbol

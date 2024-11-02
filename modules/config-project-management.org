@@ -94,7 +94,7 @@ bundler 项目。如果项目目录不使用以上工具，可以在项目根目
     (setq projectile-enable-caching t)
     ;; 设置键绑定
     (bw/define-keys-and-names
-     "p"   nil                                         "projects"
+     "p"   nil                                         "project"
      "ps"  nil                                         "search"
      "p!"  'projectile-run-shell-command-in-root       "run command"
      "p&"  'projectile-run-async-shell-command-in-root "run async command"
