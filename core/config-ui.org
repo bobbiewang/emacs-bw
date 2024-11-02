@@ -508,12 +508,6 @@ State 的功能。下面的代码可以达到这个目的。
                                             '((:background "blue") :foreground "white"))
           evil-emacs-state-tag (propertize "[E]" 'face
                                            '((:background "orange" :foreground "black"))))
-    ;; 激活 hl-line-mode，一边下面进行自定义
-    ;; 注意要和 transient-mark-mode 的颜色（region face）区别开来
-    (global-hl-line-mode 1)
-    (set-face-background 'region "purple4")
-    ;; 下面根据 Evil State 调整 hl-line 颜色的效果经常失败，暂时禁用，待分析原因
-    (set-face-background 'hl-line "#49483E") ; hl-line 暂时都用一种颜色
     ;; (add-hook 'evil-normal-state-entry-hook (lambda ()
     ;;                                           (set-face-background 'hl-line "#006400")))
     ;; (add-hook 'evil-insert-state-entry-hook (lambda ()
