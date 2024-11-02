@@ -130,7 +130,7 @@
 
   File Name Cache 是一个方便的快速打开常用文件的扩展。缺省情况下，在使
 用 C-x C-f 的时候，键入 C-TAB 就会显示 File Name Cache 列表。不过，在
-终端中使用 Emacs 的时候不能键入 C-TAB，不太方便，可以结合 ido、heml 等
+终端中使用 Emacs 的时候不能键入 C-TAB，不太方便，可以结合 ido、helm 等
 补全框架使用。
 
 #+BEGIN_SRC emacs-lisp
