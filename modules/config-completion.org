@@ -172,6 +172,50 @@ smex 的数据，最近用的命令列在前面。
     (setq smex-save-file (locate-user-emacs-file "var/smex-items")))
 #+END_SRC
 
+* Vertico
+
+  [[https://github.com/minad/vertico][Vertico]] 基于 Emacs 内置的 Completion 系统，提供一个高性能且简约的接口。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package vertico
+    :if (eq bw/completion-framework 'vertico)
+    :custom
+    (vertico-cycle t) ;; 允许循环选择
+    :init
+    (vertico-mode))
+#+END_SRC
+
+  [[https://github.com/minad/consult][Consult]] 提供了一些基于 Emacs 补全函数 completing-read 的命令。这里配合 vertico
+使用。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package consult
+    :if (eq bw/completion-framework 'vertico)
+    :ensure t
+    :bind (("C-x b" . consult-buffer)
+           ("M-`"   . consult-imenu)
+           ("M-y"   . consult-yank-pop))
+    :init
+    (bw/define-keys-and-names
+     "/"  'consult-line    "/"
+     "fF" 'consult-fd      "file file dwim"
+     "bb" 'consult-buffer  "switch buffer"
+     "sg" 'consult-grep    "grep"
+     "sr" 'rg-menu         "ripgrep"
+     "sp" 'consult-ripgrep "ripgrep in project"))
+#+END_SRC
+
+  [[https://github.com/oantolin/orderless][orderless]] 支持无序的 Completion 支持。这里配合 vertico 使用。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package orderless
+    :if (eq bw/completion-framework 'vertico)
+    :ensure t
+    :custom
+    (completion-styles '(orderless basic))
+    (completion-category-overrides '((file (styles basic partial-completion)))))
+#+END_SRC
+
 * YASnippet
 
   [[https://github.com/joaotavora/yasnippet][YASnippet]] 是一个留下的 Emacs 模版系统。

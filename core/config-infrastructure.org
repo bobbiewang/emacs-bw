@@ -210,14 +210,9 @@ window-system 当作 boolean 的用法。
 * 个人设置
 
   ~/.emacs.d/personal/personal.el 里存一些定制的设置，如不同人使用偏好、
-不同机器环境的差异等。下面是一些例子：
-  - 补全框架使用 Helm 还是 Ivy
-  - 当前是公司还是家庭网络环境
+不同机器环境的差异等。
 
 #+BEGIN_SRC emacs-lisp
-  (defvar bw/completion-framework 'ivy
-    "补全前端，可选 'helm、'ivy 和 nil")
-
   ;; 加载 ~/persional/personal.el，里面存私人设置，比如当前是公司还是家
   ;; 庭网络环境
   (let ((persional-file (locate-user-emacs-file "personal/personal.el")))
