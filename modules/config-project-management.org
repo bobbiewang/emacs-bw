@@ -1,5 +1,12 @@
 #+TITLE:     Project Management
 
+* project
+
+  project 是 Emacs 内置的项目管理功能。Emacs 根据 VC 和 EDE 判断文件是否属于项目。
+  - VC：Bazaar, CVS, Git, Mercurial, Monotone, RCS, SRC, SCCS/CSSC, and
+    Subversion 等版本管理工具。
+  - EDE：通过 ede-new 命令创建项目，在项目根目录下生成 Project.ede 文件。
+
 * Projectile
 
   [[https://github.com/bbatsov/projectile][Projectile]] 是 Emacs 的一个项目管理扩展。
