@@ -67,17 +67,51 @@
      "rl" 'bm-show-all "bookmark list"))
 #+END_SRC
 
-* auto-highlight-symbol
+* Symbol Overlay
 
-  [[https://github.com/gennad/auto-highlight-symbol/][auto-highlight-symbol]] 自动高亮光标处的 Symbol。
+  [[https://github.com/wolray/symbol-overlay][Symbol Overlay]] 支持自动高亮、手工高亮当前 Symbol，在 Symbol 之间跳转，对Symbol
+改名等功能。
+
+  下面是 Symbol Overlay 的常用函数。
+
+  | symbol-overlay-mode       | 自动高亮当前 Symbol 的 Minor Mode |
+  | symbol-overlay-put        | 高亮或取消高亮当前 Symbol         |
+  | symbol-overlay-remove-all | 取消所有 Symbol 的高亮            |
+  | symbol-overlay-rename     | 重命名当前 Symbol                 |
+
+  在高亮的 Symbol 上可以用 symbol-overlay-map 定义的键绑定进行快捷操作，非常方便。
+
+  | i | symbol-overlay-put                |
+  | n | symbol-overlay-jump-next          |
+  | p | symbol-overlay-jump-prev          |
+  | w | symbol-overlay-save-symbol        |
+  | t | symbol-overlay-toggle-in-scope    |
+  | e | symbol-overlay-echo-mark          |
+  | d | symbol-overlay-jump-to-definition |
+  | s | symbol-overlay-isearch-literally  |
+  | q | symbol-overlay-query-replace      |
+  | r | symbol-overlay-rename             |
 
 #+BEGIN_SRC emacs-lisp
-  (use-package auto-highlight-symbol
+  (use-package symbol-overlay
     :ensure t
     :delight
-    :hook (prog-mode . auto-highlight-symbol-mode)
+    :hook (prog-mode . symbol-overlay-mode)
     :init
-    (setq ahs-idle-interval 1))
+    (transient-define-prefix bw/symbol-overlay-transient ()
+      "Symbol Overlay Transient"
+    ["Symbol Overlay"
+     ["Highlight"
+      ("." "Add/Remove at point" symbol-overlay-put)
+      ("k" "Remove All" symbol-overlay-remove-all)]
+     ["Move to Symbol"
+      ("n" "Next" symbol-overlay-switch-forward)
+      ("p" "Previous" symbol-overlay-switch-backward)]
+     ["Mode"
+      ("m" "Toggle minor mode" symbol-overlay-mode)]
+     ])
+    (bw/define-keys-and-names
+     "o"  'bw/symbol-overlay-transient "overlay"))
 #+END_SRC
 
 * indent
