@@ -82,9 +82,11 @@ projectile-ag，也需要 ag 的支持。
     (setq ag-arguments '("--vimgrep" "--smart-case" "--stats")))
 #+END_SRC
 
-n* ripgrep
+* ripgrep
 
   [[https://github.com/dajva/rg.el][rg]] 支持在 Emacs 中用 ripgrep 程序搜索。
+
+  在搜索结果里可以按 e 键进入 wgrep 模式，可以编辑搜索结果。
 
 #+BEGIN_SRC emacs-lisp
   (use-package rg
