@@ -189,6 +189,10 @@ smex 的数据，最近用的命令列在前面。
   [[https://github.com/minad/consult][Consult]] 提供了一些基于 Emacs 补全函数 completing-read 的命令。这里配合 vertico
 使用。
 
+  Consult 的一些搜索命令是支持额外的命令行参数的，只要用 -- 分隔就星了。比如
+consult-ripgrep，可以 M-x consult-ripgrep RET main -- -tcpp。这里的 -tcpp 限定只
+搜索 C++ 文件。
+
 #+BEGIN_SRC emacs-lisp
   (use-package consult
     :if (eq bw/completion-framework 'vertico)
