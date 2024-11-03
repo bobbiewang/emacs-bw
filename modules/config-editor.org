@@ -14,9 +14,13 @@
 #+BEGIN_SRC emacs-lisp
   (use-package embark
     :ensure t
+    :bind (("M-`" . embark-act))
     :init
     ;; 替代 Help
     (setq prefix-help-command #'embark-prefix-help-command))
+
+  (use-package embark-consult
+    :ensure t)
 #+END_SRC
 
 * Scroll
@@ -110,16 +114,14 @@
     :init
     (transient-define-prefix bw/symbol-overlay-transient ()
       "Symbol Overlay Transient"
-    ["Symbol Overlay"
-     ["Highlight"
+    [["Highlight"
       ("." "Add/Remove at point" symbol-overlay-put)
       ("k" "Remove All" symbol-overlay-remove-all)]
      ["Move to Symbol"
       ("n" "Next" symbol-overlay-switch-forward)
       ("p" "Previous" symbol-overlay-switch-backward)]
      ["Mode"
-      ("m" "Toggle minor mode" symbol-overlay-mode)]
-     ])
+      ("m" "Toggle minor mode" symbol-overlay-mode)]])
     (bw/define-keys-and-names
      "o"  'bw/symbol-overlay-transient "overlay"))
 #+END_SRC

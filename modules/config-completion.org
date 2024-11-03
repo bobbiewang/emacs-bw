@@ -66,7 +66,7 @@ C-h m 查看 Helm 自带的帮助。
     (define-key helm-map (kbd "C-z")  'helm-select-action)
     ;; Space 键绑定
     (bw/define-keys-and-names
-     "bi"  'helm-imenu      "imenu"
+     "bm"  'helm-imenu      "imenu"
      "ff"  'helm-find-files nil
      "fF"  'helm-mini       nil
      "ha"  'helm-apropos    "apropos"
@@ -115,7 +115,7 @@ completing-read-function 的地方会自动调用 Ivy 接口。
     :bind (("M-x"     . counsel-M-x)
            ("C-x b"   . ivy-switch-buffer)
            ("C-x C-f" . counsel-find-file)
-           ("M-`"     . counsel-imenu)
+           ("M-g i"   . counsel-imenu)
            ("M-y"     . counsel-yank-pop))
     :init
     ;; 全局激活 ivy-mode，使用 completing-read 的地方都使用 Ivy 接口
@@ -198,13 +198,14 @@ consult-ripgrep，可以 M-x consult-ripgrep RET main -- -tcpp。这里的 -tcpp
     :if (eq bw/completion-framework 'vertico)
     :ensure t
     :bind (("C-x b" . consult-buffer)
-           ("M-`"   . consult-imenu)
+           ("M-g i" . consult-imenu)
            ("M-y"   . consult-yank-pop))
     :init
     (bw/define-keys-and-names
      "/"  'consult-line    "/"
      "fF" 'consult-fd      "file file dwim"
      "bb" 'consult-buffer  "switch buffer"
+     "bm" 'consult-imenu   "imenu"
      "sg" 'consult-grep    "grep"
      "sr" 'rg-menu         "ripgrep"
      "sp" 'consult-ripgrep "ripgrep in project"))
