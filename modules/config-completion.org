@@ -184,6 +184,17 @@ smex 的数据，最近用的命令列在前面。
     (vertico-cycle t) ;; 允许循环选择
     :init
     (vertico-mode))
+
+  (use-package vertico-directory
+    :after vertico
+    :ensure nil
+    ;; More convenient directory navigation commands
+    :bind (:map vertico-map
+                ("RET" . vertico-directory-enter)
+                ("DEL" . vertico-directory-delete-char)
+                ("M-DEL" . vertico-directory-delete-word))
+    ;; Tidy shadowed file names
+    :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 #+END_SRC
 
   [[https://github.com/minad/consult][Consult]] 提供了一些基于 Emacs 补全函数 completing-read 的命令。这里配合 vertico
