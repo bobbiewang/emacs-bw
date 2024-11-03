@@ -131,6 +131,13 @@
     (which-key-mode))
 #+END_SRC
 
+** transient
+
+#+BEGIN_SRC emacs-lisp
+  (use-package transient
+    :ensure t)
+#+END_SRC
+
 ** File Name Cache
 
   File Name Cache 是一个方便的快速打开常用文件的扩展。缺省情况下，在使
