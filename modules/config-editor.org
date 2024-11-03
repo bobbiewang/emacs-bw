@@ -11,6 +11,9 @@
 
 * Embark
 
+  参考资料
+  - [[https://karthinks.com/software/fifteen-ways-to-use-embark/][Fifteen ways to use Embark]]
+
 #+BEGIN_SRC emacs-lisp
   (use-package embark
     :ensure t
