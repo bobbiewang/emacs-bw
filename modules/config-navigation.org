@@ -295,7 +295,101 @@ counsel-gtags-go-forward 两个命令浏览。
 * xref
 
   xref 缺省使用 etags 后端，在加载其他扩展后，可能被修改成其他后端。可以通过变量
-xref-backend-functions 查看。
+xref-backend-functions 查看当前支持的后端。
+
+  不过，如果 xref-backend-functions 中定义了多个后端，xref 并不会依次调用各个后
+端直到某一个后端返回结果。xref 只是调用第一个后端的函数，然后不管是否成功，都不
+会再调下一个后端的函数了。
+
+  可以通过 Advice 修改 xref--create-fetcher 的行为，让其在一个后端失败后，继续尝
+试后面的终端。下面是一个例子。
+
+#+BEGIN_SRC emacs-lisp-example
+  (defun bw/xref-find-backends ()
+    (let (backends
+          backend)
+      (dolist (f (append xref-backend-functions
+                         (default-value 'xref-backend-functions)))
+        (when (functionp f)
+          (setq backend (funcall f))
+          (when backend
+            (cl-pushnew backend backends))))
+      (reverse (delete-dups backends))))
+
+  (defun bw/xref--create-fetcher (input kind arg)
+    "Return an xref list fetcher function.
+
+  It revisits the saved position and delegates the finding logic to
+  the xref backend method indicated by KIND and passes ARG to it."
+    (let* ((orig-buffer (current-buffer))
+           (orig-position (point))
+           (backends (bw/xref-find-backends))
+           (method (intern (format "xref-backend-%s" kind))))
+      (lambda ()
+        (save-excursion
+          ;; Xref methods are generally allowed to depend on the text
+          ;; around point, not just on their explicit arguments.
+          ;;
+          ;; There is only so much we can do, however, to recreate that
+          ;; context, given that the user is free to change the buffer
+          ;; contents freely in the meantime.
+          (when (buffer-live-p orig-buffer)
+            (set-buffer orig-buffer)
+            (ignore-errors (goto-char orig-position)))
+          (let (xrefs)
+            (cl-dolist (backend backends)
+              (ignore-errors
+                (setq xrefs (funcall method backend arg))
+                (when xrefs
+                  (cl-return))))
+            (unless xrefs
+              (xref--not-found-error kind input))
+            xrefs)))))
+  (advice-add #'xref--create-fetcher :override #'bw/xref--create-fetcher)
+
+  (with-eval-after-load 'dumb-jump
+    (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
+
+  (with-eval-after-load 'citre
+    (add-hook 'xref-backend-functions #'citre-xref-backend))
+#+END_SRC
+
+  下面是另一个例子。
+
+#+BEGIN_SRC emacs-lisp-example
+  (defun bw/xref-find-backends()
+    (let (backends)
+      (run-hook-wrapped 'xref-backend-functions
+                        (lambda (f)
+                          (when (functionp f)
+                            (setq backend (funcall f))
+                            (when backend
+                              (cl-pushnew backend backends)))
+                          nil))
+      (reverse backends)))
+
+  (defun bw/xref--create-fetcher (input kind arg)
+    (let* ((orig-buffer (current-buffer))
+           (orig-position (point))
+           (backends (bw/xref-find-backends))
+           (method (intern (format "xref-backend-%s" kind))))
+      (lambda ()
+        (save-excursion
+          (when (buffer-live-p orig-buffer)
+            (set-buffer orig-buffer)
+            (ignore-errors (goto-char orig-position)))
+          (let (xrefs)
+            (cl-dolist (backend backends)
+              (ignore-errors
+                (setq xrefs (funcall method backend arg))
+                (when xrefs
+                  (cl-return))))
+            (unless xrefs
+              (xref--not-found-error kind input))
+            xrefs)))))
+
+  (advice-add #'xref--create-fetcher :override #'bw/xref--create-fetcher)
+#+END_SRC
 
 #+BEGIN_SRC emacs-lisp
   (use-package xref
