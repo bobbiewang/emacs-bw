@@ -105,6 +105,8 @@ C-h m 查看 Helm 自带的帮助。
   M-x ivy-mode 全局激活 Ivy 补全，在 Emacs 中所有使用
 completing-read-function 的地方会自动调用 Ivy 接口。
 
+  counsel-rg 在 minibuffer 中实时显示搜索结果，可以 C-c C-o 将结果输出到 Buffer。
+
   参考资料
   - [[https://writequit.org/denver-emacs/presentations/2017-04-11-ivy.html][Ivy, Counsel and Swiper]]
 
