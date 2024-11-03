@@ -9,6 +9,16 @@
     (auto-fill-function " AF"))
 #+END_SRC
 
+* Embark
+
+#+BEGIN_SRC emacs-lisp
+  (use-package embark
+    :ensure t
+    :init
+    ;; 替代 Help
+    (setq prefix-help-command #'embark-prefix-help-command))
+#+END_SRC
+
 * Scroll
 
   缺省情况下，光标超出 Window 边缘时，Emacs 会滚动半个 Window 的内容，
