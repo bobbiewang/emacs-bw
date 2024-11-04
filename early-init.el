@@ -24,5 +24,3 @@
                        env)))
     (startup-redirect-eln-cache
      (expand-file-name "emacs/eln-cache" cache-home))))
-
-(setq nsm-settings-file (locate-user-emacs-file "emacs/network-security.data"))

@@ -532,4 +532,7 @@ emacsclient 的 --server-file 参数，设置 server 文件的路径。
   (setq transient-history-file
         (expand-file-name "emacs/transient/history.el"
                           (xdg-cache-home)))
+
+  (setq nsm-settings-file (expand-file-name "emacs/network-security.data"
+                                            (xdg-cache-home)))
 #+END_SRC
