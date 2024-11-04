@@ -53,7 +53,7 @@ https_proxy 环境变量设置的代理，要确保代理是可用的。
     :init
     ;; 设置 Python 包的安装目录
     (setq anaconda-mode-installation-directory
-          (locate-user-emacs-file "var/anaconda-mode")))
+          (expand-file-name "emacs/anaconda-mode" (xdg-cache-home))))
 #+END_SRC
 
 * company-anaconda

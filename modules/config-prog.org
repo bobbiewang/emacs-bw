@@ -31,7 +31,7 @@
     :init
     ;; 设置 multi-compile 的 cache 文件
     (setq multi-compile-history-file
-          (locate-user-emacs-file "var/multi-compile.cache"))
+          (expand-file-name "emacs/multi-compile.cache" (xdg-cache-home)))
     :config
     ;; 使用 Ivy 为补全后端时，用 completing-read
     (if (eq bw/completion-framework 'ivy)
@@ -55,7 +55,7 @@
     :commands lsp
     :init
     (setq lsp-session-file (expand-file-name
-                            (locate-user-emacs-file "var/lsp-session-v1"))))
+                            "emacs/lsp-session-v1" (xdg-cache-home))))
 #+END_SRC
 
 ** lsp-ui

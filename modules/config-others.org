@@ -69,7 +69,7 @@
     ;; 将 Emacs 默认输入法设置为 pyim
     (setq default-input-method "pyim")
     ;; 自定义 cache 文件的路径
-    (setq pyim-dcache-directory (locate-user-emacs-file "var/pyim/dcache/"))
+    (setq pyim-dcache-directory (expand-file-name "emacs/pyim/dcache" (xdg-cache-home)))
     :config
     ;; 加载 basedict 拼音词库
     (pyim-basedict-enable)
@@ -96,7 +96,7 @@ emacs-snapshot-module.h，导致编译失败。可以在 /usr/include 临时加�
   (use-package rime
     :disabled t
     :init
-    (setq rime-user-data-dir (locate-user-emacs-file "var/rime/"))
+    (setq rime-user-data-dir (expand-file-name "emacs/rime/" (xdg-cache-home)))
     :custom
     (default-input-method "rime"))
 #+END_SRC

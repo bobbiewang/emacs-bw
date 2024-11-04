@@ -89,9 +89,9 @@ bundler 项目。如果项目目录不使用以上工具，可以在项目根目
     :delight '(:eval (concat " [" (projectile-project-name) "]"))
     :init
     (setq projectile-cache-file
-          (locate-user-emacs-file "var/projectile.cache"))
+          (expand-file-name "emacs/projectile.cache" (xdg-cache-home)))
     (setq projectile-known-projects-file
-          (locate-user-emacs-file "var/projectile-bookmarks.eld"))
+          (expand-file-name "emacs/projectile-bookmarks.eld" (xdg-cache-home)))
     ;; 使用外部命令（如 git、find）索引文件，以加快速度
     (setq projectile-indexing-method 'alien)
     ;; 设置外部命令为 fd，并包括符号链接的文件
@@ -184,7 +184,7 @@ bundler 项目。如果项目目录不使用以上工具，可以在项目根目
     :defer t
     :init
     (setq skeletor-user-directory
-          (locate-user-emacs-file "var/skeketor"))
+          (expand-file-name "emacs/skeketor" (xdg-cache-home)))
     (skeletor-define-template "bw-cpp-quick-make"
       :title "C++ Quick Executable - Makefile"
       :no-git? t

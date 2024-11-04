@@ -22,7 +22,7 @@
     :init
     ;; 自定义 ido 记录文件的路径
     (setq ido-save-directory-list-file
-          (locate-user-emacs-file "var/ido.last"))
+          (expand-file-name "emacs/ido.last" (xdg-cache-home)))
     (ido-mode 1)
     ;; 可以用 cu 匹配文件名 config-ui.org
     (setq ido-enable-flex-matching t)
@@ -172,7 +172,7 @@ smex 的数据，最近用的命令列在前面。
     :ensure t
     :defer t
     :init
-    (setq smex-save-file (locate-user-emacs-file "var/smex-items")))
+    (setq smex-save-file (expand-file-name "emacs/smex-items" (xdg-cache-home))))
 #+END_SRC
 
 * Vertico

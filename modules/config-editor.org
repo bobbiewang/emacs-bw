@@ -403,7 +403,7 @@ undo-tree 替换 Emacs 内置的 Undo 系统，并且设置了几个键绑定，
     :defer t
     :init
     (setq pcache-directory
-          (let ((dir (concat user-emacs-directory "var/pcache/")))
+          (let ((dir (expand-file-name "emacs/pcache" (xdg-cache-home))))
             (make-directory dir t)
             dir)))
 #+END_SRC

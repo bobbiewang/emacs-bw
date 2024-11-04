@@ -21,14 +21,15 @@
 ;; - melpa: http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/
 (setq package-archives '(("gnu"   . "http://mirrors.163.com/elpa/gnu/")
 			             ("melpa" . "http://mirrors.163.com/elpa/melpa/")))
-
-(setq package-user-dir (locate-user-emacs-file "var/elpa"))
-(setq package-enable-at-startup nil)    ; 不在 init 文件加载后重复初始化
+;; 不在 init 文件加载后重复初始化
+(setq package-enable-at-startup nil)
 (package-initialize)
+
+(require 'xdg)
 
 ;; 将 site-lisp 下的包加到 load-path
 ;; 忽略 .git、.svn、RCS、CVS 等目录，以及包含 .nosearch 文件的目录
-(defvar bw/site-lisp-dir (locate-user-emacs-file "site-lisp/"))
+(defvar bw/site-lisp-dir (expand-file-name "site-lisp/" (xdg-data-home)))
 (if (and (fboundp 'normal-top-level-add-subdirs-to-load-path)
          (file-exists-p bw/site-lisp-dir))
     (let* ((default-directory bw/site-lisp-dir)
