@@ -64,6 +64,7 @@ https_proxy 环境变量设置的代理，要确保代理是可用的。
   (use-package company-anaconda
     :ensure t
     :after (company)
+    :commands (company-anaconda)
     :config
     (add-to-list 'company-backends '(company-anaconda :with company-capf)))
 #+END_SRC
