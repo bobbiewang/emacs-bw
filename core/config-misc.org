@@ -536,4 +536,7 @@ emacsclient 的 --server-file 参数，设置 server 文件的路径。
 
   (setq nsm-settings-file (expand-file-name "emacs/network-security.data"
                                             (xdg-cache-home)))
+
+  (setq tramp-persistency-file-name (expand-file-name "emacs/tramp"
+                                                      (xdg-cache-home)))
 #+END_SRC
