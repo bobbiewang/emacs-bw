@@ -164,16 +164,17 @@ package-user-dir 目录下所有的内容被称为 Package Contents。
     :disabled
     :commands R)
 
-  ;; 用了 :commands, :bind, :bind*, :bind-keymap, :bind-keymap*, :mode
-  ;; 或 :interpreter，该包会延迟加载。否则，可以用 :defer 设置延迟加载。
-  ;; 下面两个例子的效果是一样的
+  ;; 缺省 use-package 会加载扩展（类似 require）。使用了 :commands, :bind, :bind*,
+  ;; :bind-keymap, :bind-keymap*, :mode或 :interpreter，该包会延迟加载。另外，可以
+  ;; 用 :defer 设置延迟加载。下面两个例子的效果是一样的
+  (use-package ace-jump-mode
+    :bind ("C-." . ace-jump-mode))
+
   (use-package ace-jump-mode
     :defer t
     :init
     (autoload 'ace-jump-mode "ace-jump-mode" nil t)
     (bind-key "C-." 'ace-jump-mode))
-  (use-package ace-jump-mode
-    :bind ("C-." . ace-jump-mode))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
