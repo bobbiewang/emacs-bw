@@ -23,7 +23,7 @@
 
   ;; 设置备份文件的路径
   (setq backup-directory-alist
-        '(("" . (expand-file-name "emacs/auto-backup" (xdg-cache-home)))))
+        `(("" . ,(expand-file-name "emacs/auto-backup" (xdg-cache-home)))))
 
   ;; 设置备份方法：直接拷贝
   (setq backup-by-copying t)
@@ -139,8 +139,9 @@
   ;; 启用 desktop save mode
   (desktop-save-mode 1)
   ;; 设置 desktop 相关文件的路径
-  (setq desktop-base-file-name (locate-user-emacs-file "emacs/desktop" (xdg-cache-home)))
-  (setq desktop-base-lock-name (expand-file-name "emacs/desktop.lock" (xdg-cache-home)))
+  (setq desktop-dirname (expand-file-name "emacs" (xdg-cache-home)))
+  (setq desktop-base-file-name "desktop")
+  (setq desktop-base-lock-name "desktop.lock")
   ;; 始终保存 desktop 文件，不管文件原来是否存在，也不询问用户
   (setq desktop-save t)
   ;; 不管 desktop 文件是否被 lock，都加载 desktop 文件
