@@ -7,20 +7,23 @@
 
 (require 'package)
 
-;; 官方站
-;; - gnu:   https://elpa.gnu.org/packages/
-;; - melpa: https://melpa.org/packages/
-;; Emacs China
-;; - gnu:   http://1.15.88.122/gnu/
-;; - melpa: http://1.15.88.122/melpa/
-;; 163:
-;; - gnu:   http://mirrors.163.com/elpa/gnu/
-;; - melpa: http://mirrors.163.com/elpa/melpa/
-;; tuna:
-;; - gnu:   http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/
-;; - melpa: http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/
-(setq package-archives '(("gnu"   . "http://mirrors.163.com/elpa/gnu/")
-			             ("melpa" . "http://mirrors.163.com/elpa/melpa/")))
+(defvar bw/package-source '163
+  "Package 源，可选 official, 163, tuna 和 emacs-china")
+
+(cond
+ ((eq bw/package-source 'official)
+  (setq package-archives '(("gnu"   . "https://elpa.gnu.org/packages/")
+                           ("melpa" . "https://melpa.org/packages/"))))
+ ((eq bw/package-source '163)
+  (setq package-archives '(("gnu"   . "http://mirrors.163.com/elpa/gnu/")
+                           ("melpa" . "http://mirrors.163.com/elpa/melpa/"))))
+ ((eq bw/package-source 'tuna)
+  (setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+                           ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/"))))
+ ((eq bw/package-source 'emacs-china)
+  (setq package-archives '(("gnu"   . "http://1.15.88.122/gnu/")
+                           ("melpa" . "http://1.15.88.122/melpa/")))))
+
 ;; 不在 init 文件加载后重复初始化
 (setq package-enable-at-startup nil)
 (package-initialize)
