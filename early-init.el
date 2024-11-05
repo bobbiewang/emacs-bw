@@ -22,5 +22,10 @@
                              (not (file-name-absolute-p env)))
                          (expand-file-name "~/.cache")
                        env)))
-    (startup-redirect-eln-cache
-     (expand-file-name "emacs/eln-cache" cache-home))))
+    (if (version< emacs-version "29")
+        (add-to-list 'native-comp-eln-load-path eln-load-path)
+      (startup-redirect-eln-cache
+       (expand-file-name "emacs/eln-cache" cache-home)))))
+
+;; 关闭 Native Compilation 的警告、错误消息
+(setq native-comp-async-report-warnings-errors nil)
