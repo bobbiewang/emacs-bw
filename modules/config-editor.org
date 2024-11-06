@@ -29,14 +29,12 @@
 
 * Scroll
 
-  缺省情况下，光标超出 Window 边缘时，Emacs 会滚动半个 Window 的内容，
-同时光标会定位在 Window 的中间，用起来有点跳脱。这里设置的平滑的滚屏方
-式在终端下用会有文本错乱的现象，所以只在图形界面进行设置。
+  缺省情况下，光标超出 Window 边缘时，Emacs 会滚动半个 Window 的内容，同时光标会
+定位在 Window 的中间，用起来有点跳脱。这里设置的平滑的滚屏方式。
 
 #+BEGIN_SRC emacs-lisp
   (defun bw/smooth-scroll ()
     (interactive)
-    (when (display-graphic-p)
       ;; 翻屏时保持光标在屏幕的位置
       (setq scroll-preserve-screen-position 1)
       ;; 光标越出屏幕时，跳回屏幕的行数。设置为 0 的话，光标跳回屏幕中心；设
@@ -44,7 +42,7 @@
       (setq scroll-conservatively 9999)
       ;; 光标移动到离顶端/底端多少行开始滚动。设置为 0 表示到达顶端/底
       ;; 端才滚动；设置为 3 表示距离顶端/底端 3 行就开始滚动
-      (setq scroll-margin 3)))
+      (setq scroll-margin 3))
 
   (bw/smooth-scroll)
   (add-hook 'after-make-frame-functions
