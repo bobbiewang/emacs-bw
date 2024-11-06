@@ -210,15 +210,18 @@ consult-ripgrep，可以 M-x consult-ripgrep RET main -- -tcpp。这里的 -tcpp
   (use-package consult
     :if (eq bw/completion-framework 'vertico)
     :ensure t
-    :bind (("C-x b" . consult-buffer)
-           ("M-g i" . consult-imenu)
-           ("M-y"   . consult-yank-pop))
+    :bind (("C-x b"   . consult-buffer)
+           ("M-g g"   . consult-goto-line)
+           ("M-g M-g" . consult-goto-line)
+           ("M-g i"   . consult-imenu)
+           ("M-y"     . consult-yank-pop))
     :init
     (bw/define-keys-and-names
      "/"  'consult-line    "/"
-     "fF" 'consult-fd      "file file dwim"
+     "fF" 'consult-fd      "find file dwim"
      "bb" 'consult-buffer  "switch buffer"
      "bm" 'consult-imenu   "imenu"
+     "hi" 'consult-info    "info"
      "sg" 'consult-grep    "grep"
      "sr" 'rg-menu         "ripgrep"
      "sp" 'consult-ripgrep "ripgrep in project"))
