@@ -221,6 +221,7 @@ consult-ripgrep，可以 M-x consult-ripgrep RET main -- -tcpp。这里的 -tcpp
      "fF" 'consult-fd      "find file dwim"
      "bb" 'consult-buffer  "switch buffer"
      "bm" 'consult-imenu   "imenu"
+     "bo" 'consult-outline "outline"
      "hi" 'consult-info    "info"
      "sg" 'consult-grep    "grep"
      "sr" 'rg-menu         "ripgrep"
