@@ -10,6 +10,9 @@
 * 显示
 ** 字体
 
+  Emacs 的 font-family-list 函数可以返回字体列表，可以通过代码 (member
+"Consolas" (font-family-list)) 检查某字体是否在列表里。
+
   Emacs 23 开始底层统一用 Unicode 实现，中英文混合字体的设置比较简单了。下面的设
 置使用了 Consolas 和微软雅黑组合，下列字体大小设置可以做到中英文等宽。
 
