@@ -22,13 +22,15 @@
   |       16 |       18 |
   |       18 |       20 |
 
-  如果需要更强大的字体设置功能，可以考虑使用 [[https://github.com/tumashu/cnfonts][cnfonts]] 包。
+  Emacs 支持为不同的 Charset 分别设置字体。下面是一个例子。
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp-example
   (defun bw/set-mono-font ()
     (interactive)
     (when (display-graphic-p)
+      ;; 设置缺省字体
       (set-face-attribute 'default nil :font "Consolas:pixelsize=16")
+      ;; 为不同的 Charset 设置字体
       (dolist (charset '(kana han symbol cjk-misc bopomofo))
         (set-fontset-font (frame-parameter nil 'font)
                           charset (font-spec :family "Microsoft Yahei"
@@ -36,11 +38,51 @@
 
   ;; 在图形界面中设置字体
   (bw/set-mono-font)
+
   ;; 基于 Emacs Daemon 新建 Frame 时设置字体
   (add-hook 'after-make-frame-functions
             (lambda (frame)
               (select-frame frame)
               (bw/set-mono-font)))
+#+END_SRC
+
+  如果需要更强大的字体设置功能，可以考虑使用 [[https://github.com/tumashu/cnfonts][cnfonts]] 包。
+
+#+BEGIN_SRC emacs-lisp
+  (defun bw/font-installed-p (font-name)
+    "检查字体 FONT-NAME 是否可用"
+    (find-font (font-spec :name font-name)))
+
+  (defun bw/setup-fonts ()
+    (when (display-graphic-p)
+      ;; 设置缺省字体
+      (cl-loop for font in '("Maple Mono NF CN" "Consolas")
+               when (bw/font-installed-p font)
+               return (set-face-attribute 'default nil
+                                          :family font
+                                          :height 130))
+
+      ;; 设置 Unicode 字符的字体
+      (cl-loop for font in '("Segoe UI Symbol" "Symbola" "Symbol")
+               when (bw/font-installed-p font)
+               return (set-fontset-font t 'unicode font nil 'prepend))
+
+      ;; 设置 Emoji 字符的字体
+      (cl-loop for font in '("Noto Color Emoji" "Apple Color Emoji")
+               when (bw/font-installed-p font)
+               return (if (>= emacs-major-version 28)
+                          (set-fontset-font t 'emoji (font-spec :family font) nil 'prepend)
+                        (set-fontset-font t 'symbol (font-spec :family font) nil 'prepend)))
+
+      ;; 设置汉字的字体
+      (cl-loop for font in '("Maple Mono NF CN" "Microsoft Yahei")
+               when (bw/font-installed-p font)
+               return (progn
+                        (setq face-font-rescale-alist `((,font . 1.3)))
+                        (set-fontset-font t '(#x4e00 . #x9fff) (font-spec :family font))))))
+
+  (add-hook 'window-setup-hook #'bw/setup-fonts)
+  (add-hook 'server-after-make-frame-hook #'bw/setup-fonts)
 #+END_SRC
 
 ** 主题
