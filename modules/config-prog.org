@@ -19,6 +19,15 @@
     (add-hook 'compilation-filter-hook 'bw/colorize-compilation-buffer))
 #+END_SRC
 
+* format-all
+
+  [[https://github.com/lassik/emacs-format-all-the-code][format-all]] 支持许多语言的格式化。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package format-all
+    :commands format-all-region-or-buffer)
+#+END_SRC
+
 * multi-compile
 
   [[https://github.com/ReanGD/emacs-multi-compile][multi-compile]] 可以根据 Major Mode、file 后缀、buffer 名、任意 elisp expression，
