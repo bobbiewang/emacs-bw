@@ -21,7 +21,11 @@
 
 * format-all
 
-  [[https://github.com/lassik/emacs-format-all-the-code][format-all]] 支持许多语言的格式化。
+  [[https://github.com/lassik/emacs-format-all-the-code][format-all]] 支持许多语言的格式化，其原理是调用各语言的格式化程序。比如 C/C++ 语
+言支持 clang-format。
+
+  可以使用 format-all-region-or-buffer 等命令手动进行格式化，也可以启用
+format-all-mode 进行自动格式化。
 
 #+BEGIN_SRC emacs-lisp
   (use-package format-all
