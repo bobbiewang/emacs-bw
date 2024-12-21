@@ -1,5 +1,12 @@
 #+TITLE:     Python 开发环境
 
+* 说明
+
+  Python 开发环境依赖一些外部工具。
+  - pyright: LSP 后端
+  - ruff: 格式化代码
+  - direnv: 自动加载 venv
+
 * Python Mode
 
 #+BEGIN_SRC emacs-lisp
