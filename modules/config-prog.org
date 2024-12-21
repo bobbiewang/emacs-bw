@@ -1,5 +1,15 @@
 #+TITLE:     编程
 
+* 说明
+
+  下面是一些用于配置的变量。
+
+#+BEGIN_SRC emacs-lisp
+  ;;; -*- lexical-binding: t; -*-
+  (defvar bw/lsp-client 'eglot
+    "LSP 客户端，可选 'eglot、'lsp-mode 。")
+#+END_SRC
+
 * Prog Mode
 
   prog-mode 派生出各种编程语言的 mode。
@@ -67,20 +77,107 @@ format-all-mode 进行自动格式化。
 #+END_SRC
 
 * Language Server
+** eglot
+
+  [[https://github.com/joaotavora/eglot][eglot]] 是 Emacs LSP Client。和 lsp-mode 相比，eglot 的设计有如下特点。
+  - 轻量级，速度快，占用内存少
+  - 依赖少，只需要 Emacs 内置的包
+  - 开箱即用，把 eglot-ensure 函数加到相应的 Mode Hook 即可
+  - Emacs 29 开始内置
+
+  使用 eglot，首先要确保对应语言的 LSP Server 已经安装。eglot 内置了许多 LSP
+Server 的支持，可以通过变量 eglot-server-programs 查看详细列表。下面是一些常用语
+言的 LSP Server。
+  - C/C++：clangd、ccls
+  - Javascript：TS & JS Language Server
+  - Python：pylsp、pyls、pyright、jedi-language-server
+  - Ruby：solargraph
+
+  可以通过 eglot-server-programs 添加或者修改 LSP Server，下面是一个例子。
+
+#+BEGIN_SRC emacs-lisp-example
+  (add-to-list 'eglot-server-programs
+               '((c++-mode c-mode) . ("clangd" "--header-insertion=never")))
+#+END_SRC
+
+  C/C++ LSP Server 需要知道源文件的编译参数。以 clangd 为例，可以从
+compile_commands.json 或 compile_flags.txt 读取编译参数。
+  - compile_commands.json：从文件所在目录向父目录递归查找，查找时检查目录下和
+    build 子目录下面是否有 compile_commands.json 文件
+  - compile_flags.txt：在项目根目录下查找
+  - 如果找不到上述文件，假设编译的命令行是 clang source.cpp
+
+  编辑文件时通过 M-x eglot 启动 LSP Server，让 eglot 开始管理项目下的文件。项目
+文件可以是一个源代码文件，也可以是一个 Emacs Project 下的的文件。Emacs Project有
+两种：
+  1. 通过 VCS 特征目录确定（如 .git）
+  2. EDE Project（通过 ede-new 命令创建）
+
+  还可以通过 hook 为某些 Mode 自动激活 eglot，下面是一些例子。
+
+#+BEGIN_SRC emacs-lisp-example
+:hook ((prog-mode . (lambda ()
+                      (unless (derived-mode-p
+                               'emacs-lisp-mode
+                               'lisp-mode
+                               'makefile-mode)
+                        (eglot-ensure))))
+      ((markdown-mode yaml-mode) . eglot-ensure))
+#+END_SRC
+
+  下面是常用的 eglot 命令。
+
+  | 命令                      | 说明                                      |
+  |---------------------------+-------------------------------------------|
+  | eglot                     | 启动 LSP Server                           |
+  | eglot-shutdown            | 终止 LSP Server                           |
+  |---------------------------+-------------------------------------------|
+  | eglot-find-declaration    | 跳转到声明                                |
+  | eglot-find-implementation | 跳转到实现                                |
+  | eglot-find-typeDefinition | 跳转到类型定义                            |
+  |---------------------------+-------------------------------------------|
+  | eglot-rename              | 重命名当前 Symbol，会同时修改其他相关位置 |
+  | eglot-code-actions        | 当前代码的 Code Action                    |
+
+  另外，eglot 启动后会替换（增强） xref-find-definitions、xref-find-references、
+imenu、eldoc 等功能。
+
+  如果要更新 Emacs 内置的 eglot，可以 M-x eglot-upgrade-eglot。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package eglot
+    :if (eq bw/lsp-client 'eglot)
+    :ensure t
+    :commands (eglot eglot-ensure)
+    :hook ((c-mode c++-mode python-mode) . eglot-ensure))
+#+END_SRC
+
 ** lsp
 
 #+BEGIN_SRC emacs-lisp
   (use-package lsp-mode
-    :commands lsp
+    :if (eq bw/lsp-client 'lsp-mode)
+    :hook (prog-mode . lsp-deferred)
+    :custom
+    (lsp-keymap-prefix "C-c l")
+    (lsp-prefer-capf t)
+    (lsp-auto-guess-root t)
+    (lsp-keep-workspace-alive nil)
+    :bind (:map lsp-mode-map
+                ("C-c f" . lsp-format-region)
+                ("C-c d" . lsp-describe-thing-at-point)
+                ("C-c a" . lsp-execute-code-action)
+                ("C-c r" . lsp-rename))
     :init
     (setq lsp-session-file (expand-file-name
-                            "emacs/lsp-session-v1" (xdg-cache-home))))
+                        "emacs/lsp-session-v1" (xdg-cache-home))))
 #+END_SRC
 
 ** lsp-ui
 
 #+BEGIN_SRC emacs-lisp
   (use-package lsp-ui
+    :if (eq bw/lsp-client 'lsp-mode)
     :commands lsp-ui-mode)
 #+END_SRC
 
