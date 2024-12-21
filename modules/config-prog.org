@@ -29,7 +29,13 @@ format-all-mode 进行自动格式化。
 
 #+BEGIN_SRC emacs-lisp
   (use-package format-all
-    :commands format-all-region-or-buffer)
+    :commands format-all-region-or-buffer
+    :hook ((c++-mode . format-all-mode)
+           (python-mode . format-all-mode))
+    :config
+    (setq-default format-all-formatters
+                  '(("C++" (clang-format))
+                    ("Python" (ruff)))))
 #+END_SRC
 
 * multi-compile
