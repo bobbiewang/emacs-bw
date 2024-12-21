@@ -1,5 +1,16 @@
 #+TITLE:     Others
 
+* envrc
+
+  [[https://github.com/purcell/envrc][envrc]] 使用 [[https://direnv.net/][direnv]] 自动根据目录下的 .envrc 文件设置环境变量。这些设置是 buffer
+local 的，多个目录之间不会互相干扰。
+
+#+BEGIN_SRC emacs-lisp
+  (use-package envrc
+    :if (executable-find "direnv")
+    :hook (after-init . envrc-global-mode))
+#+END_SRC
+
 * WSL
 
   和 WSL 交互的命令。
