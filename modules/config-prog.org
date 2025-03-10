@@ -149,7 +149,23 @@ imenu、eldoc 等功能。
     :if (eq bw/lsp-client 'eglot)
     :ensure t
     :commands (eglot eglot-ensure)
-    :hook ((c-mode c++-mode python-mode) . eglot-ensure))
+    :config
+    ;; 检测 LSP 程序存在才激活 eglot，否则 emacsclient 可能会闪退
+      (defun conditionally-enable-eglot ()
+      (cond
+       ;; C/C++ 模式检测 clangd/ccls
+       ((or (derived-mode-p 'c-mode) (derived-mode-p 'c++-mode))
+        (when (or (executable-find "clangd")
+                  (executable-find "ccls"))
+          (eglot-ensure)))
+       ;; Python 模式检测 pyright
+       ((derived-mode-p 'python-mode)
+        (when (executable-find "pyright")
+          (eglot-ensure)))))
+
+      (add-hook 'c-mode-hook #'conditionally-enable-eglot)
+      (add-hook 'c++-mode-hook #'conditionally-enable-eglot)
+      (add-hook 'python-mode-hook #'conditionally-enable-eglot))
 #+END_SRC
 
 ** lsp
